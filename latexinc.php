@@ -44,6 +44,9 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
       $latex->_image_format = $this->getConf("image_format");
       $latex->_colour = $this->getConf("colour");
       $latex->_formula_density = $this->getConf("density");
+	  $latex->_xsize_limit = $this->getConf("xsize_limit");
+	  $latex->_ysize_limit = $this->getConf("ysize_limit");
+	  $latex->_string_length__limit = $this->getConf("string_length_limit");
 	  $this->_latex = $latex;
 	}
 
