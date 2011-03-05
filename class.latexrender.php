@@ -252,19 +252,18 @@ class LatexRender {
         fclose($fp);
 
         // create temporary dvi file
-        $command = $this->_latex_path." --interaction=nonstopmode ".$this->_tmp_filename.".tex";
+        $command = $this->_latex_path." ".$this->_tmp_filename.".tex";
         $status_code = exec($command);
 
         if (!$status_code) { $this->cleanTemporaryDirectory(); chdir($current_dir); $this->_errorcode = 4; return false; }
 
         // convert dvi file to postscript using dvips
-        $command = $this->_dvips_path." -E ".$this->_tmp_filename.".dvi"." -o ".$this->_tmp_filename.".ps";
+        $command = $this->_dvips_path." ".$this->_tmp_filename.".dvi"." -o ".$this->_tmp_filename.".ps";
         $status_code = exec($command);
 
 
         // imagemagick convert ps to image and trim picture
-        $command = $this->_convert_path." -density ".$this->_formula_density.
-                    " -trim -transparent \"#FFFFFF\" ".$this->_tmp_filename.".ps ".
+        $command = $this->_convert_path." ".$this->_tmp_filename.".ps ".
                     $this->_tmp_filename.".".$this->_image_format;
 
         $status_code = exec($command);
