@@ -9,7 +9,9 @@
 if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 require_once(DOKU_PLUGIN.'admin.php');
- 
+
+require_once(dirname(__FILE__).'/latexinc.php');
+
 /**
  * All DokuWiki plugins to extend the admin function
  * need to inherit from this class

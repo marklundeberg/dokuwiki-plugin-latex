@@ -34,19 +34,25 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 	/* common constructor -- get config settings */
 	function syntax_plugin_latex_common()
 	{
-	  $dir = $this->getConf("tmp_dir");
-      $latex = new LatexRender($dir,$dir,$dir);
-	  $latex->_latex_path = $this->getConf("latex_path");
-	  $latex->_dvips_path = $this->getConf("dvips_path");
-	  $latex->_convert_path = $this->getConf("convert_path");
-	  $latex->_identify_path = $this->getConf("identify_path");
-	  $latex->_keep_tmp = $this->getConf("keep_tmp");
-      $latex->_image_format = $this->getConf("image_format");
-      $latex->_colour = $this->getConf("colour");
-	  $latex->_xsize_limit = $this->getConf("xsize_limit");
-	  $latex->_ysize_limit = $this->getConf("ysize_limit");
-	  $latex->_string_length__limit = $this->getConf("string_length_limit");
-	  $this->_latex = $latex;
+		global $conf;
+		$dir = $this->getConf("tmp_dir");
+		$latex = new LatexRender($dir,$dir,$dir);
+		$latex->_latex_path = $this->getConf("latex_path");
+		$latex->_dvips_path = $this->getConf("dvips_path");
+		$latex->_convert_path = $this->getConf("convert_path");
+		$latex->_identify_path = $this->getConf("identify_path");
+		$latex->_keep_tmp = $this->getConf("keep_tmp");
+		$latex->_image_format = $this->getConf("image_format");
+		$latex->_colour = $this->getConf("colour");
+		$latex->_xsize_limit = $this->getConf("xsize_limit");
+		$latex->_ysize_limit = $this->getConf("ysize_limit");
+		$latex->_string_length__limit = $this->getConf("string_length_limit");
+		$this->_latex = $latex;
+        if ( !is_dir($conf['mediadir'] . '/latex') ) {
+          mkdir($conf['mediadir'] . '/latex', 0777-$conf['dmask']);
+        }
+		$latex->setPicturePath($conf['mediadir'] . '/latex/');
+		$latex->setPicturePathHTTPD(DOKU_BASE.'lib/exe/fetch.php?media=latex:');
 	}
 
     function getType(){return 'protected'; }
@@ -55,12 +61,30 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 	
     function render($mode, &$renderer, $data) {
       global $conf;
-	  //dbg('function render($mode, &$renderer, $data)-->'.' mode = '.$mode.' data = '.serialize($data).'\n');
 	  if($data[1] != DOKU_LEXER_UNMATCHED) return true; // ignore entry/exit states
+	  
       if($mode == 'xhtml') {
-//		  dbg('xhtml render: '.$data[0].', '.$data[1]);
+		  $url = $this->latex->getFormulaURL($data[0])
+		  $title = $data['title'];
 		  
-		  $url = $this->getImage($data[0]);
+		  if(!$url){
+			// some kinda error.
+			$url = DOKU_BASE.'lib/plugins/latex/images/renderfail.png';
+			switch($this->latex->_errorcode) {
+				case 1: $title = 'Fail: formula too long (current limit is '.$latex->_string_length_limit.' characters)';
+				break;
+				case 2: $title = 'Fail: triggered security filter; contains blacklisted LaTeX tags.';
+				break;
+				case 4: $title = 'Fail: LaTeX compilation failed.';
+				break;
+				case 5: $title = 'Fail: image too big (max '.$latex->_xsize_limit.'x'.$latex->_ysize_limit.' px)'.$latex->_errorextra;
+				break;
+				case 6: $title = 'Fail: unknown processing error.';
+				break;
+				default: $title = 'Fail: unknown error.';
+				break;
+			}
+		  }
 		  if($data['class'] == "latex_displayed")
 			$renderer->doc .= "\n<br/>";
 		  $renderer->doc .= '<img src="'.$url.'" class="'.$data['class'].'" alt="'.htmlspecialchars($data[0]).'" title="'.$data['title'].'"/>';		    
@@ -69,39 +93,12 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
       } elseif ($mode == 'latex') {
 		  $renderer->doc .= $data[0]."\n";
 		  return true;
+	  } elseif ($mode == 'metadata') {
+	      // nothing to meta.
+		  return true;
 	  }
-      return $data[0];
-    }    
-  
-    function getImage(&$data) {
-		global $conf;
-		
-        if ( !is_dir($conf['mediadir'] . '/latex') ) {
-          mkdir($conf['mediadir'] . '/latex', 0777-$conf['dmask']);
-        }
-        $hash = 'img'.md5($data);
-        $filename = $conf['mediadir'] . '/latex/'.$hash.'.'.$this->getConf("image_format");
-        $url = DOKU_BASE.'lib/exe/fetch.php?cache='.$cache.'&amp;media='.urlencode('latex:'.$hash.'.'.$this->getConf("image_format"));
-		
-//		dbg("getImage('".$data."'); ==> ".$filename);
-		if(is_readable($filename))
-			return $url;
-		
-		if($this->createImage($filename, $data))
-			return $url;
-		else
-			return  DOKU_BASE.'lib/plugins/latex/images/renderfail.png';
-//			return false;
-    }
-
-    function createImage($filename, &$data) {
-      global $conf;
-      if ($url = $this->_latex->getFormulaURL($data)) {
-        rename($url,$filename);
-		return true;
-      }
+	  $renderer->doc .= htmlspecialchars($data[0]); /// unknown render mode, just fart out the latex code.
       return false;
     }
-
     
 }

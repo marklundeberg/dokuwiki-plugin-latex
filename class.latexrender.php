@@ -80,7 +80,6 @@ class LatexRender {
         $this->_picture_path = $picture_path;
         $this->_picture_path_httpd = $picture_path_httpd;
         $this->_tmp_dir = $tmp_dir;
-        $this->_tmp_filename = md5(rand());
     }
 
     // ====================================================================================
@@ -140,10 +139,10 @@ class LatexRender {
 
         $formula_hash = md5($latex_formula);
 
-        $filename = $formula_hash.".".$this->_image_format;
+        $filename = "img".$formula_hash.".".$this->_image_format;
         $full_path_filename = $this->getPicturePath()."/".$filename;
 
-        if (is_file($full_path_filename)) {
+        if (is_readable($full_path_filename)) {
             return $this->getPicturePathHTTPD()."/".$filename;
         } else {
             // security filter: reject too long formulas
@@ -244,6 +243,8 @@ class LatexRender {
         $current_dir = getcwd();
 
         chdir($this->_tmp_dir);
+		
+        $this->_tmp_filename = md5(rand());
 
         // create temporary latex file
         $fp = fopen($this->_tmp_dir."/".$this->_tmp_filename.".tex","w");
@@ -254,12 +255,17 @@ class LatexRender {
         $command = $this->_latex_path." ".$this->_tmp_filename.".tex";
         $status_code = exec($command);
 
-        if (!$status_code) { $this->cleanTemporaryDirectory(); chdir($current_dir); $this->_errorcode = 4; return false; }
+        if (!$status_code)
+		{
+			if( ! $this->_keep_tmp) $this->cleanTemporaryDirectory();
+			chdir($current_dir);
+			$this->_errorcode = 4; /// Error 4: latexing failed
+			return false;
+		}
 
         // convert dvi file to postscript using dvips
         $command = $this->_dvips_path." ".$this->_tmp_filename.".dvi"." -o ".$this->_tmp_filename.".ps";
         $status_code = exec($command);
-
 
         // imagemagick convert ps to image and trim picture
         $command = $this->_convert_path." ".$this->_tmp_filename.".ps ".
@@ -267,15 +273,14 @@ class LatexRender {
 
         $status_code = exec($command);
 
-
         // test picture for correct dimensions
         $dim = $this->getDimensions($this->_tmp_filename.".".$this->_image_format);
 
         if ( ($dim["x"] > $this->_xsize_limit) or ($dim["y"] > $this->_ysize_limit)) {
-            $this->cleanTemporaryDirectory();
+            if( ! $this->_keep_tmp) $this->cleanTemporaryDirectory();
             chdir($current_dir);
-            $this->_errorcode = 5;
-            $this->_errorextra = ": " . $dim["x"] . "x" . number_format($dim["y"],0,"","");
+            $this->_errorcode = 5; // image too big.
+            $this->_errorextra = ": " . $dim["x"] . "x" . $dim["y"];
             return false;
         }
 
@@ -285,11 +290,11 @@ class LatexRender {
 
         $status_code = copy($this->_tmp_filename.".".$this->_image_format,$filename);
 
-        if( ! $this->_keep_tmp)
-            $this->cleanTemporaryDirectory();
-
-        if (!$status_code) { chdir($current_dir); $this->_errorcode = 6; return false; }
+        if( ! $this->_keep_tmp) $this->cleanTemporaryDirectory();
+		
         chdir($current_dir);
+
+        if (!$status_code) { $this->_errorcode = 6; return false; }
 
         return true;
     }
@@ -298,8 +303,8 @@ class LatexRender {
      * Cleans the temporary directory
      */
     function cleanTemporaryDirectory() {
-        $current_dir = getcwd();
-        chdir($this->_tmp_dir);
+//        $current_dir = getcwd();
+//        chdir($this->_tmp_dir);
 
         unlink($this->_tmp_dir."/".$this->_tmp_filename.".tex");
         unlink($this->_tmp_dir."/".$this->_tmp_filename.".aux");
@@ -308,9 +313,7 @@ class LatexRender {
         unlink($this->_tmp_dir."/".$this->_tmp_filename.".ps");
         unlink($this->_tmp_dir."/".$this->_tmp_filename.".".$this->_image_format);
 
-        chdir($current_dir);
+//        chdir($current_dir);
     }
 
 }
-
-?>
