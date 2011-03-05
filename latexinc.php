@@ -22,7 +22,7 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
             'email'  => '.',
             'date'   => '2011-03-04',
             'name'   => 'LaTeX plugin',
-            'desc'   => 'LaTeX rendering plugin; requires LaTeX, dvips, ImageMagick. This plugin prevents the use of $ for currency; you should type <tt>%%$%%</tt> instead to avoid triggering math mode.',
+            'desc'   => 'LaTeX rendering plugin; requires LaTeX, dvips, ImageMagick.',
             'url'    => 'http://www.dokuwiki.org/plugin:latex'
         );
     }
