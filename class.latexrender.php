@@ -179,11 +179,13 @@ class LatexRender {
      */
     function wrap_formula($latex_formula) {
         $string  = "\documentclass[".$this->_font_size."pt]{".$this->_latexclass."}\n";
+        $string .= "\usepackage{ucs}\n";
         $string .= "\usepackage[utf8x]{inputenc}\n";
         $string .= "\usepackage{amsmath}\n";
         $string .= "\usepackage{amsfonts}\n";
         $string .= "\usepackage{amssymb}\n";
-        //$string .= "\usepackage{wasysym}\n";
+        $string .= "\usepackage{eurosym}\n";
+        $string .= "\usepackage{wasysym}\n";
         $string .= "\usepackage{color}\n";
         $string .= "\pagestyle{empty}\n";
         $string .= "\begin{document}\n";
