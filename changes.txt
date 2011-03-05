@@ -1,0 +1,11 @@
+  * starting with Michael Boyle's modification to Alexander Krause's plugin
+	http://wiki.erazor-zone.de/_media/wiki:projects:php:dokuwiki:plugins:latexrender_extended.zip
+    (enabled $...$, <latex></latex>, \begin{displaymath}, \begin{eqnarray}, \begin{eqnarray*})
+  * changed inlines to have vertical-alignment:middle; (not perfect, but close)
+  * changed big equations to have nice margins.
+  * added DokuTexit support (latex rendering mode)
+	http://wiki.erazor-zone.de/doku.php?id=wiki:projects:php:dokuwiki:plugins:latex
+  * restructured files
+  * added several config options (paths of binaries, colour, formula size, image format)
+  * added support for $$ ... $$ as in LaTeX, for displayed equations.
+  * added support for \begin{equation}   and \begin{equation*}
