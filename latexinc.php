@@ -16,16 +16,20 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
    /**
     * return some info
     */
-/*    function getInfo(){
+     function getInfo(){
+        if(method_exists(DokuWiki_Syntax_Plugin,"getInfo"))
+             return parent::getInfo(); /// this with grab the data from the plugin.info.txt
+
+        // Otherwise return some hardcoded data for old dokuwikis
         return array(
             'author' => 'Alexander Kraus, Michael Boyle, and Mark Lundeberg)',
             'email'  => '.',
-            'date'   => '2011-03-04',
+            'date'   => '???',
             'name'   => 'LaTeX plugin',
             'desc'   => 'LaTeX rendering plugin; requires LaTeX, dvips, ImageMagick.',
             'url'    => 'http://www.dokuwiki.org/plugin:latex'
         );
-    } */  // Not really necessary anymore since the .txt file sources this information.
+    }
 	
 	/* common constructor -- get config settings */
 	function syntax_plugin_latex_common()
