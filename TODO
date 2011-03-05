@@ -1,2 +1,2 @@
--config options for maximum Xsize Ysize and formula length
--add Admin panel with: Troubleshooter, and Cache cruft-cleaner/wiper.
+-add Admin panel with: Troubleshooter, and cache cruft-cleaner/wiper.
+-some sort of configuration for LaTeX preamble and postamble.

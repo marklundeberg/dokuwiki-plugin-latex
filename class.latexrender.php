@@ -30,10 +30,14 @@ class LatexRender {
     // ====================================================================================
     var $_picture_path = "";
     var $_picture_path_httpd = "";
-    var $_tmp_dir = "";
-    var $_keep_tmp = false;   // keep temporary files? (good for debug)
     // i was too lazy to write mutator functions for every single program used
     // just access it outside the class or change it here if nescessary
+
+	/////////////////////////////////////////
+    ////// NOTE - DO NOT CHANGE THESE SETTINGS. USE THE CONFIG MANAGER
+    //////    IN DOKUWIKI INSTEAD; THESE ARE OVERWRITTEN.
+    var $_tmp_dir = "";
+    var $_keep_tmp = false;   // keep temporary files? (good for debug)
     var $_latex_path = "latex";
     var $_dvips_path = "dvips";
     var $_convert_path = "convert";
@@ -42,10 +46,12 @@ class LatexRender {
     var $_xsize_limit = 1000;
     var $_ysize_limit = 500;
     var $_string_length_limit = 2000;
+    var $_image_format = "png"; //change to png if you prefer
+	////////////////////////////////////
+
 	var $_font_size = 10;
 	var $_latexclass = "article"; //install extarticle class if you wish to have smaller font sizes
     var $_tmp_filename;
-	var $_image_format = "png"; //change to png if you prefer
     // this most certainly needs to be extended. in the long term it is planned to use
     // a positive list for more security. this is hopefully enough for now. i'd be glad
     // to receive more bad tags !

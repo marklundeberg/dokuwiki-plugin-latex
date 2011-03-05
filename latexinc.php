@@ -80,7 +80,7 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
         if ( !is_dir($conf['mediadir'] . '/latex') ) {
           mkdir($conf['mediadir'] . '/latex', 0777-$conf['dmask']);
         }
-        $hash = md5($data);
+        $hash = 'img'.md5($data);
         $filename = $conf['mediadir'] . '/latex/'.$hash.'.'.$this->getConf("image_format");
         $url = DOKU_BASE.'lib/exe/fetch.php?cache='.$cache.'&amp;media='.urlencode('latex:'.$hash.'.'.$this->getConf("image_format"));
 		
