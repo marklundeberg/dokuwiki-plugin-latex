@@ -12,3 +12,5 @@ $conf['colour'] = '{rgb}{0.50,0.00,0.00}';
 $conf['xsize_limit'] = 1000;
 $conf['ysize_limit'] = 500;
 $conf['string_length_limit'] = 2000;
+
+$conf['preamble'] = 'Asdf\njkhgl';
