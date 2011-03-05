@@ -18,7 +18,7 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
     */
     function getInfo(){
         return array(
-            'author' => 'Alexander Krause (changes by Michael Boyle & Mark Lundeberg)',
+            'author' => 'Alexander Kraus, Michael Boyle, and Mark Lundeberg)',
             'email'  => '.',
             'date'   => '2011-03-04',
             'name'   => 'LaTeX plugin',
