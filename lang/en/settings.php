@@ -4,7 +4,7 @@ $lang['latex_path'] = 'Path to <code>latex</code> binary';
 $lang['dvips_path'] = 'Path to <code>dvips</code> binary';
 $lang['convert_path'] = 'Path to ImageMagick <code>convert</code> binary';
 $lang['identify_path'] = 'Path to ImageMagick <code>identify</code> binary';
-$lang['image_format'] = 'Image format of rendered LaTeX: <code>png</code> supports transparency, but <code>jpg</code> is compact.';
+$lang['image_format'] = 'Image format of rendered LaTeX: <code>png</code> looks best, but <code>gif</code> is more compact.';
 $lang['tmp_dir'] = 'Location of temporary folder';
 $lang['colour'] = 'Equation colour, written as <code>{model}{value1,value2,...}</code>.
     <code>model</code> may be one of <code>gray</code>, <code>rgb</code>, <code>RGB</code>, <code>HTML</code>, <code>CMYK</code>
