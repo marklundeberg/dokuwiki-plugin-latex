@@ -252,7 +252,7 @@ class LatexRender {
         if (!$status_code) { $this->cleanTemporaryDirectory(); chdir($current_dir); $this->_errorcode = 4; return false; }
 
         // convert dvi file to postscript using dvips
-        $command = $this->_dvips_path."  ".$this->_tmp_filename.".dvi"." -o ".$this->_tmp_filename.".ps";
+        $command = $this->_dvips_path." -E ".$this->_tmp_filename.".dvi"." -o ".$this->_tmp_filename.".ps";
         $status_code = exec($command);
 
 
