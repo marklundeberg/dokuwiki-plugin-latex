@@ -1,9 +1,9 @@
 <?php
 
-$conf['latex_path'] = 'latex --interaction=nonstopmode';
-$conf['dvips_path'] = 'dvips -E';
-$conf['convert_path'] = 'convert -density 120 -trim -transparent "#FFFFFF"';
-$conf['identify_path'] = 'identify';
+$conf['latex_path'] = '/usr/bin/latex --interaction=nonstopmode';
+$conf['dvips_path'] = '/usr/bin/dvips -E';
+$conf['convert_path'] = '/usr/bin/convert -density 120 -trim -transparent "#FFFFFF"';
+$conf['identify_path'] = '/usr/bin/identify';
 $conf['image_format'] = 'png';
 $conf['tmp_dir'] = '/tmp';
 $conf['keep_tmp'] = false;
