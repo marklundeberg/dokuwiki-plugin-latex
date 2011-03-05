@@ -42,7 +42,6 @@ class LatexRender {
     var $_dvips_path = "dvips";
     var $_convert_path = "convert";
     var $_identify_path = "identify";
-    var $_formula_density = 120;
     var $_xsize_limit = 1000;
     var $_ysize_limit = 500;
     var $_string_length_limit = 2000;

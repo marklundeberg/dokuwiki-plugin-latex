@@ -6,6 +6,9 @@ $lang['convert_path'] = 'Path to ImageMagick <code>convert</code> binary and opt
    <code>-density &lt;number&gt;</code> controls rendering size, and <code>-transparent &lt;colour&gt;</code>
    converts colour to transparency.';
 $lang['identify_path'] = 'Path to ImageMagick <code>identify</code> binary.';
+$lang['xsize_limit'] = 'Maximum width (in pixels) of rendered LaTeX images';
+$lang['ysize_limit'] = 'Maximum height (in pixels) of rendered LaTeX images';
+$lang['string_length_limit'] = 'Maximum length of LaTeX code';
 $lang['image_format'] = 'Image format of rendered LaTeX: <code>png</code> looks best, but <code>gif</code> is more compact.';
 $lang['tmp_dir'] = 'Location of temporary folder';
 $lang['colour'] = 'Equation colour, written as <code>{model}{value1,value2,...}</code>.

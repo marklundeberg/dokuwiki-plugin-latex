@@ -1,7 +1,6 @@
 <?php
 
 $meta['colour'] = array('string');
-//$meta['density'] = array('numeric');
 $meta['image_format'] = array('string');
 
 $meta['xsize_limit'] = array('numeric');
