@@ -1,0 +1,20 @@
+LaTeX plugin for dokuwiki.
+
+This plugin requires ImageMagick to convert DVI files into images.
+
+PHP safe mode will almost always break the plugin.
+
+Adds the following syntax to DokuWiki:
+    $$...$$ syntax for displayed LaTeX-math [ddollar]
+    \begin{displaymath} ... \end{displaymath} syntax [displaymath]
+    $...$ syntax for inline LaTeX-math [dollar]
+    \begin{eqnarray} ... \end{eqnarray} syntax [eqnarray]
+    \begin{eqnarray*} ... \end{eqnarray*} syntax [eqnarraystar]
+    \begin{equation} ... \end{equation} syntax [equation]
+    \begin{equation*} ... \end{equation*} syntax [equationstar]
+    <latex>...</latex> syntax for inline LaTeX (non-math-mode) [latex]
+
+
+Things to watch out for:
+  * The symbol $ can no longer be used for currency, so use %%$%% instead in wiki text.
+  * If the colour or formula density is changed, you need to delete the old cached LaTeX images. Just rm data/media/latex/*, then touch conf/local.php (or resave config manager) to purge the page cache.
