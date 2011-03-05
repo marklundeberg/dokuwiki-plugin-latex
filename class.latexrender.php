@@ -179,7 +179,7 @@ class LatexRender {
      */
     function wrap_formula($latex_formula) {
         $string  = "\documentclass[".$this->_font_size."pt]{".$this->_latexclass."}\n";
-        $string .= "\usepackage[latin1]{inputenc}\n";
+        $string .= "\usepackage[utf8x]{inputenc}\n";
         $string .= "\usepackage{amsmath}\n";
         $string .= "\usepackage{amsfonts}\n";
         $string .= "\usepackage{amssymb}\n";
