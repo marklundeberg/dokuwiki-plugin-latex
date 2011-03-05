@@ -241,7 +241,7 @@ class LatexRender {
         chdir($this->_tmp_dir);
 
         // create temporary latex file
-        $fp = fopen($this->_tmp_dir."/".$this->_tmp_filename.".tex","a+");
+        $fp = fopen($this->_tmp_dir."/".$this->_tmp_filename.".tex","w");
         fputs($fp,$latex_document);
         fclose($fp);
 
