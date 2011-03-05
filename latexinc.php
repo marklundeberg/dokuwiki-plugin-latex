@@ -18,7 +18,7 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
     */
      function getInfo(){
         if(method_exists(DokuWiki_Syntax_Plugin,"getInfo"))
-             return parent::getInfo(); /// this with grab the data from the plugin.info.txt
+             return parent::getInfo(); /// this will grab the data from the plugin.info.txt
 
         // Otherwise return some hardcoded data for old dokuwikis
         return array(
