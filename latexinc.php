@@ -16,7 +16,7 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
    /**
     * return some info
     */
-    function getInfo(){
+/*    function getInfo(){
         return array(
             'author' => 'Alexander Kraus, Michael Boyle, and Mark Lundeberg)',
             'email'  => '.',
@@ -25,7 +25,7 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
             'desc'   => 'LaTeX rendering plugin; requires LaTeX, dvips, ImageMagick.',
             'url'    => 'http://www.dokuwiki.org/plugin:latex'
         );
-    }
+    } */  // Not really necessary anymore since the .txt file sources this information.
 	
 	/* common constructor -- get config settings */
 	function syntax_plugin_latex_common()
