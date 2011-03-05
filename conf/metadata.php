@@ -14,5 +14,3 @@ $meta['convert_path'] = array('string');
 $meta['identify_path'] = array('string');
 $meta['tmp_dir'] = array('string');
 $meta['keep_tmp'] = array('onoff');
-
-$meta['preamble'] = array('');

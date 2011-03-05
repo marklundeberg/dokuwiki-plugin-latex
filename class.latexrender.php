@@ -257,7 +257,8 @@ class LatexRender {
 
         if (!$status_code)
 		{
-			if( ! $this->_keep_tmp) $this->cleanTemporaryDirectory();
+			if( ! $this->_keep_tmp)
+				$this->cleanTemporaryDirectory();
 			chdir($current_dir);
 			$this->_errorcode = 4; /// Error 4: latexing failed
 			return false;
@@ -277,7 +278,8 @@ class LatexRender {
         $dim = $this->getDimensions($this->_tmp_filename.".".$this->_image_format);
 
         if ( ($dim["x"] > $this->_xsize_limit) or ($dim["y"] > $this->_ysize_limit)) {
-            if( ! $this->_keep_tmp) $this->cleanTemporaryDirectory();
+            if( ! $this->_keep_tmp)
+				$this->cleanTemporaryDirectory();
             chdir($current_dir);
             $this->_errorcode = 5; // image too big.
             $this->_errorextra = ": " . $dim["x"] . "x" . $dim["y"];
@@ -290,7 +292,8 @@ class LatexRender {
 
         $status_code = copy($this->_tmp_filename.".".$this->_image_format,$filename);
 
-        if( ! $this->_keep_tmp) $this->cleanTemporaryDirectory();
+        if( ! $this->_keep_tmp)
+			$this->cleanTemporaryDirectory();
 		
         chdir($current_dir);
 
