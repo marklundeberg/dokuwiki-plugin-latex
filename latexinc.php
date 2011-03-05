@@ -35,8 +35,12 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 	function syntax_plugin_latex_common()
 	{
 		global $conf;
-		$dir = $this->getConf("tmp_dir");
-		$latex = new LatexRender($dir,$dir,$dir);
+        if ( !is_dir($conf['mediadir'] . '/latex') ) {
+          mkdir($conf['mediadir'] . '/latex', 0777-$conf['dmask']);
+        }
+		$latex = new LatexRender($conf['mediadir'] . '/latex/',
+						DOKU_BASE.'lib/exe/fetch.php?media=latex:',
+						$this->getConf("tmp_dir"));
 		$latex->_latex_path = $this->getConf("latex_path");
 		$latex->_dvips_path = $this->getConf("dvips_path");
 		$latex->_convert_path = $this->getConf("convert_path");
@@ -47,12 +51,8 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 		$latex->_xsize_limit = $this->getConf("xsize_limit");
 		$latex->_ysize_limit = $this->getConf("ysize_limit");
 		$latex->_string_length__limit = $this->getConf("string_length_limit");
+		
 		$this->_latex = $latex;
-        if ( !is_dir($conf['mediadir'] . '/latex') ) {
-          mkdir($conf['mediadir'] . '/latex', 0777-$conf['dmask']);
-        }
-		$latex->setPicturePath($conf['mediadir'] . '/latex/');
-		$latex->setPicturePathHTTPD(DOKU_BASE.'lib/exe/fetch.php?media=latex:');
 	}
 
     function getType(){return 'protected'; }
@@ -60,24 +60,24 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
     function getSort(){return 405; }
 	
     function render($mode, &$renderer, $data) {
-      global $conf;
+//      global $conf;
 	  if($data[1] != DOKU_LEXER_UNMATCHED) return true; // ignore entry/exit states
 	  
       if($mode == 'xhtml') {
-		  $url = $this->latex->getFormulaURL($data[0])
+		  $url = $this->_latex->getFormulaURL($data[0])
 		  $title = $data['title'];
 		  
 		  if(!$url){
 			// some kinda error.
 			$url = DOKU_BASE.'lib/plugins/latex/images/renderfail.png';
-			switch($this->latex->_errorcode) {
-				case 1: $title = 'Fail: formula too long (current limit is '.$latex->_string_length_limit.' characters)';
+			switch($this->_latex->_errorcode) {
+				case 1: $title = 'Fail: formula too long (current limit is '.$this->_latex->_string_length_limit.' characters)';
 				break;
 				case 2: $title = 'Fail: triggered security filter; contains blacklisted LaTeX tags.';
 				break;
 				case 4: $title = 'Fail: LaTeX compilation failed.';
 				break;
-				case 5: $title = 'Fail: image too big (max '.$latex->_xsize_limit.'x'.$latex->_ysize_limit.' px)'.$latex->_errorextra;
+				case 5: $title = 'Fail: image too big (max '.$this->_latex->_xsize_limit.'x'.$this->_latex->_ysize_limit.' px)'.$this->_latex->_errorextra;
 				break;
 				case 6: $title = 'Fail: unknown processing error.';
 				break;
@@ -87,7 +87,7 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 		  }
 		  if($data['class'] == "latex_displayed")
 			$renderer->doc .= "\n<br/>";
-		  $renderer->doc .= '<img src="'.$url.'" class="'.$data['class'].'" alt="'.htmlspecialchars($data[0]).'" title="'.$data['title'].'"/>';		    
+		  $renderer->doc .= '<img src="'.$url.'" class="'.$data['class'].'" alt="'.htmlspecialchars($data[0]).'" title="'.$title.'"/>';		    
 		  if($data['class'] == "latex_displayed")
 			$renderer->doc .= "<br/>\n";
       } elseif ($mode == 'latex') {

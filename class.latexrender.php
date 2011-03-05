@@ -194,7 +194,7 @@ class LatexRender {
         $string .= "\usepackage{color}\n";
         $string .= "\pagestyle{empty}\n";
         $string .= "\begin{document}\n";
-	$string .= "\definecolor{MyColour}".$this->_colour."\n";
+		$string .= "\definecolor{MyColour}".$this->_colour."\n";
         $string .= "{\color{MyColour}\n";
         $string .= $latex_formula."\n";
         $string .= "}\n";
