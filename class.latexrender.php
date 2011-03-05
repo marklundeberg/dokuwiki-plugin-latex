@@ -31,6 +31,7 @@ class LatexRender {
     var $_picture_path = "";
     var $_picture_path_httpd = "";
     var $_tmp_dir = "";
+    var $_keep_tmp = false;   // keep temporary files? (good for debug)
     // i was too lazy to write mutator functions for every single program used
     // just access it outside the class or change it here if nescessary
     var $_latex_path = "latex";
@@ -280,7 +281,8 @@ class LatexRender {
 
         $status_code = copy($this->_tmp_filename.".".$this->_image_format,$filename);
 
-        $this->cleanTemporaryDirectory();
+        if( ! $this->_keep_tmp)
+            $this->cleanTemporaryDirectory();
 
         if (!$status_code) { chdir($current_dir); $this->_errorcode = 6; return false; }
         chdir($current_dir);
