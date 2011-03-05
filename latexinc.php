@@ -40,6 +40,7 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 	  $latex->_dvips_path = $this->getConf("dvips_path");
 	  $latex->_convert_path = $this->getConf("convert_path");
 	  $latex->_identify_path = $this->getConf("identify_path");
+	  $latex->_keep_tmp = $this->getConf("keep_tmp");
       $latex->_image_format = $this->getConf("image_format");
       $latex->_colour = $this->getConf("colour");
       $latex->_formula_density = $this->getConf("density");
