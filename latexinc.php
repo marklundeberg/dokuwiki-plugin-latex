@@ -110,14 +110,14 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 		  $height = ($info[1] * 0.03175)."cm";
 		  
 		  if($data['class'] == "latex_displayed")
-		    // displayed math: new paragraph + 5 spaces seems to look okay.
-			$renderer->doc .= "\n".'<text:p text:style-name="Text_20_body"><text:s text:c="5"/>'."\n";
+		    // displayed math: newline + 5 spaces seems to look okay.
+			$renderer->doc .= "\n".'<text:line-break/><text:s text:c="5"/>'."\n";
 		  
 		  $renderer->_odtAddImage($fname);
 		  
 		  if($data['class'] == "latex_displayed")
-		    // displayed math: close para
-			$renderer->doc .= "\n".'</text:p>'."\n";
+		    // displayed math: closing newline
+			$renderer->doc .= "\n".'<text:line-break/>'."\n";
 		  return true;
       } elseif ($mode == 'latex') {
 		  if($data['class'] == "latex_displayed")
