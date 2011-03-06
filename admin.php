@@ -58,15 +58,15 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
      */
     function handle() {
 	  global $conf;
-	  $output = "";
+	  $this->output = "";
 	  if(!isset($_POST['latexpurge']))
-		$output = "Yams.";
+		$this->$output = "Yams.";
 	  if(isset($_POST['latexpurge']))
 	  {
-		$output .= "Want to purge:<br/><pre>";
+		$this->$output .= "Want to purge:<br/><pre>";
 		foreach(glob($conf['mediadir'].'/latex/img*') as $fname)
-			$output .= $fname."\n";
-		$output .= "</pre>";
+			$this->$output .= $fname."\n";
+		$this->$output .= "</pre>";
 	  }
     }
  
@@ -76,7 +76,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
     function html() {
 	  dbg('$_REQUEST = '.print_r($_REQUEST,true));
 	  dbg('$_POST = '.print_r($_POST,true));
-      ptln('<p>'.htmlspecialchars($this->getLang($this->output)).'</p>');
+      ptln('<p>'.$this->output.'</p>');
       
       ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="post">');
 	        
