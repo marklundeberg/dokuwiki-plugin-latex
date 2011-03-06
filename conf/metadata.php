@@ -16,3 +16,4 @@ $meta['tmp_dir'] = array('string');
 $meta['keep_tmp'] = array('onoff');
 
 $meta['preamble'] = array('');
+$meta['postamble'] = array('');
