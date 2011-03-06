@@ -161,7 +161,7 @@ class LatexRender {
 
             // security checks assume correct formula, let's render it
             if ($this->renderLatex($latex_formula)) {
-                return $this->getPicturePathHTTPD()."/".$filename;
+                return $this->getPicturePathHTTPD().$filename;
             } else {
                 // uncomment if required
                 // $this->_errorcode = 3;
