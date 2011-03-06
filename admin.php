@@ -59,6 +59,8 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
     function handle() {
 	  global $conf;
 	  $output = "";
+	  if(!isset($_POST['latexpurge']))
+		$output = "Yams.";
 	  if(isset($_POST['latexpurge']))
 	  {
 		$output .= "Want to purge:<br/><pre>";
@@ -72,7 +74,8 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
      * output appropriate html
      */
     function html() {
-	  dbg(print_r($_REQUEST,true));
+	  dbg('$_REQUEST = '.print_r($_REQUEST,true));
+	  dbg('$_POST = '.print_r($_POST,true));
       ptln('<p>'.htmlspecialchars($this->getLang($this->output)).'</p>');
       
       ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="post">');
