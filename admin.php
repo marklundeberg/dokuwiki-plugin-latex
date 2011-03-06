@@ -23,9 +23,11 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
      */
      function getInfo(){
 		$a = '';
-        if(method_exists(DokuWiki_Admin_Plugin,"getInfo"))
+        if(method_exists(DokuWiki_Admin_Plugin,"getInfo")) {
              $a = parent::getInfo(); /// this will grab the data from the plugin.info.txt
-		else
+			 $a['name'] = 'LaTeX administration';
+			 return $a;
+		} else
 			// Otherwise return some hardcoded data for old dokuwikis
 			return array(
 				'author' => 'Alexander Kraus, Michael Boyle, and Mark Lundeberg)',
@@ -73,7 +75,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	}
 	function vio_all($fname) {
 		unlink($fname);
-		return false;
+		return true;
 	}
  
  
@@ -124,7 +126,6 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 					$numkept += 1;
 				}
 			}
-			$this->output .= $this->_timelimit;
 			if($numdeleted > 0)
 				touch($config_cascade['main']['local']);
 		} else {
