@@ -112,16 +112,16 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 		$days = $_POST['purgedays'];
 		$this->output .= "Purge result ([x] = deleted):<br/><pre>";
 		if($mode == 'all' || is_numeric($days)) {
-			$res = $this->latexpurge($mode, $timelimit*86400);
+			$res = $this->latexpurge($mode, $days*86400);
 			
 			foreach($res as $img => $vio){
 				if($vio)
-					echo '[x] ';
+					$this->output .= '[x] ';
 				else
-					echo '[ ] ';
+					$this->output .= '[ ] ';
 				$this->output .= $img . "\n";
 			}
-			
+			$this->output .= $this->_timelimit;
 		} else {
 			$this->output .= "Purger: Bad input (non-numeric?). No action taken.";
 		}
