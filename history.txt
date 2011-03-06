@@ -1,19 +1,19 @@
-===== History =====
+===== Recent history =====
   * March 4 2011 - Mark Lundeberg
-	* starting with [[http://wiki.erazor-zone.de/_media/wiki:projects:php:dokuwiki:plugins:latexrender_extended.zip|Michael Boyle's modification to Alexander Krause's plugin]] (enabled $...$, <latex></latex>, \begin{displaymath}, \begin{eqnarray}, \begin{eqnarray*})
-	* changed inlines to have vertical-alignment:middle; (not perfect, but close)
-	* changed big equations to have nicer CSS margins.
-	* added DokuTexit render mode, following suggestion on [[http://wiki.erazor-zone.de/doku.php?id=wiki:projects:php:dokuwiki:plugins:latex|E-Razor's page]]
-	* restructured files to share a common class
-	* added several config options to config manager (paths of binaries, colour, formula size, image format)
-	* added support for $$ ... $$ as in LaTeX, for displayed equations.
-	* added support for \begin{equation} and \begin{equation*}.
-	* uploaded the plugin here where other people can find it.
+    * starting with [[http://wiki.erazor-zone.de/_media/wiki:projects:php:dokuwiki:plugins:latexrender_extended.zip|Michael Boyle's modification to Alexander Krause's plugin]] (enabled $...$, <latex></latex>, \begin{displaymath}, \begin{eqnarray}, \begin{eqnarray*})
+    * changed inlines to have vertical-alignment:middle; (not perfect, but close)
+    * changed big equations to have nicer CSS margins.
+    * added DokuTexit render mode, following suggestion on [[http://wiki.erazor-zone.de/doku.php?id=wiki:projects:php:dokuwiki:plugins:latex|E-Razor's page]]
+    * restructured files to share a common class
+    * added several config options to config manager (paths of binaries, colour, formula size, image format)
+    * added support for $$ ... $$ as in LaTeX, for displayed equations.
+    * added support for \begin{equation} and \begin{equation*}.
+    * uploaded the plugin here where other people can find it.
 
   * March 6 2011
-	* added admin page for cache wiping/cleaning.
-	* binary paths now include options, as applicable.
-	* added config options for preamble/postamble.
-	* added config options for max formula sizes
-	* added a minimal ODT render mode.
-	* added informative tooltip text on images of failed renders.
+    * added admin page for cache wiping/cleaning.
+    * binary paths now include options, as applicable.
+    * added config options for preamble/postamble.
+    * added config options for max formula sizes
+    * added a minimal ODT render mode.
+    * added informative tooltip text on images of failed renders.
