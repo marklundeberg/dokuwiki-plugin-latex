@@ -111,7 +111,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 		$mode = $_POST['purgemode'];
 		$days = $_POST['purgetime'];
 		if($mode == 'all' || is_numeric($days))
-			$res = latexpurge($mode, $timelimit*86400);
+			$res = $this->latexpurge($mode, $timelimit*86400);
 			$this->output .= "Purge result ([x] = deleted):<br/><pre>";
 			foreach($res as $img -> $vio){
 				if($vio)
