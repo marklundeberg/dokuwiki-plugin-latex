@@ -52,6 +52,53 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 //    function getMenuText() {
 //      return 'a menu prompt';
 //    }
+
+
+	// Purgers.
+	function vio_atime($fname) {
+		if(time() - fileatime($fname) - $this->_timelimit > 0)
+		{
+			//unlink($fname);
+			return true;
+		}
+		return false;
+	}
+	function vio_mtime($fname) {
+		if(time() - filemtime($fname) - $this->_timelimit > 0)
+		{
+			//unlink($fname);
+			return true;
+		}
+		return false;
+	}
+	function vio_all($fname) {
+		//unlink($fname);
+		return false;
+	}
+ 
+ 
+	// purge all files older than $timelimit (in seconds)
+	function latexpurge($mode, $timelimit)
+	{
+	    global $conf, $config_cascade;
+		$images = glob($conf['mediadir'].'/latex/img*');
+		$this->_timelimit = $timelimit;
+		switch($mode) {
+			case 'atime':
+				$vio = array_map($this->vio_atime,$images);
+				break;
+			case 'mtime':
+				$vio = array_map($this->vio_mtime,$images);
+				break;
+			case 'all':
+				$vio = array_map($this->vio_all,$images);
+				break;
+			default:
+				return false;
+		}
+		touch($config_cascade['main']['local']);
+		return array_combine($images,$vio);
+	}
  
     /**
      * handle user request
@@ -61,16 +108,26 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	  $this->output = "";
 	  if(isset($_POST['latexpurge']))
 	  {
-		$this->output .= "Want to purge:<br/><pre>";
-		foreach(glob($conf['mediadir'].'/latex/img*') as $fname) {
-			$base = basename($fname);
-			$this->output .= $fname."\n";
+		$mode = $_POST['purgemode'];
+		$days = $_POST['purgetime'];
+		if($mode == 'all' || is_numeric($days))
+			$res = latexpurge($mode, $timelimit*86400);
+			$this->output .= "Purge result ([x] = deleted):<br/><pre>";
+			foreach($res as $img -> $vio){
+				if($vio)
+					echo '[x] ';
+				else
+					echo '[ ] ';
+				$this->output .= $img . "\n";
+			}
+			$this->output .= "</pre>";
+		} else {
+			$this->output .= "Bad input (non-numeric?). No action taken.";
 		}
-		$this->output .= "</pre>";
-		touch($config_cascade['main']['local']); // touch config settings to force re-rendering.
 	  }
     }
- 
+
+	
     /**
      * output appropriate html
      */
@@ -80,17 +137,17 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
       ptln('<p>'.$this->output.'</p>');
       
       ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="post">');
-	  ptln('<fieldset><legend>'.$this->getLang('legend_purge').'</legend><table class="inline"><tr>');
+	  ptln('<fieldset style="width:500px;"><legend>'.$this->getLang('legend_purge').'</legend><table class="inline"><tr>');
 	  ptln('<td rowspan="2"><input type="submit" class="button" name="latexpurge"  value="'.$this->getLang('btn_purge').'" /></td>');
 	  ptln('<TD>');
 	  $labtimes = $this->getLang('label_times');
-	  ptln('<LABEL><INPUT type="radio" name="purgetime" value="atime" checked/>'.$labtimes['atime'].'</LABEL>');
-	  ptln('<LABEL><INPUT type="radio" name="purgetime" value="mtime"/>'.$labtimes['mtime'].'</LABEL>');
+	  ptln('<LABEL><INPUT type="radio" name="purgemode" value="atime" checked/>'.$labtimes['atime'].'</LABEL>');
+	  ptln('<LABEL><INPUT type="radio" name="purgemode" value="mtime"/>'.$labtimes['mtime'].'</LABEL>');
 	  echo $this->getLang('label_olderthan');
 	  echo '<input type="text" name="purgedays" size="3" value="100">';
 	  echo $this->getLang('label_days');
 	  ptln('</TD><TR><TD>');
-	  echo '<LABEL><INPUT type="radio" name="purgetime" value="all"/>';
+	  echo '<LABEL><INPUT type="radio" name="purgemode" value="all"/>'.$this->getLang('label_all').'</LABEL>';
 	  ptln('</TD></TR></TABLE></fieldset');
       ptln('</form>');
     }
