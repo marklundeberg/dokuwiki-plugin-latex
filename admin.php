@@ -57,16 +57,18 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
      * handle user request
      */
     function handle() {
-	  global $conf;
+	  global $conf, $config_cascade;
 	  $this->output = "";
-	  if(!isset($_POST['latexpurge']))
-		$this->output = "Yams.";
 	  if(isset($_POST['latexpurge']))
 	  {
+		$current_dir = getcwd();
 		$this->output .= "Want to purge:<br/><pre>";
-		foreach(glob($conf['mediadir'].'/latex/img*') as $fname)
+		foreach(glob($conf['mediadir'].'/latex/img*') as $fname) {
+			$base = basename($fname);
 			$this->output .= $fname."\n";
+		}
 		$this->output .= "</pre>";
+		touch($config_cascade['main']['local']); // touch config settings to force re-rendering.
 	  }
     }
  
@@ -79,7 +81,12 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
       ptln('<p>'.$this->output.'</p>');
       
       ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="post">');
-	        
+	  echo $this->getLang('btn_latexpurge');
+	  foreach(array('mtime','atime') as $which) {
+		echo '<LABEL><INPUT type="radio" name="purgetime" value="'.$which.'"/>';
+		echo $this->getLang('label_times')[$which];
+		echo '</LABEL>\n';
+	  }
 	  ptln('  <input type="submit" class="button" name="latexpurge"  value="'.$this->getLang('btn_latexpurge').'" />');
       ptln('</form>');
     }
