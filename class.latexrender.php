@@ -142,7 +142,8 @@ class LatexRender {
 
         $filename = "img".$formula_hash.".".$this->_image_format;
         $full_path_filename = $this->getPicturePath()."/".$filename;
-
+		$this->_filename = $full_path_filename;
+		
         if (is_readable($full_path_filename)) {
             return $this->getPicturePathHTTPD()."/".$filename;
         } else {
@@ -289,8 +290,6 @@ class LatexRender {
 
         // copy temporary formula file to cahed formula directory
         $status_code = copy($this->_tmp_filename.".".$this->_image_format,$destination);
-		$this->_filename = $destination;
-		dbg("latexrender: $destination");
 
         if( ! $this->_keep_tmp)
 			$this->cleanTemporaryDirectory();
