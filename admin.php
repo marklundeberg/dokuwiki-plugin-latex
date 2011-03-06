@@ -58,7 +58,6 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
      */
     function handle() {
     
-	  dbg(print_r($_REQUEST,true));
       if (!isset($_REQUEST['cmd'])) return;   // first time - nothing to do
 
       $this->output = 'invalid';
@@ -76,6 +75,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
      * output appropriate html
      */
     function html() {
+	  dbg(print_r($_REQUEST,true));
       ptln('<p>'.htmlspecialchars($this->getLang($this->output)).'</p>');
       
       ptln('<form action="'.wl($ID).'" method="get">');
@@ -84,7 +84,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
       ptln('  <input type="hidden" name="do"   value="admin" />');
       ptln('  <input type="hidden" name="page" value="'.$this->getPluginName().'" />');
       
-      ptln('  <input type="submit" name="cmd[hello]"  value="'.$this->getLang('btn_hello').'" />');
+      ptln('  <input type="submit" class="button" name="cmd[hello]"  value="'.$this->getLang('btn_hello').'" />');
       ptln('  <input type="submit" name="cmd[goodbye]"  value="'.$this->getLang('btn_goodbye').'" />');
       ptln('</form>');
     }
