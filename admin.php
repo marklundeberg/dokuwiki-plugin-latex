@@ -18,8 +18,6 @@ require_once(dirname(__FILE__).'/latexinc.php');
  */
 class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 
-    var $output = 'world';
- 
     /**
      * return some info
      */
