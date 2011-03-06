@@ -277,7 +277,6 @@ class LatexRender {
         // test picture for correct dimensions
         $dim = $this->getDimensions($this->_tmp_filename.".".$this->_image_format);
 
-		dbg($latex_formula.': '.$dim["x"].'x'.$dim["y"]);
         if ( ($dim["x"] > $this->_xsize_limit) or ($dim["y"] > $this->_ysize_limit)) {
             if( ! $this->_keep_tmp)
 				$this->cleanTemporaryDirectory();
@@ -288,9 +287,8 @@ class LatexRender {
         }
 
         // copy temporary formula file to cahed formula directory
-        $filename = $destination;
-
-        $status_code = copy($this->_tmp_filename.".".$this->_image_format,$filename);
+        $status_code = copy($this->_tmp_filename.".".$this->_image_format,$destination);
+		$this->_filename = $destination;
 
         if( ! $this->_keep_tmp)
 			$this->cleanTemporaryDirectory();
