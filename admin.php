@@ -168,5 +168,6 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	  echo '<LABEL><INPUT type="radio" name="purgemode" value="all"/>'.$this->getLang('label_all').'</LABEL>';
 	  ptln('</TD></TR></TABLE></fieldset');
       ptln('</form>');
+	}
 
 }
