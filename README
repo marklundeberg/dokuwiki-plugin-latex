@@ -1,4 +1,7 @@
 LaTeX-rendering plugin for dokuwiki.
+Based on class.latexrender.php from Benjamin Zeiss, converted to
+Dokuwiki by Alexander 'E-Razor' Krause, extended by Michael Boyle,
+and extended again by Mark Lundeberg.
 
 This plugin requires a LaTeX installation, and ImageMagick to convert
 PS files into images. ImageMagick, in turn, requires Ghostscript.
