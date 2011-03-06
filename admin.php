@@ -86,13 +86,13 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 		$this->_timelimit = $timelimit;
 		switch($mode) {
 			case 'atime':
-				$vio = array_map($this->vio_atime,$images);
+				$vio = array_map(array($this,'vio_atime'),$images);
 				break;
 			case 'mtime':
-				$vio = array_map($this->vio_mtime,$images);
+				$vio = array_map(array($this,'vio_mtime'),$images);
 				break;
 			case 'all':
-				$vio = array_map($this->vio_all,$images);
+				$vio = array_map(array($this,'vio_all'),$images);
 				break;
 			default:
 				return false;
