@@ -94,19 +94,19 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 		  if($data['class'] == "latex_displayed")
 			$renderer->doc .= "<br/>\n";
 		  return true;
-      } elseif ($mode == 'latex') {
-		  $renderer->doc .= $data[0]."\n";
+	  } elseif ($mode == 'metadata') {
+	      // nothing to meta.
 		  return true;
       } elseif ($mode == 'odt') {
 		  $url = $this->_latex->getFormulaURL($data[0]);
 		  $fname = dirname(__FILE__).'/images/renderfail.png';
-		  if($url){
+		  if($url) {
 			$fname = $this->_latex->_filename;
 		  }
-		  $renderer->_odtAddImage($fname)
+		  $renderer->_odtAddImage($fname);
 		  return true;
-	  } elseif ($mode == 'metadata') {
-	      // nothing to meta.
+      } elseif ($mode == 'latex') {
+		  $renderer->doc .= $data[0]."\n";
 		  return true;
 	  }
 	  $renderer->doc .= htmlspecialchars($data[0]); /// unknown render mode, just fart out the latex code.
