@@ -277,6 +277,7 @@ class LatexRender {
         // test picture for correct dimensions
         $dim = $this->getDimensions($this->_tmp_filename.".".$this->_image_format);
 
+		dbg($latex_formula.': '.$dim["x"].'x'.$dim["y"]);
         if ( ($dim["x"] > $this->_xsize_limit) or ($dim["y"] > $this->_ysize_limit)) {
             if( ! $this->_keep_tmp)
 				$this->cleanTemporaryDirectory();
