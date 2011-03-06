@@ -93,7 +93,8 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 		  $renderer->doc .= '<img src="'.$url.'" class="'.$data['class'].'" alt="'.htmlspecialchars($data[0]).'" title="'.$title.'"/>';		    
 		  if($data['class'] == "latex_displayed")
 			$renderer->doc .= "<br/>\n";
-		  dbg("$renderer->_odtAddImage('".$fname."');");
+		  $fname = $this->_latex->_filename;
+		  dbg('$renderer->_odtAddImage("'.$fname.'");');
 		  return true;
 	  } elseif ($mode == 'metadata') {
 	      // nothing to meta.
