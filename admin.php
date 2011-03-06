@@ -59,7 +59,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
     function handle() {
 	  global $conf;
 	  $output = "";
-	  if(isset($_REQUEST['latexpurge']))
+	  if(isset($_POST['latexpurge']))
 	  {
 		$output .= "Want to purge:<br/><pre>";
 		foreach(glob($conf['mediadir'].'/latex/img*') as $fname)
@@ -75,12 +75,8 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	  dbg(print_r($_REQUEST,true));
       ptln('<p>'.htmlspecialchars($this->getLang($this->output)).'</p>');
       
-      ptln('<form action="'.wl($ID).'" method="get">');
-	  
-      // output hidden values to ensure dokuwiki will return back to this plugin
-      ptln('  <input type="hidden" name="do"   value="admin" />');
-      ptln('  <input type="hidden" name="page" value="'.$this->getPluginName().'" />');
-      
+      ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="post">');
+	        
 	  ptln('  <input type="submit" class="button" name="latexpurge"  value="'.$this->getLang('btn_latexpurge').'" />');
       ptln('</form>');
     }
