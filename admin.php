@@ -80,26 +80,18 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
       ptln('<p>'.$this->output.'</p>');
       
       ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="post">');
-	  echo '<fieldset id="_basic"><legend>'.$this->getLang('legend_purge').'</legend><table class="inline"><tr>';
-	  echo '<td>';
-//	  echo $this->getLang('label_purge');
-	  echo '<UL><LI class="level1"><div class="li">';
+	  ptln('<fieldset><legend>'.$this->getLang('legend_purge').'</legend><table class="inline"><tr>');
+	  ptln('<td rowspan="2"><input type="submit" class="button" name="latexpurge"  value="'.$this->getLang('btn_purge').'" /></td>');
+	  ptln('<TD>');
 	  $labtimes = $this->getLang('label_times');
-	  foreach(array('mtime','atime') as $which) {
-		echo ' <LABEL><INPUT type="radio" name="purgetime" value="'.$which.'"';
-		if($which == 'atime') echo ' checked';
-		echo '/>';
-		echo $labtimes[$which];
-		echo "</LABEL>\n";
-	  }
+	  ptln('<LABEL><INPUT type="radio" name="purgetime" value="atime" checked/>'.$labtimes['atime'].'</LABEL>');
+	  ptln('<LABEL><INPUT type="radio" name="purgetime" value="mtime"/>'.$labtimes['mtime'].'</LABEL>');
 	  echo $this->getLang('label_olderthan');
 	  echo '<input type="text" name="purgedays" size="3" value="100">';
 	  echo $this->getLang('label_days');
-	  echo '</div></LI><LI class="level1"><div class="li"><LABEL><INPUT type="radio" name="purgetime" value="all"/>';
-	  echo $this->getLang('label_all');
-	  echo '</LABEL></div></LI></UL></td>';
-	  ptln('<td><input type="submit" class="button" name="latexpurge"  value="'.$this->getLang('btn_purge').'" /></td>');
-	  echo '</tr></table></fieldset>';
+	  ptln('</TD><TR><TD>');
+	  echo '<LABEL><INPUT type="radio" name="purgetime" value="all"/>';
+	  ptln('</TD></TR></TABLE></fieldset');
       ptln('</form>');
     }
  
