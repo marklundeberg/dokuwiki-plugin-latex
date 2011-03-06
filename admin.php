@@ -58,6 +58,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
      */
     function handle() {
     
+	  dbg(print_r($_REQUEST,true));
       if (!isset($_REQUEST['cmd'])) return;   // first time - nothing to do
 
       $this->output = 'invalid';
@@ -77,8 +78,8 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
     function html() {
       ptln('<p>'.htmlspecialchars($this->getLang($this->output)).'</p>');
       
-      ptln('<form action="'.wl($ID).'" method="post">');
-      
+      ptln('<form action="'.wl($ID).'" method="get">');
+	  
       // output hidden values to ensure dokuwiki will return back to this plugin
       ptln('  <input type="hidden" name="do"   value="admin" />');
       ptln('  <input type="hidden" name="page" value="'.$this->getPluginName().'" />');
