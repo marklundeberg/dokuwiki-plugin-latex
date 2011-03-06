@@ -60,7 +60,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 		if(time() - fileatime($fname) - $this->_timelimit > 0)
 		{
 			//unlink($fname);
-			return true;
+			return $this->_timelimit;
 		}
 		return false;
 	}
@@ -120,7 +120,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 					$this->output .= '[x] ';
 				else
 					$this->output .= '[ ] ';
-				$this->output .= $img . "\n";
+				$this->output .= $vio . $img . "\n";
 			}
 			$this->output .= $this->_timelimit;
 		} else {
