@@ -160,7 +160,7 @@ class LatexRender {
             }
 
             // security checks assume correct formula, let's render it
-            if ($this->renderLatex($latex_formula)) {
+            if ($this->renderLatex($latex_formula,$full_path_filename)) {
                 return $this->getPicturePathHTTPD().$filename;
             } else {
                 // uncomment if required
@@ -237,7 +237,7 @@ class LatexRender {
      * @returns true if the picture has been successfully saved to the picture
      *          cache directory
      */
-    function renderLatex($latex_formula) {
+    function renderLatex($latex_formula,$destination) {
         $latex_document = $this->wrap_formula($latex_formula);
 
         $current_dir = getcwd();
@@ -287,8 +287,7 @@ class LatexRender {
         }
 
         // copy temporary formula file to cahed formula directory
-        $latex_hash = md5($latex_formula);
-        $filename = $this->getPicturePath()."/".$latex_hash.".".$this->_image_format;
+        $filename = $destination;
 
         $status_code = copy($this->_tmp_filename.".".$this->_image_format,$filename);
 
