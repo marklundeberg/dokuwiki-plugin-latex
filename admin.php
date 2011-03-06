@@ -25,7 +25,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 		$a = '';
         if(method_exists(DokuWiki_Admin_Plugin,"getInfo")) {
              $a = parent::getInfo(); /// this will grab the data from the plugin.info.txt
-			 $a['name'] = 'LaTeX administration';
+			 $a['name'] = 'LaTeX plugin administration';
 			 return $a;
 		} else
 			// Otherwise return some hardcoded data for old dokuwikis
@@ -80,6 +80,10 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
  
  
 	// purge all files older than $timelimit (in seconds)
+	// $mode = 
+	//      atime: age based on fileatime().
+	//      mtime: age based on filemtime().
+	//      all: delete all cached files.
 	function latexpurge($mode, $timelimit)
 	{
 	    global $conf, $config_cascade;
@@ -111,10 +115,10 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	  {
 		$mode = $_POST['purgemode'];
 		$days = $_POST['purgedays'];
-		$this->output .= "Purge result ([x] = deleted):<br/><pre>";
+		$this->output .= "<pre>Purge result ([x] = deleted):\n";
 		$numdeleted = 0;
 		$numkept = 0;
-		if($mode == 'all' || is_numeric($days)) {
+		if($mode == 'all' || (is_numeric($days) && $days >= 0)) {
 			$res = $this->latexpurge($mode, $days*86400);
 			
 			foreach($res as $img => $vio){
@@ -126,12 +130,16 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 					$numkept += 1;
 				}
 			}
-			if($numdeleted > 0)
-				touch($config_cascade['main']['local']);
+				
 		} else {
 			$this->output .= "Purger: Bad input (non-numeric?). No action taken.\n";
 		}
-		$this->output .= "Totals: $numdeleted deleted, $numkept kept.";
+		$this->output .= "Totals: $numdeleted deleted, $numkept kept (kept files not shown).\n";
+		if ($numdeleted > 0) {
+			touch($config_cascade['main']['local']);
+			$this->output .= "** If you have modified rendering settings (such as colour), ".
+			   "** refresh your browser's cache to download the new images.";
+		}
 		$this->output .= "</pre>";
 	  }
     }
@@ -141,8 +149,6 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
      * output appropriate html
      */
     function html() {
-	  dbg('$_REQUEST = '.print_r($_REQUEST,true));
-	  dbg('$_POST = '.print_r($_POST,true));
       ptln('<p>'.$this->output.'</p>');
       
       ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="post">');
@@ -150,8 +156,8 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	  ptln('<td rowspan="2"><input type="submit" class="button" name="latexpurge"  value="'.$this->getLang('btn_purge').'" /></td>');
 	  ptln('<TD>');
 	  $labtimes = $this->getLang('label_times');
-	  ptln('<LABEL><INPUT type="radio" name="purgemode" value="atime" checked/>'.$labtimes['atime'].'</LABEL>');
-	  ptln('<LABEL><INPUT type="radio" name="purgemode" value="mtime"/>'.$labtimes['mtime'].'</LABEL>');
+	  ptln('(<LABEL><INPUT type="radio" name="purgemode" value="atime" checked/>'.$labtimes['atime'].'</LABEL>');
+	  ptln('|<LABEL><INPUT type="radio" name="purgemode" value="mtime"/>'.$labtimes['mtime'].'</LABEL>)');
 	  echo $this->getLang('label_olderthan');
 	  echo '<input type="text" name="purgedays" size="3" value="30">';
 	  echo $this->getLang('label_days');
