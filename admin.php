@@ -58,6 +58,9 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	function vio_atime($fname) {
 		if(time() - fileatime($fname) - $this->_timelimit > 0)
 		{
+			if(strpos('fname','03d40dce49336d')) {
+				$this->output .= time() . " " . fileatime($fname) . " " . $this->_timelimit . "<br/>";
+			}
 			//unlink($fname);
 			return true;
 		}
