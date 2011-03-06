@@ -17,7 +17,7 @@ require_once(dirname(__FILE__).'/latexinc.php');
  * need to inherit from this class
  */
 class admin_plugin_latex extends DokuWiki_Admin_Plugin {
-
+	var $output;
     /**
      * return some info
      */
@@ -57,18 +57,15 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
      * handle user request
      */
     function handle() {
-    
-      if (!isset($_REQUEST['cmd'])) return;   // first time - nothing to do
-
-      $this->output = 'invalid';
-
-      if (!is_array($_REQUEST['cmd'])) return;
-      
-      // verify valid values
-      switch (key($_REQUEST['cmd'])) {
-        case 'hello' : $this->output = 'again'; break;
-        case 'goodbye' : $this->output = 'goodbye'; break;
-      }      
+	  global $conf;
+	  $output = "";
+	  if(isset($_REQUEST['latexpurge']))
+	  {
+		$output .= "Want to purge:<br/><pre>";
+		foreach(glob($conf['mediadir'].'/latex/img*') as $fname)
+			$output .= $fname."\n";
+		$output .= "</pre>";
+	  }
     }
  
     /**
@@ -84,8 +81,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
       ptln('  <input type="hidden" name="do"   value="admin" />');
       ptln('  <input type="hidden" name="page" value="'.$this->getPluginName().'" />');
       
-      ptln('  <input type="submit" class="button" name="cmd[hello]"  value="'.$this->getLang('btn_hello').'" />');
-      ptln('  <input type="submit" name="cmd[goodbye]"  value="'.$this->getLang('btn_goodbye').'" />');
+	  ptln('  <input type="submit" class="button" name="latexpurge"  value="'.$this->getLang('btn_latexpurge').'" />');
       ptln('</form>');
     }
  
