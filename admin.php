@@ -98,6 +98,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 				return false;
 		}
 		touch($config_cascade['main']['local']);
+		$this->output .= "xxx".$images[0] . $vio[0]."xxx<br/>";
 		return array_combine($images,$vio);
 	}
  
