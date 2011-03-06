@@ -81,10 +81,11 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
       
       ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="post">');
 	  echo $this->getLang('btn_latexpurge');
+	  $labtimes = $this->getLang('label_times')
 	  foreach(array('mtime','atime') as $which) {
 		echo '<LABEL><INPUT type="radio" name="purgetime" value="'.$which.'"/>';
-//		echo $this->getLang('label_times')[$which];
-		echo '</LABEL>\n';
+		echo $labtimes[$which];
+		echo "</LABEL>\n";
 	  }
 	  ptln('  <input type="submit" class="button" name="latexpurge"  value="'.$this->getLang('btn_purge').'" />');
       ptln('</form>');
