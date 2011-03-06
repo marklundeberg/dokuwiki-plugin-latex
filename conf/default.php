@@ -24,7 +24,7 @@ $conf['preamble'] = '\\documentclass[10pt]{article}
 \\pagestyle{empty}
 \\begin{document}
 \\definecolor{MyColour}{rgb}{0.50,0.00,0.00}
-{\\color{Mycolour}';
+{\\color{MyColour}';
 
 $conf['postamble'] = '}\end{document}';
 		
