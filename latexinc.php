@@ -111,13 +111,19 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 		  
 		  if($data['class'] == "latex_displayed")
 		    // displayed math: new paragraph + 5 spaces seems to look okay.
-			$renderer->doc .= '\n<text:p text:style-name="Text_20_body"><text:s text:c="5"/>\n';
+			$renderer->doc .= "\n".'<text:p text:style-name="Text_20_body"><text:s text:c="5"/>'."\n";
+		  
 		  $renderer->_odtAddImage($fname);
+		  
 		  if($data['class'] == "latex_displayed")
-			$renderer->doc .= '\n</text:p>\n';
+		    // displayed math: close para
+			$renderer->doc .= "\n".'</text:p>'."\n";
 		  return true;
       } elseif ($mode == 'latex') {
-		  $renderer->doc .= $data[0]."\n";
+		  if($data['class'] == "latex_displayed")
+			$renderer->doc .= "\n".$data[0]."\n";
+		  else
+			$renderer->doc .= $data[0];
 		  return true;
 	  }
 	  $renderer->doc .= htmlspecialchars($data[0]); /// unknown render mode, just fart out the latex code.
