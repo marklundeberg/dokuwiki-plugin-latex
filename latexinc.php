@@ -106,18 +106,18 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 	        $fname = $this->_latex->_filename;
 		  }
 		  $info  = getimagesize($fname);
-		  $width = ($info[0] * 0.03175)."cm";
-		  $height = ($info[1] * 0.03175)."cm";
+		  $width = ($info[0] * 0.04)."cm";
+		  $height = ($info[1] * 0.04)."cm";
 		  
 		  if($data['class'] == "latex_displayed")
 		    // displayed math: newline + 5 spaces seems to look okay.
-			$renderer->doc .= "\n".'<text:line-break/><text:s text:c="5"/>'."\n";
+			$renderer->doc .= "\n".'<text:p/><text:p text:style-name="Text_20_body"><text:s text:c="5"/>'."\n";
 		  
 		  $renderer->_odtAddImage($fname);
 		  
 		  if($data['class'] == "latex_displayed")
 		    // displayed math: closing newline
-			$renderer->doc .= "\n".'<text:line-break/>'."\n";
+			$renderer->doc .= "\n".'<text:p text:style-name="Text_20_body">'."\n";
 		  return true;
       } elseif ($mode == 'latex') {
 		  if($data['class'] == "latex_displayed")
