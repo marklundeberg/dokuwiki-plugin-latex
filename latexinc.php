@@ -14,6 +14,25 @@ require_once(dirname(__FILE__).'/class.latexrender.php');
  */
 class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 	var $_latex;
+	
+	static $_latex_preamble = NULL;
+	static $_latex_postamble = NULL;
+	static $_latex_preamble_default = "
+	    \documentclass[10pt]{article}
+        \usepackage{ucs}
+        \usepackage[utf8x]{inputenc}
+        \usepackage{amsmath}
+        \usepackage{amsfonts}
+        \usepackage{amssmyb}
+        \usepackage{wasysym}
+        \usepackage{color}
+        \pagestyle{empty}
+		\begin{document}
+		\definecolor{MyColour}{rgb}{0.50,0.00,0.00}
+		{\color{Mycolour}\n";
+	static $_latex_postamble_default = "
+		}
+		\end{document}\n";
    /**
     * return some info
     */

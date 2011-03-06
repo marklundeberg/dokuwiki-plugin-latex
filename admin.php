@@ -137,7 +137,8 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 		$this->output .= "Totals: $numdeleted deleted, $numkept kept (kept files not shown).\n";
 		if ($numdeleted > 0) {
 			touch($config_cascade['main']['local']);
-			$this->output .= "** If you have modified rendering settings (such as colour), ".
+			$this->output .=
+			   "** If you have modified rendering settings (such as colour or image size),\n".
 			   "** refresh your browser's cache to download the new images.";
 		}
 		$this->output .= "</pre>";
@@ -149,15 +150,17 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
      * output appropriate html
      */
     function html() {
+	  ptln('<h1>LaTeX plugin tasks</h1>');
       ptln('<p>'.$this->output.'</p>');
       
+	  ////////////// PURGE FORM
       ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="post">');
 	  ptln('<fieldset style="width:500px;"><legend>'.$this->getLang('legend_purge').'</legend><table class="inline"><tr>');
 	  ptln('<td rowspan="2"><input type="submit" class="button" name="latexpurge"  value="'.$this->getLang('btn_purge').'" /></td>');
 	  ptln('<TD>');
 	  $labtimes = $this->getLang('label_times');
 	  ptln('(<LABEL><INPUT type="radio" name="purgemode" value="atime" checked/>'.$labtimes['atime'].'</LABEL>');
-	  ptln('|<LABEL><INPUT type="radio" name="purgemode" value="mtime"/>'.$labtimes['mtime'].'</LABEL>)');
+	  ptln(' | <LABEL><INPUT type="radio" name="purgemode" value="mtime"/>'.$labtimes['mtime'].'</LABEL>)');
 	  echo $this->getLang('label_olderthan');
 	  echo '<input type="text" name="purgedays" size="3" value="30">';
 	  echo $this->getLang('label_days');
@@ -165,6 +168,13 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	  echo '<LABEL><INPUT type="radio" name="purgemode" value="all"/>'.$this->getLang('label_all').'</LABEL>';
 	  ptln('</TD></TR></TABLE></fieldset');
       ptln('</form>');
-    }
+
+	  ////////////// PREAMBLE CONTROL
+      ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="post">');
+	  ptln('<fieldset style="width:100%;"><legend>'.$this->getLang('legend_preamble').'</legend>');
+	  ptln('<TEXTAREA name="latex_preamble" rows="20" cols="80">');
+	  ptln('<TEXTAREA name="latex_postamble" rows="20" cols="80">');
+	  ptln('</fieldset</form>');
+	  }
  
 }
