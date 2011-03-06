@@ -63,7 +63,6 @@ class LatexRender {
         );
     var $_errorcode = 0;
 	var $_errorextra = "";
-	var $_colour = "{rgb}{0.408,0.094,0.059}";
 	var $_filename;
 
 
@@ -137,6 +136,8 @@ class LatexRender {
         // is pretty pointless right here
         $latex_formula = preg_replace("/&gt;/i", ">", $latex_formula);
         $latex_formula = preg_replace("/&lt;/i", "<", $latex_formula);
+		
+		$latex_document = $this->_preamble."\n".$latex_formula."\n".$this->_postamble;
 
         $formula_hash = md5($latex_formula);
 
@@ -162,7 +163,7 @@ class LatexRender {
             }
 
             // security checks assume correct formula, let's render it
-            if ($this->renderLatex($latex_formula,$full_path_filename)) {
+            if ($this->renderLatex($latex_document,$full_path_filename)) {
                 return $this->getPicturePathHTTPD().$filename;
             } else {
                 // uncomment if required
@@ -175,35 +176,6 @@ class LatexRender {
     // ====================================================================================
     // private functions
     // ====================================================================================
-
-    /**
-     * wraps a minimalistic LaTeX document around the formula and returns a string
-     * containing the whole document as string. Customize if you want other fonts for
-     * example.
-     *
-     * @param string formula in LaTeX format
-     * @returns minimalistic LaTeX document containing the given formula
-     */
-    function wrap_formula($latex_formula) {
-        $string  = "\documentclass[".$this->_font_size."pt]{".$this->_latexclass."}\n";
-        $string .= "\usepackage{ucs}\n";
-        $string .= "\usepackage[utf8x]{inputenc}\n";
-        $string .= "\usepackage{amsmath}\n";
-        $string .= "\usepackage{amsfonts}\n";
-        $string .= "\usepackage{amssymb}\n";
-        $string .= "\usepackage{eurosym}\n";
-        $string .= "\usepackage{wasysym}\n";
-        $string .= "\usepackage{color}\n";
-        $string .= "\pagestyle{empty}\n";
-        $string .= "\begin{document}\n";
-		$string .= "\definecolor{MyColour}".$this->_colour."\n";
-        $string .= "{\color{MyColour}\n";
-        $string .= $latex_formula."\n";
-        $string .= "}\n";
-        $string .= "\end{document}\n";
-
-        return $string;
-    }
 
     /**
      * returns the dimensions of a picture file using 'identify' of the
@@ -239,14 +211,13 @@ class LatexRender {
      * @returns true if the picture has been successfully saved to the picture
      *          cache directory
      */
-    function renderLatex($latex_formula,$destination) {
-        $latex_document = $this->wrap_formula($latex_formula);
+    function renderLatex($latex_document,$destination) {
 
         $current_dir = getcwd();
 
         chdir($this->_tmp_dir);
 		
-        $this->_tmp_filename = md5(rand());
+        $this->_tmp_filename = md5(rand().$destination);
 
         // create temporary latex file
         $fp = fopen($this->_tmp_dir."/".$this->_tmp_filename.".tex","w");

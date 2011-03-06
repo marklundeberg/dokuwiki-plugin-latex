@@ -21,4 +21,4 @@ $lang['keep_tmp'] = 'Keep temporary tex/aux/log/dvi/ps files, rather than deleti
 $lang['preamble'] = 'LaTeX compilation preamble.
 Include <a href="http://en.wikibooks.org/wiki/LaTeX/Colors#Color_Models" target="_blank" class="urlextern">colours</a>,
 new packages, and more.';
-$lang['preamble'] = 'LaTeX compilation postamble.';
+$lang['postamble'] = 'LaTeX compilation postamble.';

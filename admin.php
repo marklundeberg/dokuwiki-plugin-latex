@@ -169,15 +169,4 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	  ptln('</TD></TR></TABLE></fieldset');
       ptln('</form>');
 
-	  ////////////// PREAMBLE CONTROL
-      ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="post">');
-	  ptln('<fieldset style="width:100%;"><legend>'.$this->getLang('legend_preamble').'</legend>');
-	  ptln('<TEXTAREA name="latex_preamble" rows="20" cols="80">');
-	  ptln('ASDF &amp; &lt;');
-	  ptln('</TEXTAREA>');
-	  ptln('<TEXTAREA name="latex_postamble" rows="20" cols="80" />');
-	  ptln('</TEXTAREA>');
-	  ptln('</fieldset</form>');
-	  }
- 
 }
