@@ -103,10 +103,18 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 		  $url = $this->_latex->getFormulaURL($data[0]);
 		  $fname = dirname(__FILE__).'/images/renderfail.png';
 		  if($url) {
-			$fname = $this->_latex->_filename;
+	        $fname = $this->_latex->_filename;
 		  }
-		  //dbg("$renderer->_odtAddImage('".$fname."');");
+		  $info  = getimagesize($fname);
+		  $width = ($info[0] * 0.03175)."cm";
+		  $height = ($info[1] * 0.03175)."cm";
+		  
+		  if($data['class'] == "latex_displayed")
+		    // displayed math: new paragraph + 5 spaces seems to look okay.
+			$renderer->doc .= '\n<text:p text:style-name="Text_20_body"><text:s text:c="5"/>\n';
 		  $renderer->_odtAddImage($fname);
+		  if($data['class'] == "latex_displayed")
+			$renderer->doc .= '\n</text:p>\n';
 		  return true;
       } elseif ($mode == 'latex') {
 		  $renderer->doc .= $data[0]."\n";
