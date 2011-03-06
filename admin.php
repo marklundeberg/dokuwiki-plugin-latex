@@ -82,8 +82,9 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
       ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="post">');
 	  echo $this->getLang('label_purge');
 	  $labtimes = $this->getLang('label_times');
+	  echo '<UL><LI class="level1">';
 	  foreach(array('mtime','atime') as $which) {
-		echo '<LABEL><INPUT type="radio" name="purgetime" value="'.$which.'"';
+		echo ' <LABEL><INPUT type="radio" name="purgetime" value="'.$which.'"';
 		if($which == 'atime') echo ' checked';
 		echo '/>';
 		echo $labtimes[$which];
@@ -92,6 +93,9 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	  echo $this->getLang('label_olderthan');
 	  echo '<input type="text" name="purgedays" size="3" value="100">';
 	  echo $this->getLang('label_days');
+	  echo '</LI><LI class="level1"><LABEL><INPUT type="radio" name="purgetime" value="all">';
+	  echo $this->getLang('label_all');
+	  echo '</LABEL></LI></UL>';
 	  ptln('  <input type="submit" class="button" name="latexpurge"  value="'.$this->getLang('btn_purge').'" />');
       ptln('</form>');
     }
