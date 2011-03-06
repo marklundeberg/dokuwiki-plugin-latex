@@ -103,9 +103,9 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
       } elseif ($mode == 'odt') {
 		  $url = $this->_latex->getFormulaURL($data[0]);
 		  $fname = dirname(__FILE__).'/images/renderfail.png';
-		  if($url) {
-			$fname = $this->_latex->_filename;
-		  }
+//		  if($url) {
+//			$fname = $this->_latex->_filename;
+//		  }
 		  //dbg("$renderer->_odtAddImage('".$fname."');");
 		  $renderer->_odtAddImage($fname);
 		  return true;

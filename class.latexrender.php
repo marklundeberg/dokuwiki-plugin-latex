@@ -290,6 +290,7 @@ class LatexRender {
         // copy temporary formula file to cahed formula directory
         $status_code = copy($this->_tmp_filename.".".$this->_image_format,$destination);
 		$this->_filename = $destination;
+		dbg("latexrender: $destination");
 
         if( ! $this->_keep_tmp)
 			$this->cleanTemporaryDirectory();
