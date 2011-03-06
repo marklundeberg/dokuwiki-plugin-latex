@@ -64,20 +64,23 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 	  if($data[1] != DOKU_LEXER_UNMATCHED) return true; // ignore entry/exit states
 	  
       if($mode == 'xhtml') {
-		  $url = $this->_latex->getFormulaURL($data[0])
+		  $url = $this->_latex->getFormulaURL($data[0]);
 		  $title = $data['title'];
 		  
 		  if(!$url){
 			// some kinda error.
 			$url = DOKU_BASE.'lib/plugins/latex/images/renderfail.png';
 			switch($this->_latex->_errorcode) {
-				case 1: $title = 'Fail: formula too long (current limit is '.$this->_latex->_string_length_limit.' characters)';
+				case 1: $title = 'Fail: formula too long (current limit is '.
+						$this->_latex->_string_length_limit.' characters)';
 				break;
 				case 2: $title = 'Fail: triggered security filter; contains blacklisted LaTeX tags.';
 				break;
 				case 4: $title = 'Fail: LaTeX compilation failed.';
 				break;
-				case 5: $title = 'Fail: image too big (max '.$this->_latex->_xsize_limit.'x'.$this->_latex->_ysize_limit.' px)'.$this->_latex->_errorextra;
+				case 5: $title = 'Fail: image too big (max '.
+						$this->_latex->_xsize_limit.'x'.$this->_latex->_ysize_limit.' px) '.
+						$this->_latex->_errorextra;
 				break;
 				case 6: $title = 'Fail: unknown processing error.';
 				break;
