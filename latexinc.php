@@ -103,7 +103,7 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 		  if($url) {
 			$fname = $this->_latex->_filename;
 		  }
-		  dbg("$renderer->_odtAddImage('".$fname."');");
+		  //dbg("$renderer->_odtAddImage('".$fname."');");
 		  $renderer->_odtAddImage($fname);
 		  return true;
       } elseif ($mode == 'latex') {
