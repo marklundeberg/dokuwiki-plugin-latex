@@ -1,6 +1,5 @@
 <?php
 
-$meta['colour'] = array('string');
 $meta['image_format'] = array('string');
 
 $meta['xsize_limit'] = array('numeric');

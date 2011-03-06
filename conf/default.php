@@ -7,24 +7,24 @@ $conf['identify_path'] = '/usr/bin/identify';
 $conf['image_format'] = 'png';
 $conf['tmp_dir'] = '/tmp';
 $conf['keep_tmp'] = false;
-$conf['colour'] = '{rgb}{0.50,0.00,0.00}';
 
 $conf['xsize_limit'] = 1000;
 $conf['ysize_limit'] = 500;
 $conf['string_length_limit'] = 2000;
 
-$conf['preamble'] = '\documentclass[10pt]{article}
-\usepackage{ucs}
-\usepackage[utf8x]{inputenc}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssmyb}
-\usepackage{wasysym}
-\usepackage{color}
-\pagestyle{empty}
-\begin{document}
-\definecolor{MyColour}{rgb}{0.50,0.00,0.00}
-{\color{Mycolour}';
+$conf['preamble'] = '\\documentclass[10pt]{article}
+\\usepackage{ucs}
+\\usepackage[utf8x]{inputenc}
+\\usepackage{amsmath}
+\\usepackage{amsfonts}
+\\usepackage{amssymb}
+\\usepackage{eurosym}
+\\usepackage{wasysym}
+\\usepackage{color}
+\\pagestyle{empty}
+\\begin{document}
+\\definecolor{MyColour}{rgb}{0.50,0.00,0.00}
+{\\color{Mycolour}';
 
 $conf['postamble'] = '}\end{document}';
 		
