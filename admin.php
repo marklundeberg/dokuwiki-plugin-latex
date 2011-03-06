@@ -130,7 +130,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 		} else {
 			$this->output .= "Purger: Bad input (non-numeric?). No action taken.\n";
 		}
-		$this->output .= "Totals: $numdeleted deleted, $numkept kept."
+		$this->output .= "Totals: $numdeleted deleted, $numkept kept.";
 		$this->output .= "</pre>";
 	  }
     }
