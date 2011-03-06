@@ -13,10 +13,11 @@ require_once(dirname(__FILE__).'/class.latexrender.php');
  * need to inherit from this class
  */
 class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
+	var $_latex;
    /**
     * return some info
     */
-     function getInfo(){
+    function getInfo(){
         if(method_exists(DokuWiki_Syntax_Plugin,"getInfo"))
              return parent::getInfo(); /// this will grab the data from the plugin.info.txt
 

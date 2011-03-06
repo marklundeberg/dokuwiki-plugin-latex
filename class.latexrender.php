@@ -64,6 +64,7 @@ class LatexRender {
     var $_errorcode = 0;
 	var $_errorextra = "";
 	var $_colour = "{rgb}{0.408,0.094,0.059}";
+	var $_filename;
 
 
     // ====================================================================================
