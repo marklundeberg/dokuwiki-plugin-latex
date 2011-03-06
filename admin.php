@@ -78,27 +78,27 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
  
  
 	// purge all files older than $timelimit (in seconds)
-	// function latexpurge($mode, $timelimit)
-	// {
-	    // global $conf, $config_cascade;
-		// $images = glob($conf['mediadir'].'/latex/img*');
-		// $this->_timelimit = $timelimit;
-		// switch($mode) {
-			// case 'atime':
-				// $vio = array_map($this->vio_atime,$images);
-				// break;
-			// case 'mtime':
-				// $vio = array_map($this->vio_mtime,$images);
-				// break;
-			// case 'all':
-				// $vio = array_map($this->vio_all,$images);
-				// break;
-			// default:
-				// return false;
-		// }
-		// touch($config_cascade['main']['local']);
-		// return array_combine($images,$vio);
-	// }
+	function latexpurge($mode, $timelimit)
+	{
+	    global $conf, $config_cascade;
+		$images = glob($conf['mediadir'].'/latex/img*');
+		$this->_timelimit = $timelimit;
+		switch($mode) {
+			case 'atime':
+				$vio = array_map($this->vio_atime,$images);
+				break;
+			case 'mtime':
+				$vio = array_map($this->vio_mtime,$images);
+				break;
+			case 'all':
+				$vio = array_map($this->vio_all,$images);
+				break;
+			default:
+				return false;
+		}
+		touch($config_cascade['main']['local']);
+		return array_combine($images,$vio);
+	}
  
     /**
      * handle user request
@@ -106,10 +106,10 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
     function handle() {
 	  global $conf, $config_cascade;
 	  $this->output = "";
-	  // if(isset($_POST['latexpurge']))
-	  // {
-		// $mode = $_POST['purgemode'];
-		// $days = $_POST['purgetime'];
+	  if(isset($_POST['latexpurge']))
+	  {
+		$mode = $_POST['purgemode'];
+		$days = $_POST['purgetime'];
 		// if($mode == 'all' || is_numeric($days))
 			// $res = $this->latexpurge($mode, $timelimit*86400);
 			// $this->output .= "Purge result ([x] = deleted):<br/><pre>";
@@ -124,7 +124,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 		// } else {
 			// $this->output .= "Purger: Bad input (non-numeric?). No action taken.";
 		// }
-	  // }
+	  }
     }
 
 	
