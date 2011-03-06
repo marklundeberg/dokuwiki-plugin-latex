@@ -80,8 +80,9 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
       ptln('<p>'.$this->output.'</p>');
       
       ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="post">');
-	  echo $this->getLang('label_purge');
-	  ptln('<div style="float:right;"><input type="submit" class="button" name="latexpurge"  value="'.$this->getLang('btn_purge').'" /></div>');
+	  echo '<legend>'.$this->getLang('legend_purge').'</legend><table class="inline"><tr>';
+	  echo '<td>';
+//	  echo $this->getLang('label_purge');
 	  echo '<UL><LI class="level1"><div class="li">';
 	  $labtimes = $this->getLang('label_times');
 	  foreach(array('mtime','atime') as $which) {
@@ -96,7 +97,9 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	  echo $this->getLang('label_days');
 	  echo '</div></LI><LI class="level1"><div class="li"><LABEL><INPUT type="radio" name="purgetime" value="all">';
 	  echo $this->getLang('label_all');
-	  echo '</LABEL></div></LI></UL>';
+	  echo '</LABEL></div></LI></UL></td>';
+	  ptln('<td><input type="submit" class="button" name="latexpurge"  value="'.$this->getLang('btn_purge').'" /><td>');
+	  echo '</tr></table>';
       ptln('</form>');
     }
  
