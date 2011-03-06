@@ -54,27 +54,27 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 //    }
 
 
-	// Purgers.
-	function vio_atime($fname) {
-		if(time() - fileatime($fname) - $this->_timelimit > 0)
-		{
-			//unlink($fname);
-			return true;
-		}
-		return false;
-	}
-	function vio_mtime($fname) {
-		if(time() - filemtime($fname) - $this->_timelimit > 0)
-		{
-			//unlink($fname);
-			return true;
-		}
-		return false;
-	}
-	function vio_all($fname) {
-		//unlink($fname);
-		return false;
-	}
+	// // Purgers.
+	// function vio_atime($fname) {
+		// if(time() - fileatime($fname) - $this->_timelimit > 0)
+		// {
+			// //unlink($fname);
+			// return true;
+		// }
+		// return false;
+	// }
+	// function vio_mtime($fname) {
+		// if(time() - filemtime($fname) - $this->_timelimit > 0)
+		// {
+			// //unlink($fname);
+			// return true;
+		// }
+		// return false;
+	// }
+	// function vio_all($fname) {
+		// //unlink($fname);
+		// return false;
+	// }
  
  
 	// purge all files older than $timelimit (in seconds)
@@ -122,7 +122,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			}
 			$this->output .= "</pre>";
 		} else {
-			$this->output .= "Bad input (non-numeric?). No action taken.";
+			$this->output .= "Purger: Bad input (non-numeric?). No action taken.";
 		}
 	  }
     }
