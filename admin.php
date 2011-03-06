@@ -83,7 +83,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	  echo $this->getLang('label_purge');
 	  $labtimes = $this->getLang('label_times');
 	  foreach(array('mtime','atime') as $which) {
-		echo '<LABEL><INPUT type="radio" name="purgetime" value="'.$which.'"'
+		echo '<LABEL><INPUT type="radio" name="purgetime" value="'.$which.'"';
 		if($which == 'atime') echo ' checked';
 		echo '/>';
 		echo $labtimes[$which];
