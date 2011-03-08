@@ -13,18 +13,17 @@ $conf['ysize_limit'] = 500;
 $conf['string_length_limit'] = 2000;
 
 $conf['preamble'] = '\\documentclass[10pt]{article}
-\\usepackage{ucs}
-\\usepackage[utf8x]{inputenc}
+\\usepackage[utf8]{inputenc}
 \\usepackage{amsmath}
 \\usepackage{amsfonts}
 \\usepackage{amssymb}
-\\usepackage{eurosym}
-\\usepackage{wasysym}
 \\usepackage{color}
 \\pagestyle{empty}
 \\begin{document}
 \\definecolor{MyColour}{rgb}{0.50,0.00,0.00}
-{\\color{MyColour}';
+{\\color{MyColour}
+';
 
-$conf['postamble'] = '}\end{document}';
-		
+$conf['postamble'] = '}\end{document}
+';
+
