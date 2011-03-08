@@ -54,7 +54,7 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 		$latex->_colour = $this->getConf("colour");
 		$latex->_xsize_limit = $this->getConf("xsize_limit");
 		$latex->_ysize_limit = $this->getConf("ysize_limit");
-		$latex->_string_length__limit = $this->getConf("string_length_limit");
+		$latex->_string_length_limit = $this->getConf("string_length_limit");
 		$latex->_preamble = $this->getConf("preamble");
 		$latex->_postamble = $this->getConf("postamble");
 		
