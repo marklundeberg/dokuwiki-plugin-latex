@@ -137,9 +137,9 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 		$this->output .= "Totals: $numdeleted deleted, $numkept kept (kept files not shown).\n";
 		if ($numdeleted > 0) {
 			touch($config_cascade['main']['local']);
-			$this->output .=
-			   "** If you have modified rendering settings (such as colour or image size),\n".
-			   "** refresh your browser's cache to download the new images.";
+			$this->output = 
+			   "<div class=\"info\">If you have modified rendering settings (such as colour or image size),
+ 				 refresh your browser's cache to download the new images on each page.</div>" . $this->output;
 		}
 		$this->output .= "</pre>";
 	  }
