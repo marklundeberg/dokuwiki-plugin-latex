@@ -31,7 +31,7 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 			'date'   => '???',
 			'name'   => 'LaTeX plugin',
 			'desc'   => 'LaTeX rendering plugin; requires LaTeX, dvips, ImageMagick.',
-			'url'	=> 'http://www.dokuwiki.org/plugin:latex'
+			'url'    => 'http://www.dokuwiki.org/plugin:latex'
 		);
 	}
 		
@@ -77,30 +77,30 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 		  $title = $data['title'];
 		  
 		  if(!$url){
-			// some kinda error.
-			$url = DOKU_BASE.'lib/plugins/latex/images/renderfail.png';
-			switch($this->_latex->_errorcode) {
-				case 1: $title = $this->getLang('fail1').$this->latex->_errorextra.
-						$this->getLang('failmax').$this->_latex->_string_length_limit;
-					break;
-				case 2: $title = $this->getLang('fail2');
-					break;
-				case 4: $title = $this->getLang('fail4');
-					break;
-				case 5: $title = $this->getLang('fail5').$this->_latex->_errorextra.
-						$this->getLang('failmax').$this->_latex->_xsize_limit.'x'.$this->_latex->_ysize_limit.'px';
-					break;
-				case 6: $title = $this->getLang('fail6');
-					break;
-				default: $title = $this->getLang('failX');
-					break;
-			}
+				// some kinda error.
+				$url = DOKU_BASE.'lib/plugins/latex/images/renderfail.png';
+				switch($this->_latex->_errorcode) {
+					case 1: $title = $this->getLang('fail1').$this->_latex->_errorextra.
+							$this->getLang('failmax').$this->_latex->_string_length_limit;
+						break;
+					case 2: $title = $this->getLang('fail2');
+						break;
+					case 4: $title = $this->getLang('fail4');
+						break;
+					case 5: $title = $this->getLang('fail5').$this->_latex->_errorextra.
+							$this->getLang('failmax').$this->_latex->_xsize_limit.'x'.$this->_latex->_ysize_limit.'px';
+						break;
+					case 6: $title = $this->getLang('fail6');
+						break;
+					default: $title = $this->getLang('failX');
+						break;
+				}
 		  }
 		  if($data['class'] == "latex_displayed")
-			$renderer->doc .= "\n<br/>";
+				$renderer->doc .= "\n<br/>";
 		  $renderer->doc .= '<img src="'.$url.'" class="'.$data['class'].'" alt="'.htmlspecialchars($data[0]).'" title="'.$title.'"/>';			
 		  if($data['class'] == "latex_displayed")
-			$renderer->doc .= "<br/>\n";
+				$renderer->doc .= "<br/>\n";
 		  $fname = $this->_latex->_filename;
 		  return true;
 	  } elseif ($mode == 'metadata') {
@@ -127,17 +127,17 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 		  $renderer->_odtAddImage($fname,$width,$height);
 		  
 		  if($data['class'] == "latex_displayed")
-			// displayed math: closing newline
-			$renderer->doc .= "\n".'</text:p><text:p text:style-name="Text_20_body">'."\n";
+				// displayed math: closing newline
+				$renderer->doc .= "\n".'</text:p><text:p text:style-name="Text_20_body">'."\n";
 		  return true;
 	  } elseif ($mode == 'latex') {
 			////////////////////////////////////
 			// LATEX                          //
 			////////////////////////////////////
 		  if($data['class'] == "latex_displayed")
-			$renderer->doc .= "\n".$data[0]."\n";
+				$renderer->doc .= "\n".$data[0]."\n";
 		  else
-			$renderer->doc .= $data[0];
+				$renderer->doc .= $data[0];
 		  return true;
 	  }
 	  $renderer->doc .= htmlspecialchars($data[0]); /// unknown render mode, just fart out the latex code.
