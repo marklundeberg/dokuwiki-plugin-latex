@@ -1,8 +1,8 @@
 <?php
 
-$lang['adminlink'] = 'You should delete the image cache from the <a href="'.
+$lang['adminlink'] = 'If you want this change to affect old LaTeX renders, you should delete the image cache from the <a href="'.
   wl($ID).'?do=admin&page=latex'.
-  '" target="_blank" class=""wikilink1">admin page</a> for this change to affect old equations.';
+  '" target="_blank" class=""wikilink1">admin page</a> and refresh your browser\'s cache.';
 
 $lang['latex_path'] = 'Path to <code>latex</code> program and options';
 $lang['dvips_path'] = 'Path to <code>dvips</code> program and options';

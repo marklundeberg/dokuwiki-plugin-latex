@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Skeleton: Displays "Hello World!"
+ * Admin for LaTeX plugin.
  * 
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     Christopher Smith <chris@jalakai.co.uk>
+ * @license	GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author	 Mark Lundeberg <nanite@gmail.com>
  */
 
 if(!defined('DOKU_INC')) die();
@@ -18,13 +18,13 @@ require_once(dirname(__FILE__).'/latexinc.php');
  */
 class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	var $output;
-    /**
-     * return some info
-     */
-     function getInfo(){
+	/**
+	 * return some info
+	 */
+	 function getInfo(){
 		$a = '';
-        if(method_exists(DokuWiki_Admin_Plugin,"getInfo")) {
-             $a = parent::getInfo(); /// this will grab the data from the plugin.info.txt
+		if(method_exists(DokuWiki_Admin_Plugin,"getInfo")) {
+			 $a = parent::getInfo(); /// this will grab the data from the plugin.info.txt
 			 $a['name'] = 'LaTeX plugin administration';
 			 return $a;
 		} else
@@ -35,26 +35,16 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 				'date'   => '???',
 				'name'   => 'LaTeX plugin',
 				'desc'   => 'LaTeX rendering plugin; requires LaTeX, dvips, ImageMagick.',
-				'url'    => 'http://www.dokuwiki.org/plugin:latex'
+				'url'	=> 'http://www.dokuwiki.org/plugin:latex'
 			);
-    }
+	}
  
-    /**
-     * return sort order for position in admin menu
-     */
-    function getMenuSort() {
-      return 999;
-    }
-    
-    /**
-     *  return a menu prompt for the admin menu
-     *  NOT REQUIRED - its better to place $lang['menu'] string in localised string file
-     *  only use this function when you need to vary the string returned
-     */
-//    function getMenuText() {
-//      return 'a menu prompt';
-//    }
-
+	/**
+	 * return sort order for position in admin menu
+	 */
+	function getMenuSort() {
+	  return 999;
+	}
 
 	// Purgers.
 	function vio_atime($fname) {
@@ -81,12 +71,12 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
  
 	// purge all files older than $timelimit (in seconds)
 	// $mode = 
-	//      atime: age based on fileatime().
-	//      mtime: age based on filemtime().
-	//      all: delete all cached files.
+	//	  atime: age based on fileatime().
+	//	  mtime: age based on filemtime().
+	//	  all: delete all cached files.
 	function latexpurge($mode, $timelimit)
 	{
-	    global $conf, $config_cascade;
+		global $conf, $config_cascade;
 		$images = glob($conf['mediadir'].'/latex/img*');
 		$this->_timelimit = $timelimit;
 		switch($mode) {
@@ -105,56 +95,60 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 		return array_combine($images,$vio);
 	}
  
-    /**
-     * handle user request
-     */
-    function handle() {
+	/**
+	 * handle user request
+	 */
+	function handle() {
 	  global $conf, $config_cascade;
 	  $this->output = "";
 	  if(isset($_POST['latexpurge']))
 	  {
-		$mode = $_POST['purgemode'];
-		$days = $_POST['purgedays'];
-		$this->output .= "<pre>Purge result ([x] = deleted):\n";
-		$numdeleted = 0;
-		$numkept = 0;
-		if($mode == 'all' || (is_numeric($days) && $days >= 0)) {
-			$res = $this->latexpurge($mode, $days*86400);
-			
-			foreach($res as $img => $vio){
-				if($vio) {
-					$this->output .= '[x] '.$img . "\n";
-					$numdeleted += 1;
-				} else {
-					// $this->output .= '[ ] '.$img . "\n";
-					$numkept += 1;
-				}
+			$mode = $_POST['purgemode'];
+			$days = $_POST['purgedays'];
+			if(is_numeric($days) && $days == 0)
+				$mode = 'all';
+			if($mode == 'all') {
+				// If the admin wants to delete all of the images, probably it's good to print a reminder.
+				// (I don't know how many hours I spent trying to fix buggy LaTeX that was just cached... grr.)
+				$this->output .= 
+			   "<div class=\"info\">If you have modified rendering settings (such as colour or image size), force-refresh
+				 (CTRL-F5) your browser's cache on each page (or clear your cache fully) to download the new images.</div>";
 			}
-				
-		} else {
-			$this->output .= "Purger: Bad input (non-numeric?). No action taken.\n";
-		}
-		$this->output .= "Totals: $numdeleted deleted, $numkept kept (kept files not shown).\n";
-		if ($numdeleted > 0) {
-			touch($config_cascade['main']['local']);
-			$this->output = 
-			   "<div class=\"info\">If you have modified rendering settings (such as colour or image size),
- 				 refresh your browser's cache to download the new images on each page.</div>" . $this->output;
-		}
-		$this->output .= "</pre>";
+			$numdeleted = 0;
+			$numkept = 0;
+			$this->output .= "<pre>Purge result ([x] = deleted):\n";
+			if($mode == 'all' || (is_numeric($days) && $days >= 0)) {
+				$res = $this->latexpurge($mode, $days*86400);				
+				foreach($res as $img => $vio){
+					if($vio) {
+						$this->output .= '[x] '.$img . "\n";
+						$numdeleted += 1;
+					} else {
+						// $this->output .= '[ ] '.$img . "\n";
+						$numkept += 1;
+					}
+				}
+			} else {
+				$this->output = "<div class=\"error\">Purger: Bad form inputs. No action taken.</div>".$this->output;
+			}
+			$this->output .= "Totals: $numdeleted deleted, $numkept kept (kept files not shown).\n";
+			if ($numdeleted > 0) {
+				touch($config_cascade['main']['local']);
+			}
+			$this->output .= "</pre>";
 	  }
-    }
+	}
 
 	
-    /**
-     * output appropriate html
-     */
-    function html() {
+	/**
+	 * output appropriate html
+	 */
+	function html() {
 	  ptln('<h1>LaTeX plugin tasks</h1>');
-      ptln('<p>'.$this->output.'</p>');
-      
+	  ptln('<p>'.$this->output.'</p>');
+	  
 	  ////////////// PURGE FORM
-      ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="post">');
+	  ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="post">');
 	  ptln('<fieldset style="width:500px;"><legend>'.$this->getLang('legend_purge').'</legend><table class="inline"><tr>');
 	  ptln('<td rowspan="2"><input type="submit" class="button" name="latexpurge"  value="'.$this->getLang('btn_purge').'" /></td>');
 	  ptln('<TD>');
@@ -167,7 +161,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	  ptln('</TD><TR><TD>');
 	  echo '<LABEL><INPUT type="radio" name="purgemode" value="all"/>'.$this->getLang('label_all').'</LABEL>';
 	  ptln('</TD></TR></TABLE></fieldset');
-      ptln('</form>');
+	  ptln('</form>');
 	}
 
 }
