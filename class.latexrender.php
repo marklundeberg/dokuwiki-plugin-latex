@@ -151,14 +151,15 @@ class LatexRender {
             // security filter: reject too long formulas
             if (strlen($latex_formula) > $this->_string_length_limit) {
             	$this->_errorcode = 1;
-                return false;
+							$this->_errorextra = ': '.strlen($latex_formula);
+              return false;
             }
 
             // security filter: try to match against LaTeX-Tags Blacklist
             for ($i=0;$i<sizeof($this->_latex_tags_blacklist);$i++) {
                 if (stristr($latex_formula,$this->_latex_tags_blacklist[$i])) {
                 	$this->_errorcode = 2;
-                    return false;
+                  return false;
                 }
             }
 

@@ -1,5 +1,7 @@
 <?php
 
+///// Generic plugin for all the latex syntax plugins.
+//// Handles the rendering bits, so the syntax plugins just need to match syntax.
 
 
 if(!defined('DOKU_INC')) die();
@@ -16,30 +18,30 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 	var $_latex;
 	
    /**
-    * return some info
-    */
-    function getInfo(){
-        if(method_exists(DokuWiki_Syntax_Plugin,"getInfo"))
-             return parent::getInfo(); /// this will grab the data from the plugin.info.txt
+	* return some info
+	*/
+	function getInfo(){
+		if(method_exists(DokuWiki_Syntax_Plugin,"getInfo"))
+			 return parent::getInfo(); /// this will grab the data from the plugin.info.txt
 
-        // Otherwise return some hardcoded data for old dokuwikis
-        return array(
-            'author' => 'Alexander Kraus, Michael Boyle, and Mark Lundeberg)',
-            'email'  => '.',
-            'date'   => '???',
-            'name'   => 'LaTeX plugin',
-            'desc'   => 'LaTeX rendering plugin; requires LaTeX, dvips, ImageMagick.',
-            'url'    => 'http://www.dokuwiki.org/plugin:latex'
-        );
-    }
+		// Otherwise return some hardcoded data for old dokuwikis
+		return array(
+			'author' => 'Alexander Kraus, Michael Boyle, and Mark Lundeberg)',
+			'email'  => '.',
+			'date'   => '???',
+			'name'   => 'LaTeX plugin',
+			'desc'   => 'LaTeX rendering plugin; requires LaTeX, dvips, ImageMagick.',
+			'url'	=> 'http://www.dokuwiki.org/plugin:latex'
+		);
+	}
 		
 	/* common constructor -- get config settings */
 	function syntax_plugin_latex_common()
 	{
 		global $conf;
-        if ( !is_dir($conf['mediadir'] . '/latex') ) {
-          mkdir($conf['mediadir'] . '/latex', 0777-$conf['dmask']);
-        }
+		if ( !is_dir($conf['mediadir'] . '/latex') ) {
+		  mkdir($conf['mediadir'] . '/latex', 0777-$conf['dmask']);
+		}
 		$latex = new LatexRender($conf['mediadir'] . '/latex/',
 						DOKU_BASE.'lib/exe/fetch.php?media=latex:',
 						$this->getConf("tmp_dir"));
@@ -59,15 +61,18 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 		$this->_latex = $latex;
 	}
 
-    function getType(){return 'protected'; }
+	function getType(){return 'protected'; }
 
-    function getSort(){return 405; }
+	function getSort(){return 405; }
 	
-    function render($mode, &$renderer, $data) {
-//      global $conf;
+	function render($mode, &$renderer, $data) {
+//	  global $conf;
 	  if($data[1] != DOKU_LEXER_UNMATCHED) return true; // ignore entry/exit states
 	  
-      if($mode == 'xhtml') {
+	  if($mode == 'xhtml') {
+			////////////////////////////////////
+			// XHTML                          //
+			////////////////////////////////////
 		  $url = $this->_latex->getFormulaURL($data[0]);
 		  $title = $data['title'];
 		  
@@ -75,38 +80,40 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 			// some kinda error.
 			$url = DOKU_BASE.'lib/plugins/latex/images/renderfail.png';
 			switch($this->_latex->_errorcode) {
-				case 1: $title = 'Fail: formula too long (current limit is '.
-						$this->_latex->_string_length_limit.' characters)';
-				break;
-				case 2: $title = 'Fail: triggered security filter; contains blacklisted LaTeX tags.';
-				break;
-				case 4: $title = 'Fail: LaTeX compilation failed.';
-				break;
-				case 5: $title = 'Fail: image too big (max '.
-						$this->_latex->_xsize_limit.'x'.$this->_latex->_ysize_limit.' px) '.
-						$this->_latex->_errorextra;
-				break;
-				case 6: $title = 'Fail: unknown processing error.';
-				break;
-				default: $title = 'Fail: unknown error.';
-				break;
+				case 1: $title = $this->getLang['fail1'].$this->latex->_errorextra.
+						$this->getLang['failmax'].$this->_latex->_string_length_limit;
+					break;
+				case 2: $title = $this->getLang['fail2'];
+					break;
+				case 4: $title = $this->getLang['fail4'];
+					break;
+				case 5: $title = $this->getLang['fail5'].$this->_latex->_errorextra.
+						$this->getLang['failmax'].$this->_latex->_xsize_limit.'x'.$this->_latex->_ysize_limit.'px';
+					break;
+				case 6: $title = $this->getLang['fail6'];
+					break;
+				default: $title = $this->getLang['failX'];
+					break;
 			}
 		  }
 		  if($data['class'] == "latex_displayed")
 			$renderer->doc .= "\n<br/>";
-		  $renderer->doc .= '<img src="'.$url.'" class="'.$data['class'].'" alt="'.htmlspecialchars($data[0]).'" title="'.$title.'"/>';		    
+		  $renderer->doc .= '<img src="'.$url.'" class="'.$data['class'].'" alt="'.htmlspecialchars($data[0]).'" title="'.$title.'"/>';			
 		  if($data['class'] == "latex_displayed")
 			$renderer->doc .= "<br/>\n";
 		  $fname = $this->_latex->_filename;
 		  return true;
 	  } elseif ($mode == 'metadata') {
-	      // nothing to meta.
+		  // nothing to do in metadata mode.
 		  return true;
-      } elseif ($mode == 'odt') {
+	  } elseif ($mode == 'odt') {
+			////////////////////////////////////
+			// ODT                            //
+			////////////////////////////////////
 		  $url = $this->_latex->getFormulaURL($data[0]);
 		  $fname = dirname(__FILE__).'/images/renderfail.png';
 		  if($url) {
-	        $fname = $this->_latex->_filename;
+				$fname = $this->_latex->_filename;
 		  }
 		  $info  = getimagesize($fname);
 		  // expand images sizes 20% larger than those in renderer->_odtGetImageSize .
@@ -114,16 +121,19 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 		  $height = ($info[1] * 0.03175)."cm";
 		  
 		  if($data['class'] == "latex_displayed")
-		    // displayed math: newline + 5 spaces seems to look okay.
+			// displayed math: newline + 5 spaces seems to look okay.
 			$renderer->doc .= "\n".'</text:p><text:p text:style-name="Text_20_body"><text:s text:c="5"/>'."\n";
 		  
 		  $renderer->_odtAddImage($fname,$width,$height);
 		  
 		  if($data['class'] == "latex_displayed")
-		    // displayed math: closing newline
+			// displayed math: closing newline
 			$renderer->doc .= "\n".'</text:p><text:p text:style-name="Text_20_body">'."\n";
 		  return true;
-      } elseif ($mode == 'latex') {
+	  } elseif ($mode == 'latex') {
+			////////////////////////////////////
+			// LATEX                          //
+			////////////////////////////////////
 		  if($data['class'] == "latex_displayed")
 			$renderer->doc .= "\n".$data[0]."\n";
 		  else
@@ -131,7 +141,7 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 		  return true;
 	  }
 	  $renderer->doc .= htmlspecialchars($data[0]); /// unknown render mode, just fart out the latex code.
-      return false;
-    }
+	  return false;
+	}
 
 }

@@ -15,3 +15,13 @@ $lang['btn_purge'] = 'Delete!';
 $lang['legend_preamble'] = "LaTeX preamble settings";
 
 $lang['refresh_note'] = "If you have modified rendering settings (such as colour or image size), force-refresh (CTRL-F5) your browser's cache on each page (or clear your cache fully) to download the new images.";
+
+/// title tags (ie. tooltips) for failed renders.
+$lang['fail1'] = 'Fail: formula too long (in characters)';
+$lang['fail2'] = 'Fail: triggered security filter; contains blacklisted LaTeX tags.';
+$lang['fail3'] = ''; // there is no fail 3;
+$lang['fail4'] = 'Fail: LaTeX compilation failed.';
+$lang['fail5'] = 'Fail: image too wide or too tall: ';
+$lang['fail6'] = 'Fail: error during graphic processing.';
+$lang['failX'] = 'Fail: unknown error.';
+$lang['failmax'] =', maximum allowed:';
