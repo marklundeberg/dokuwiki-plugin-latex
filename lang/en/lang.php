@@ -19,7 +19,7 @@ $lang['refresh_note'] = "If you have modified rendering settings (such as colour
 /// title tags (ie. tooltips) for failed renders.
 $lang['fail1'] = 'Fail: formula too long (in characters)';
 $lang['fail2'] = 'Fail: triggered security filter; contains blacklisted LaTeX tags.';
-$lang['fail3'] = ''; // there is no fail 3;
+//$lang['fail3'] = ''; // there is no fail #3;
 $lang['fail4'] = 'Fail: LaTeX compilation failed.';
 $lang['fail5'] = 'Fail: image too wide or too tall: ';
 $lang['fail6'] = 'Fail: error during graphic processing.';

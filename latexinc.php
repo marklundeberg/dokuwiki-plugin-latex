@@ -80,19 +80,19 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 			// some kinda error.
 			$url = DOKU_BASE.'lib/plugins/latex/images/renderfail.png';
 			switch($this->_latex->_errorcode) {
-				case 1: $title = $this->getLang['fail1'].$this->latex->_errorextra.
-						$this->getLang['failmax'].$this->_latex->_string_length_limit;
+				case 1: $title = $this->getLang('fail1').$this->latex->_errorextra.
+						$this->getLang('failmax').$this->_latex->_string_length_limit;
 					break;
-				case 2: $title = $this->getLang['fail2'];
+				case 2: $title = $this->getLang('fail2');
 					break;
-				case 4: $title = $this->getLang['fail4'];
+				case 4: $title = $this->getLang('fail4');
 					break;
-				case 5: $title = $this->getLang['fail5'].$this->_latex->_errorextra.
-						$this->getLang['failmax'].$this->_latex->_xsize_limit.'x'.$this->_latex->_ysize_limit.'px';
+				case 5: $title = $this->getLang('fail5').$this->_latex->_errorextra.
+						$this->getLang('failmax').$this->_latex->_xsize_limit.'x'.$this->_latex->_ysize_limit.'px';
 					break;
-				case 6: $title = $this->getLang['fail6'];
+				case 6: $title = $this->getLang('fail6');
 					break;
-				default: $title = $this->getLang['failX'];
+				default: $title = $this->getLang('failX'];
 					break;
 			}
 		  }
