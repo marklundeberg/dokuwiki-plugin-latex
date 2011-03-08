@@ -148,7 +148,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	  
 	  ////////////// PURGE FORM
 	  ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="post">');
-	  ptln('<fieldset style="width:500px;"><legend>'.$this->getLang('legend_purge').'</legend><table class="inline"><tr>');
+	  ptln('<fieldset style="float:left;"><legend>'.$this->getLang('legend_purge').'</legend><table class="inline"><tr>');
 	  ptln('<td rowspan="2"><input type="submit" class="button" name="latexpurge"  value="'.$this->getLang('btn_purge').'" /></td>');
 	  ptln('<TD>');
 	  $labtimes = $this->getLang('label_times');
