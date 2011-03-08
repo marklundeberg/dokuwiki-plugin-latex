@@ -20,7 +20,8 @@ class syntax_plugin_latex_ddollar extends syntax_plugin_latex_common {
     }
     function postConnect() { $this->Lexer->addExitPattern('\$\$','plugin_latex_ddollar'); }
  
-	function getPType(){return 'stack';}
+		function getPType(){return 'stack';}
+	
    /**
     * Handle the match
     */

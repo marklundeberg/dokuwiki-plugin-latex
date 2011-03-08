@@ -20,6 +20,8 @@ class syntax_plugin_latex_equationstar extends syntax_plugin_latex_common {
       $this->Lexer->addExitPattern('\x5Cend\{equation\*\}','plugin_latex_equationstar');
     }
  
+		function getPType(){return 'stack';}
+	
    /**
     * Handle the match
     */

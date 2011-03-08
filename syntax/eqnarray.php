@@ -19,6 +19,8 @@ class syntax_plugin_latex_eqnarray extends syntax_plugin_latex_common {
       $this->Lexer->addExitPattern('\x5Cend\{eqnarray\}','plugin_latex_eqnarray');
     }
  
+		function getPType(){return 'stack';}
+	
    /**
     * Handle the match
     */

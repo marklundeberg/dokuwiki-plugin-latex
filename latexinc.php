@@ -96,11 +96,16 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 						break;
 				}
 		  }
-		  if($data['class'] == "latex_displayed")
-				$renderer->doc .= "\n<br/>";
-		  $renderer->doc .= '<img src="'.$url.'" class="'.$data['class'].'" alt="'.htmlspecialchars($data[0]).'" title="'.$title.'"/>';			
-		  if($data['class'] == "latex_displayed")
-				$renderer->doc .= "<br/>\n";
+			// don't need breaks now, as PType takes care of this for us.
+		  // if($data['class'] == "latex_displayed")
+				// $renderer->doc .= "\n<br/>";
+				
+		  $renderer->doc .= '<img src="'.$url.'" class="'.$data['class'].'" alt="'.htmlspecialchars($data[0]).'" title="'.$title.'"/>';
+			
+			// don't need breaks now, as PType takes care of this for us.
+		  // if($data['class'] == "latex_displayed")
+				// $renderer->doc .= "<br/>\n";
+
 		  $fname = $this->_latex->_filename;
 		  return true;
 	  } elseif ($mode == 'metadata') {
@@ -121,14 +126,11 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 		  $height = ($info[1] * 0.03175)."cm";
 		  
 		  if($data['class'] == "latex_displayed")
-			// displayed math: newline + 5 spaces seems to look okay.
-			$renderer->doc .= "\n".'</text:p><text:p text:style-name="Text_20_body"><text:s text:c="5"/>'."\n";
+				// displayed math: 5 spaces seems to look okay.
+				$renderer->doc .= '<text:s text:c="5"/>';
 		  
 		  $renderer->_odtAddImage($fname,$width,$height);
 		  
-		  if($data['class'] == "latex_displayed")
-				// displayed math: closing newline
-				$renderer->doc .= "\n".'</text:p><text:p text:style-name="Text_20_body">'."\n";
 		  return true;
 	  } elseif ($mode == 'latex') {
 			////////////////////////////////////

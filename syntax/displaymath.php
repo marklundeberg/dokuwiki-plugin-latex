@@ -20,6 +20,8 @@ class syntax_plugin_latex_displaymath extends syntax_plugin_latex_common {
       $this->Lexer->addExitPattern('\x5Cend\{displaymath\}','plugin_latex_displaymath');
     }
  
+		function getPType(){return 'stack';}
+	
    /**
     * Handle the match
     */
