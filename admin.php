@@ -108,11 +108,10 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			if(is_numeric($days) && $days == 0)
 				$mode = 'all';
 			if($mode == 'all') {
-				// If the admin wants to delete all of the images, probably it's good to print a reminder.
-				// (I don't know how many hours I spent trying to fix buggy LaTeX that was just cached... grr.)
-				$this->output .= 
-			   "<div class=\"info\">If you have modified rendering settings (such as colour or image size), force-refresh
-				 (CTRL-F5) your browser's cache on each page (or clear your cache fully) to download the new images.</div>";
+				// If the admin wants to delete all of the images, probably it's good to print this reminder
+				//   since they are likely doing it after changing the colour or something.
+				// (I don't know how many hours I spent trying to fix LaTeX heisenbugs that were just cached... grr.)
+				$this->output .= '<div class="info">'.$this->getLang('refresh_note').'</div>';
 			}
 			$numdeleted = 0;
 			$numkept = 0;

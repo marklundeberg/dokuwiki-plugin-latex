@@ -13,3 +13,5 @@ $lang['label_all'] = 'all ';
 $lang['btn_purge'] = 'Delete!';
 
 $lang['legend_preamble'] = "LaTeX preamble settings";
+
+$lang['refresh_note'] = "If you have modified rendering settings (such as colour or image size), force-refresh (CTRL-F5) your browser's cache on each page (or clear your cache fully) to download the new images.";
