@@ -137,7 +137,7 @@ class LatexRender {
         $latex_formula = preg_replace("/&gt;/i", ">", $latex_formula);
         $latex_formula = preg_replace("/&lt;/i", "<", $latex_formula);
 		
-		$latex_document = $this->_preamble."\n".$latex_formula."\n".$this->_postamble;
+		$latex_document = $this->_preamble."\n".trim($latex_formula)."\n".$this->_postamble;
 
         $formula_hash = md5($latex_formula);
 
@@ -148,7 +148,7 @@ class LatexRender {
         if (is_readable($full_path_filename)) {
             return $this->getPicturePathHTTPD()."/".$filename;
         } else {
-            // security filter: reject too long formulas
+            // security filter: reject too-long formulas
             if (strlen($latex_formula) > $this->_string_length_limit) {
             	$this->_errorcode = 1;
 							$this->_errorextra = ': '.strlen($latex_formula);
