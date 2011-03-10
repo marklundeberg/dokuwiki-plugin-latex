@@ -244,16 +244,17 @@ class LatexRender {
 	   $command = $this->_dvips_path." ".$this->_tmp_filename.".dvi"." -o ".$this->_tmp_filename.".ps";
 	   $this->myexec($command,$status_dvips);
 
-		 chdir($current_dir);
 
 	   // imagemagick convert ps to image and trim picture
 	   $command = $this->_convert_path." ".$this->_tmp_filename.".ps ".
 				$this->_tmp_filename.".".$this->_image_format;
 	   $this->myexec($command,$status_convert);
+
 		 
 		 if ($status_dvips || $status_convert) {
 			if( ! $this->_keep_tmp)
 				$this->cleanTemporaryDirectory();
+			chdir($current_dir);
 			$this->_errorcode = 6;
 			return false;
 		}
@@ -264,6 +265,7 @@ class LatexRender {
 	   if ( ($dim["x"] > $this->_xsize_limit) or ($dim["y"] > $this->_ysize_limit)) {
 		  if( ! $this->_keep_tmp)
 				$this->cleanTemporaryDirectory();
+			chdir($current_dir);
 		  $this->_errorcode = 5; // image too big.
 		  $this->_errorextra = ": " . $dim["x"] . "x" . $dim["y"];
 		  return false;
@@ -271,7 +273,8 @@ class LatexRender {
 
 	   // copy temporary formula file to cahed formula directory
 	   $status_code = copy($this->_tmp_filename.".".$this->_image_format,$destination);
-
+		 chdir($current_dir);
+		 
 	   if( ! $this->_keep_tmp)
 				$this->cleanTemporaryDirectory();
 		
