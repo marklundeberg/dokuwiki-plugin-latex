@@ -172,6 +172,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 		if($troubleshoot) {
 			ptln('<h3>Versions</h3>');
 			ptln('<div class="level3">');
+			ptln('This is a test of the acessibility of your programs and their versions.');
 			ptln('<table class="inline">');
 			ptln('<tr><th>command</th><th>output</th></tr>');
 			foreach(array($this->getConf("latex_path"),$this->getConf("dvips_path"),
@@ -189,26 +190,37 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			ptln('</table>');
 			ptln('</div>');
 			
-			ptln('<h3>Output logs</h3>');
-			ptln('<div class="level3">');
+			ptln('<h3>Test run</h3>');
 			$plug = new syntax_plugin_latex_common();
 			
+			/// Directory sanity checks
+			if(is_writable($plug->_latex->getPicturePath()) && is_dir($plug->_latex->getPicturePath()))
+				ptln('<div class="success">Media directory writable:'.$plug->_latex->getPicturePath().'</div>');
+			else
+				ptln('<div class="error">Media directory not writable or nonexistant!!! : '.$plug->_latex->getPicturePath().'
+						<br />Recommendation: This media namespace must be writable on the file system.</div>');
+			if(is_writable($plug->_latex->_tmp_dir) && is_dir($plug->_latex->_tmp_dir))
+				ptln('<div class="success">Temporary directory writable:'.$plug->_latex->_tmp_dir.'</div>');
+			else
+				ptln('<div class="error">Temporary directory not writable or nonexistant!!! : '.$plug->_latex->_tmp_dir.'
+						<br />Recommendation: Choose a new temporary directory.</div>');
+
+			// simulate a call to the syntax plugin; force render, keep temp files.				
 			$testformula = '$a+b=c$';
 			$md5 = md5($testformula);
 			$outname = $plug->_latex->getPicturePath()."/img".$md5.'.'.$plug->_latex->_image_format;
 			if(file_exists($outname)) {
 				unlink($outname);
 				ptln('<div class="info">Removed cache file for test: '.$outname.'</div>');
-			} else {
-				ptln('<div class="info">Attempting to create: '.$outname.'</div>');
 			}
-			// simulate a call to the syntax plugin; keep temp files.
+			ptln('<div class="info">Attempting to render: <tt>'.$testformula.'</tt> =>'.$outname.'</div>');
 			$plug->_latex->_keep_tmp = true;
 			$data = array($testformula,DOKU_LEXER_UNMATCHED,'class'=>"latex_inline", 'title'=>"Math", NULL);
+			$this->doc = '';
 			$plug->render('xhtml', $this, $data);
 			$tmpf = $plug->_latex->_tmp_dir."/".$plug->_latex->_tmp_filename;
-			ptln('<div class="info">Temporary basepath '.$tmpf.'</div>');
-			$this->doc = '';
+			
+			ptln('<div class="level3">');
 			ptln('<table class="inline"><tr><th>Input LaTeX file</th><th>Final result</th></tr>');
 			ptln('<tr><td><pre>');
 			echo htmlspecialchars(file_get_contents($tmpf.'.tex'));
