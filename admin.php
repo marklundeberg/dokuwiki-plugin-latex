@@ -143,14 +143,14 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	 * output appropriate html
 	 */
 	function html() {
-		global $ID;
+		global $ID,$INFO;
 		ptln('<p>'.$this->output.'</p>');
 		ptln('<h1>LaTeX plugin administrator tasks</h1>');
 		ptln('<h2>'.$this->getLang('legend_purge').'</h2>');
 		ptln('<div class="level2">');
 
 		////////////// PURGE FORM
-		ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="post">');
+		ptln('<form action="'.wl($INFO['id']).'?do=admin&page='.$this->getPluginName().'" method="post">');
 		ptln('<table class="inline"><tr>');
 		ptln('<td rowspan="2"><input type="submit" class="button" name="latexpurge"  value="'.$this->getLang('btn_purge').'" /></td>');
 		ptln('<TD>');
