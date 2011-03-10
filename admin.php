@@ -205,10 +205,10 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			// simulate a call to the syntax plugin; keep temp files.
 			$plug->_latex->_keep_tmp = true;
 			$data = array($testformula,DOKU_LEXER_UNMATCHED,'class'=>"latex_inline", 'title'=>"Math", NULL);
+			$plug->render('xhtml', $this, $data);
 			$tmpf = $plug->_latex->_tmp_dir."/".$plug->_latex->_tmp_filename;
 			ptln('<div class="info">Temporary basepath '.$tmpf.'</div>');
 			$this->doc = '';
-			$plug->render('xhtml', $this, $data);
 			ptln('<table class="inline"><tr><th>Input LaTeX file</th><th>Final result</th></tr>');
 			ptln('<tr><td><pre>');
 			echo htmlspecialchars(file_get_contents($tmpf.'.tex'));
