@@ -74,6 +74,7 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 			// XHTML                          //
 			////////////////////////////////////
 		  $url = $this->_latex->getFormulaURL($data[0]);
+			$this->_url = $url;
 		  $title = $data['title'];
 		  
 		  if(!$url){

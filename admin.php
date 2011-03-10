@@ -206,13 +206,14 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			$plug->_latex->_keep_tmp = true;
 			$data = array($testformula,DOKU_LEXER_UNMATCHED,'class'=>"latex_inline", 'title'=>"Math", NULL);
 			$tmpf = $plug->_latex->_tmp_dir."/".$plug->_latex->_tmp_filename;
+			ptln('<div class="info">Temporary basepath '.$tmpf.'</div>');
 			$this->doc = '';
 			$plug->render('xhtml', $this, $data);
 			ptln('<table class="inline"><tr><th>Input LaTeX file</th><th>Final result</th></tr>');
 			ptln('<tr><td><pre>');
 			echo htmlspecialchars(file_get_contents($tmpf.'.tex'));
 			ptln('</pre></td><td>');
-			ptln(htmlspecialchars($this->doc));
+			ptln(htmlspecialchars($plug->_url));
 			ptln('<br/>');
 			ptln($this->doc);
 			ptln('</pre></td></tr>');
