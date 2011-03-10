@@ -228,9 +228,10 @@ class LatexRender {
 
 	   // create temporary dvi file
 	   $command = $this->_latex_path." ".$this->_tmp_filename.".tex";
-	   $status_code = $this->myexec($command);
+	   $this->myexec($command,$status_latex);
 
-	   if (!$status_code)
+		// LaTeXing only fails
+	   if (!file_exists($this->_latex_path." ".$this->_tmp_filename.".dvi"))
 		{
 			if( ! $this->_keep_tmp)
 				$this->cleanTemporaryDirectory();
@@ -241,14 +242,16 @@ class LatexRender {
 
 	   // convert dvi file to postscript using dvips
 	   $command = $this->_dvips_path." ".$this->_tmp_filename.".dvi"." -o ".$this->_tmp_filename.".ps";
-	   $status_code = $this->myexec($command);
+	   $this->myexec($command,$status_dvips);
+
+		 chdir($current_dir);
 
 	   // imagemagick convert ps to image and trim picture
 	   $command = $this->_convert_path." ".$this->_tmp_filename.".ps ".
 				$this->_tmp_filename.".".$this->_image_format;
-	   $status_code .= $this->myexec($command);
+	   $this->myexec($command,$status_convert);
 		 
-		 if (!$status_code) {
+		 if ($status_dvips || $status_convert) {
 			if( ! $this->_keep_tmp)
 				$this->cleanTemporaryDirectory();
 			$this->_errorcode = 6;
@@ -261,7 +264,6 @@ class LatexRender {
 	   if ( ($dim["x"] > $this->_xsize_limit) or ($dim["y"] > $this->_ysize_limit)) {
 		  if( ! $this->_keep_tmp)
 				$this->cleanTemporaryDirectory();
-		  chdir($current_dir);
 		  $this->_errorcode = 5; // image too big.
 		  $this->_errorextra = ": " . $dim["x"] . "x" . $dim["y"];
 		  return false;
@@ -273,15 +275,13 @@ class LatexRender {
 	   if( ! $this->_keep_tmp)
 				$this->cleanTemporaryDirectory();
 		
-	   chdir($current_dir);
-
 	   if (!$status_code) { $this->_errorcode = 7; return false; }
 
 	   return true;
     }
 		
 		//// Run command and append it to _cmdoutput if that variable exists. (for debug).
-		function myexec($cmd) {
+		function myexec($cmd,&$status) {
 			$cmd = "$cmd 2>&1";
 			$lastline = exec($cmd,$output,$status);
 			
