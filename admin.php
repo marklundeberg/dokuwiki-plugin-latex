@@ -177,7 +177,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 		if(isset($_REQUEST['testformula']))
 			$testformula = $_REQUEST['testformula'];
 		else
-			$testformula = '$${\it f}({\rm DokuWiki}) = \overbrace{[a+b=c]}^\textrm{\LaTeX}$$';
+			$testformula = '$$\underbrace{{\it f}({\rm DokuWiki}) = \overbrace{[a+b=c]}^\textrm{\LaTeX}}_{Success!}$$';
 		ptln('<br />');
 		ptln('  <input type="text" name="testformula" size="'.(strlen($testformula)+20).'" value="'.htmlspecialchars($testformula).'" />');
 		ptln('</form>');
