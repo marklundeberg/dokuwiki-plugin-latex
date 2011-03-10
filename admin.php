@@ -173,12 +173,12 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			$cmd = explode(' ',$path)[0]." --version 2>&1";
 			echo htmlspecialchars($cmd);
 			ptln('</td><td><pre>');
-			echo trim(shell_exec($cmd));
+			echo htmlspecialchars(trim(shell_exec($cmd)));
 			ptln('</pre></td></tr>');
 		}
 		ptln('</table>');
 		
-		$latex = new syntax_plugin_latex_common();
+//		$latex = new syntax_plugin_latex_common();
 		
 	}
 }
