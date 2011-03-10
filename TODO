@@ -1,1 +1,8 @@
 -add troubleshooter to Admin panel
+-ODT export looks fugly due to grainy equations and large fonts, but maybe people never use those massive fonts in practice?
+-SVG support? 
+	-use pdf2svg?
+	-use dvisvgm? output seems weird on my first try at it.
+	-firefox 3.6.15 (for example) does not support SVG in image tags, but firefox 4 does.
+		- using object tag instead means no tooltip text, no linking.
+	-perhaps a bit premature.
