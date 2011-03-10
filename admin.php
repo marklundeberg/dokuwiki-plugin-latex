@@ -187,7 +187,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 				if($statuscode == 0)
 					echo '<pre>';
 				else
-					echo '<pre style="background-color:#80FF80;">'; //pink for error status
+					echo '<pre style="background-color:#FCC;">'; //pink for error status
 				echo htmlspecialchars(implode(PHP_EOL,$execout));
 				ptln('</pre></td></tr>');
 			}
@@ -223,7 +223,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			$this->doc = '';
 			$plug->render('xhtml', $this, $data);
 			$tmpf = $plug->_latex->_tmp_dir."/".$plug->_latex->_tmp_filename;
-			$tmpext = array('cmd','tex','log','aux','dvi','ps',$plug->_latex->_image_format);
+			$tmpext = array('tex','log','aux','dvi','ps',$plug->_latex->_image_format);
 			foreach($tmpext as $ext) {
 				$fname = $tmpf.'.'.$ext;
 				if(is_file($fname))

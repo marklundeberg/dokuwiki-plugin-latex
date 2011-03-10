@@ -187,7 +187,7 @@ class LatexRender {
 	* @returns array containing the picture dimensions
 	*/
     function getDimensions($filename) {
-	   $output=exec($this->_identify_path." ".$filename);
+	   $output=$this->myexec($this->_identify_path." ".$filename);
 	   $result=explode(" ",$output);
 	   $dim=explode("x",$result[2]);
 	   $dim["x"] = $dim[0];
@@ -227,8 +227,8 @@ class LatexRender {
 	   fclose($fp);
 
 	   // create temporary dvi file
-	   $command = $this->_latex_path." ".$this->_tmp_filename.".tex".$this->_cmdout;
-	   $status_code = exec($command);
+	   $command = $this->_latex_path." ".$this->_tmp_filename.".tex";
+	   $status_code = $this->myexec($command);
 
 	   if (!$status_code)
 		{
@@ -240,14 +240,14 @@ class LatexRender {
 		}
 
 	   // convert dvi file to postscript using dvips
-	   $command = $this->_dvips_path." ".$this->_tmp_filename.".dvi"." -o ".$this->_tmp_filename.".ps".$this->_cmdout;
-	   $status_code = exec($command);
+	   $command = $this->_dvips_path." ".$this->_tmp_filename.".dvi"." -o ".$this->_tmp_filename.".ps";
+	   $status_code = $this->myexec($command);
 
 	   // imagemagick convert ps to image and trim picture
 	   $command = $this->_convert_path." ".$this->_tmp_filename.".ps ".
-				$this->_tmp_filename.".".$this->_image_format.$this->_cmdout;
+				$this->_tmp_filename.".".$this->_image_format;
 
-	   $status_code = exec($command);
+	   $status_code = $this->myexec($command);
 
 	   // test picture for correct dimensions
 	   $dim = $this->getDimensions($this->_tmp_filename.".".$this->_image_format);
@@ -273,6 +273,14 @@ class LatexRender {
 
 	   return true;
     }
+		
+		//// Run command and append it to _cmdoutput if that variable exists. (for debug).
+		function myexec($cmd) {
+			$lastline = exec($cmd,$output);
+			if(isset($this->_cmdoutput))
+				$this->_cmdoutput .= "\n>>>>> $cmd\n".implode(PHP_EOL,$output).PHP_EOL;
+			return $lastline;
+		}
 
    /**
 		* Cleans the temporary directory
@@ -281,7 +289,6 @@ class LatexRender {
 //	   $current_dir = getcwd();
 //	   chdir($this->_tmp_dir);
 
-			unlink($this->_tmp_dir."/".$this->_tmp_filename.".cmd");
 			unlink($this->_tmp_dir."/".$this->_tmp_filename.".tex");
 			unlink($this->_tmp_dir."/".$this->_tmp_filename.".aux");
 			unlink($this->_tmp_dir."/".$this->_tmp_filename.".log");
