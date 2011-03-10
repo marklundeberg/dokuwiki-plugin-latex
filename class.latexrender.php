@@ -283,16 +283,16 @@ class LatexRender {
 		//// Run command and append it to _cmdoutput if that variable exists. (for debug).
 		function myexec($cmd) {
 			$cmd = "$cmd 2>&1";
-			exec($cmd,$output);
+			$lastline = exec($cmd,$output,$status);
 			
-			//strip trailing empty lines from output
-			for($i = count($output)-1 ; $i > 0 ; $i -= 1) 
-				if($output[$i]) break;
-			$lastline = $output[$i];
+//			//strip trailing empty lines from output
+//			for($i = count($output)-1 ; $i > 0 ; $i -= 1) 
+//				if($output[$i]) break;
+//			$lastline = $output[$i];
 			
 			if(isset($this->_cmdoutput))
-				$this->_cmdoutput .= "\n>>>>> $cmd\n".trim(implode(PHP_EOL,$output)).PHP_EOL;
-
+				$this->_cmdoutput .= "\n>>>>> $cmd\n".trim(implode(PHP_EOL,$output)).PHP_EOL."  --- exit status ".$status;
+			
 			return $lastline;
 		}
 
