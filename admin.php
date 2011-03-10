@@ -143,6 +143,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	 * output appropriate html
 	 */
 	function html() {
+		global $ID;
 		ptln('<p>'.$this->output.'</p>');
 		ptln('<h1>LaTeX plugin administrator tasks</h1>');
 		ptln('<h2>'.$this->getLang('legend_purge').'</h2>');
@@ -167,9 +168,13 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 		ptln('</div>');
 
 		/////////////// DIAGNOSER
-		ptln('<h2>Troubleshooter</h2>');
-		$troubleshoot = 1;
-		if($troubleshoot) {
+		ptln('<h2>LaTeX troubleshooter</h2>');
+		ptln('<div class="level2">');
+		ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="get">');
+		echo 'Push this button to diagnose your LaTeX/ImageMagick installation: <input type="submit" class="button" name="dotest"  value="Test" />';
+		ptln('</form>');
+		ptln('</div>');
+		if($_REQUEST['dotest']) {
 			ptln('<h3>Versions</h3>');
 			ptln('<div class="level3">');
 			ptln('This is a test of the acessibility of your programs and their versions.');
