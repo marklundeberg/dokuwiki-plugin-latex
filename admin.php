@@ -144,7 +144,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	 */
 	function html() {
 		ptln('<p>'.$this->output.'</p>');
-		ptln('<h1>LaTeX plugin tasks</h1>');
+		ptln('<h1>LaTeX plugin administrator tasks</h1>');
 		ptln('<h2>'.$this->getLang('legend_purge').'</h2>');
 		ptln('<div class="level2">');
 
@@ -168,10 +168,9 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 
 		/////////////// DIAGNOSER
 		ptln('<h2>Troubleshooter</h2>');
-		ptln('<h3>Versions</h3>');
-
-		ptln('<div class="level3">');
 		
+		ptln('<h3>Versions</h3>');
+		ptln('<div class="level3">');
 		ptln('<table class="inline">');
 		ptln('<tr><th>command</th><th>output</th></tr>');
 		foreach(array($this->getConf("latex_path"),$this->getConf("dvips_path"),
@@ -180,14 +179,17 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			$parts = explode(' ',$path);
 			$cmd = $parts[0]." --version 2>&1";
 			echo htmlspecialchars($cmd);
-			ptln('<pre></td><td><pre>');
-			echo htmlspecialchars(trim(shell_exec($cmd)));
+			ptln('</pre></td><td><pre>');
+			exec($cmd,$execout);
+			echo htmlspecialchars(implode('\n',$execout));
 			ptln('</pre></td></tr>');
 		}
 		ptln('</table>');
-
 		ptln('</div>');
 
+		ptln('<h3>Versions</h3>');
+		ptln('<div class="level3">');
+		ptln('</div>');
 		
 //		$latex = new syntax_plugin_latex_common();
 		ptln('<div class="level2');
