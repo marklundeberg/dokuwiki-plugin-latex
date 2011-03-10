@@ -42,7 +42,7 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 		if ( !is_dir($conf['mediadir'] . '/latex') ) {
 		  mkdir($conf['mediadir'] . '/latex', 0777-$conf['dmask']);
 		}
-		$latex = new LatexRender($conf['mediadir'] . '/latex/',
+		$latex = new LatexRender($conf['mediadir'] . '/latex',
 						DOKU_BASE.'lib/exe/fetch.php?media=latex:',
 						$this->getConf("tmp_dir"));
 		$latex->_latex_path = $this->getConf("latex_path");

@@ -173,7 +173,13 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 		ptln('<form action="'.wl($INFO['id']).'" method="get">');
 		ptln('  <input type="hidden" name="do"   value="admin" />');
 		ptln('  <input type="hidden" name="page" value="'.$this->getPluginName().'" />');
-		echo 'Push this button to diagnose your LaTeX/ImageMagick installation: <input type="submit" class="button" name="dotest"  value="Test" />';
+		ptln('Push this button to diagnose your LaTeX/ImageMagick installation: <input type="submit" class="button" name="dotest"  value="Test" />');
+		if(isset($_REQUEST['testformula']))
+			$testformula = $_REQUEST['testformula'];
+		else
+			$testformula = '$${\it f}({\rm DokuWiki}) = \overbrace{[a+b=c]}^\textrm{\LaTeX}$$';
+		ptln('<br />');
+		ptln('  <input type="text" name="testformula" size="'.strlen($testformula).'" value="'.htmlspecialchars($testformula).'" />');
 		ptln('</form>');
 		ptln('</div>');
 		if($_REQUEST['dotest']) {
@@ -216,8 +222,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 				ptln('<div class="error">Temporary directory not writable or nonexistant! '.$plug->_latex->_tmp_dir.'
 						<br />Recommendation: Choose a new temporary directory.</div>');
 
-			// simulate a call to the syntax plugin; force render, keep temp files.				
-			$testformula = '$${\it f}({\rm DokuWiki}) = \overbrace{[\LaTeX]}$$';
+			// simulate a call to the syntax plugin; force render, keep temp files.
 			$md5 = md5($testformula);
 			$outname = $plug->_latex->getPicturePath()."/img".$md5.'.'.$plug->_latex->_image_format;
 			if(file_exists($outname)) {
@@ -226,7 +231,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 				else
 					ptln('<div class="error">Could not remove cached file for test! '.$outname.'</div>');
 			}
-			ptln('<div class="info">Attempting to render: <tt>'.$testformula.'</tt> => '.$outname.'</div>');
+			ptln('<div class="info">Attempting to render: <tt>'.htmlspecialchars($testformula).'</tt><br /> => '.$outname.'</div>');
 			$plug->_latex->_keep_tmp = true;
 			$plug->_latex->_cmdoutput = ''; // activate command log.
 			$data = array($testformula,DOKU_LEXER_UNMATCHED,'class'=>"latex_inline", 'title'=>"Math", NULL);
@@ -242,7 +247,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 					ptln('<div class="error">File missing! '.$fname.'</div>');
 			}
 			if(! $this->getConf("keep_tmp"))
-				ptln('<div class="alert">These files '.$tmpf.'.* will be deleted at the end of this script
+				ptln('<div class="info">These files '.$tmpf.'.* will be deleted at the end of this script
 									(change keep_tmp in Config Manager to disable this).</div>');
 			if(is_file($outname))
 				ptln('<div class="success">Successfully moved to media: '.$outname.'</div>');
