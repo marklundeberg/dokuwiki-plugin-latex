@@ -217,12 +217,14 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 						<br />Recommendation: Choose a new temporary directory.</div>');
 
 			// simulate a call to the syntax plugin; force render, keep temp files.				
-			$testformula = '$a+b=c$';
+			$testformula = '$${\it f}({\rm DokuWiki}) = \overbrace{[\LaTeX]}$$';
 			$md5 = md5($testformula);
 			$outname = $plug->_latex->getPicturePath()."/img".$md5.'.'.$plug->_latex->_image_format;
 			if(file_exists($outname)) {
-				unlink($outname);
-				ptln('<div class="info">Removed cache file for test: '.$outname.'</div>');
+				if(unlink($outname))
+					ptln('<div class="info">Removed cache file for test: '.$outname.'</div>');
+				else
+					ptln('<div class="error">Could not remove cached file for test! '.$outname.'</div>');
 			}
 			ptln('<div class="info">Attempting to render: <tt>'.$testformula.'</tt> => '.$outname.'</div>');
 			$plug->_latex->_keep_tmp = true;
@@ -240,7 +242,13 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 					ptln('<div class="error">File missing! '.$fname.'</div>');
 			}
 			if(! $this->getConf("keep_tmp"))
-				ptln('<div class="info">These files '.$tmpf.'/* will be deleted at the end of this script.</div>');
+				ptln('<div class="alert">These files '.$tmpf.'.* will be deleted at the end of this script
+									(change keep_tmp in Config Manager to disable this).</div>');
+			if(is_file($outname))
+				ptln('<div class="success">Successfully moved to media: '.$outname.'</div>');
+			else
+				ptln('<div class="error">File missing from media! '.$outname.'</div>');
+				
 			ptln('<div class="level3">');
 			ptln('<table class="inline"><tr><th>Input LaTeX file</th><th>Final result</th></tr>');
 			ptln('<tr><td><pre>');
