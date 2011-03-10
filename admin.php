@@ -143,13 +143,14 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	 * output appropriate html
 	 */
 	function html() {
-		ptln('<h1>LaTeX plugin tasks</h1>');
-		ptln('<h2>Cache control</h2>');
 		ptln('<p>'.$this->output.'</p>');
+		ptln('<h1>LaTeX plugin tasks</h1>');
+		ptln('<h2>'.$this->getLang('legend_purge').'</h2>');
+		ptln('<div class="level2">');
 
 		////////////// PURGE FORM
 		ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="post">');
-		ptln('<fieldset style="float:left;"><legend>'.$this->getLang('legend_purge').'</legend><table class="inline"><tr>');
+		ptln('<table class="inline"><tr>');
 		ptln('<td rowspan="2"><input type="submit" class="button" name="latexpurge"  value="'.$this->getLang('btn_purge').'" /></td>');
 		ptln('<TD>');
 		$labtimes = $this->getLang('label_times');
@@ -160,26 +161,36 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 		echo $this->getLang('label_days');
 		ptln('</TD><TR><TD>');
 		echo '<LABEL><INPUT type="radio" name="purgemode" value="all"/>'.$this->getLang('label_all').'</LABEL>';
-		ptln('</TD></TR></TABLE></fieldset');
+		ptln('</TD></TR></TABLE>');
 		ptln('</form>');
 		
+		ptln('</div>');
+
 		/////////////// DIAGNOSER
 		ptln('<h2>Troubleshooter</h2>');
 		ptln('<h3>Versions</h3>');
-		ptln('<table>');
+
+		ptln('<div class="level3">');
+		
+		ptln('<table class="inline">');
+		ptln('<tr><th>command</th><th>output</th></tr>');
 		foreach(array($this->getConf("latex_path"),$this->getConf("dvips_path"),
 				$this->getConf("convert_path"),$this->getConf("identify_path")) as $path) {
-			ptln('<tr><td>');
+			ptln('<tr><td><pre>');
 			$parts = explode(' ',$path);
 			$cmd = $parts[0]." --version 2>&1";
 			echo htmlspecialchars($cmd);
-			ptln('</td><td><pre>');
+			ptln('<pre></td><td><pre>');
 			echo htmlspecialchars(trim(shell_exec($cmd)));
 			ptln('</pre></td></tr>');
 		}
 		ptln('</table>');
+
+		ptln('</div>');
+
 		
 //		$latex = new syntax_plugin_latex_common();
+		ptln('<div class="level2');
 		
 	}
 }
