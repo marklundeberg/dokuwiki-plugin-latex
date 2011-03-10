@@ -181,9 +181,13 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 				$parts = explode(' ',$path);
 				$cmd = $parts[0]." --version 2>&1";
 				echo htmlspecialchars($cmd);
-				ptln('</pre></td><td><pre>');
+				ptln('</pre></td><td>');
 				unset($execout);
-				exec($cmd,$execout);
+				exec($cmd,$execout,$statuscode);
+				if($statuscode == 0)
+					echo '<pre>';
+				else
+					echo '<pre style="background-color:#80FF80;">'; //pink for error status
 				echo htmlspecialchars(implode(PHP_EOL,$execout));
 				ptln('</pre></td></tr>');
 			}
@@ -225,8 +229,9 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 				if(is_file($fname))
 					ptln('<div class="success">File created: '.$fname.'</div>');
 				else
-					ptln('<div class="success">File missing! '.$fname.'</div>');
+					ptln('<div class="error">File missing! '.$fname.'</div>');
 			}
+			ptln('<div class="info">These files '.$tmpf.'/* will be deleted at the end of this script.</div>');
 			ptln('<div class="level3">');
 			ptln('<table class="inline"><tr><th>Input LaTeX file</th><th>Final result</th></tr>');
 			ptln('<tr><td><pre>');
@@ -242,17 +247,18 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			ptln('</center></td></tr>');
 			ptln('</table>');
 			
+			ptln('Command log '.$tmpf.'.cmd (does not include <tt>identify</tt> output):');
+			echo '<pre>';
+			echo htmlspecialchars(file_get_contents($tmpf.'.cmd'));
+			echo '</pre>';
+			
 			ptln('Contents of '.$tmpf.'.log:');
 			echo '<pre>';
 			echo htmlspecialchars(file_get_contents($tmpf.'.log'));
 			echo '</pre>';
 			
-			ptln('Contents of '.$tmpf.'.cmd:');
-			echo '<pre>';
-			echo htmlspecialchars(file_get_contents($tmpf.'.cmd'));
-			echo '</pre>';
+			$plug->_latex->cleanTemporaryDirectory();
 			ptln('</div>');
-	//		$plug->_latex->cleanTemporaryDirectory();
 		}
 	}
 }

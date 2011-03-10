@@ -220,13 +220,14 @@ class LatexRender {
 		
 	   $this->_tmp_filename = md5(rand().$destination);
 
+		 $this->_cmdout = " >> ".$this->_tmp_filename.".cmd 2>&1";
 	   // create temporary latex file
 	   $fp = fopen($this->_tmp_dir."/".$this->_tmp_filename.".tex","w");
 	   fputs($fp,$latex_document);
 	   fclose($fp);
 
 	   // create temporary dvi file
-	   $command = $this->_latex_path." ".$this->_tmp_filename.".tex";
+	   $command = $this->_latex_path." ".$this->_tmp_filename.".tex".$this->_cmdout;
 	   $status_code = exec($command);
 
 	   if (!$status_code)
@@ -239,12 +240,12 @@ class LatexRender {
 		}
 
 	   // convert dvi file to postscript using dvips
-	   $command = $this->_dvips_path." ".$this->_tmp_filename.".dvi"." -o ".$this->_tmp_filename.".ps";
+	   $command = $this->_dvips_path." ".$this->_tmp_filename.".dvi"." -o ".$this->_tmp_filename.".ps".$this->_cmdout;
 	   $status_code = exec($command);
 
 	   // imagemagick convert ps to image and trim picture
 	   $command = $this->_convert_path." ".$this->_tmp_filename.".ps ".
-				$this->_tmp_filename.".".$this->_image_format;
+				$this->_tmp_filename.".".$this->_image_format.$this->_cmdout;
 
 	   $status_code = exec($command);
 
