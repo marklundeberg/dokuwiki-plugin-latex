@@ -195,7 +195,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			
 			$testformula = '$a+b=c$';
 			$md5 = md5($testformula);
-			$outname = $plug->_latex->getPicturePath()."/".$md5.$plug->_latex->_image_format;
+			$outname = $plug->_latex->getPicturePath()."/img".$md5.'.'.$plug->_latex->_image_format;
 			if(file_exists($outname)) {
 				unlink($outname);
 				ptln('<div class="info">Removed cache file for test: '.$outname.'</div>');

@@ -141,7 +141,7 @@ class LatexRender {
 
 	   $formula_hash = md5($latex_formula);
 
-	   $filename = "img".$formula_hash.".".$this->_image_format;
+	   $filename = "img".$formula_hash.'.'.$this->_image_format;
 	   $full_path_filename = $this->getPicturePath()."/".$filename;
 		 $this->_filename = $full_path_filename;
 		
