@@ -170,7 +170,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 		/////////////// DIAGNOSER
 		ptln('<h2>LaTeX troubleshooter</h2>');
 		ptln('<div class="level2">');
-		ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="get">');
+		ptln('<form action="'.wl($INFO['id']).'?do=admin&page='.$this->getPluginName().'" method="get">');
 		echo 'Push this button to diagnose your LaTeX/ImageMagick installation: <input type="submit" class="button" name="dotest"  value="Test" />';
 		ptln('</form>');
 		ptln('</div>');
