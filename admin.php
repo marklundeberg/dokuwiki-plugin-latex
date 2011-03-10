@@ -143,24 +143,42 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	 * output appropriate html
 	 */
 	function html() {
-	  ptln('<h1>LaTeX plugin tasks</h1>');
-	  ptln('<p>'.$this->output.'</p>');
-	  
-	  ////////////// PURGE FORM
-	  ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="post">');
-	  ptln('<fieldset style="float:left;"><legend>'.$this->getLang('legend_purge').'</legend><table class="inline"><tr>');
-	  ptln('<td rowspan="2"><input type="submit" class="button" name="latexpurge"  value="'.$this->getLang('btn_purge').'" /></td>');
-	  ptln('<TD>');
-	  $labtimes = $this->getLang('label_times');
-	  ptln('(<LABEL><INPUT type="radio" name="purgemode" value="atime" checked/>'.$labtimes['atime'].'</LABEL>');
-	  ptln(' | <LABEL><INPUT type="radio" name="purgemode" value="mtime"/>'.$labtimes['mtime'].'</LABEL>)');
-	  echo $this->getLang('label_olderthan');
-	  echo '<input type="text" name="purgedays" size="3" value="30">';
-	  echo $this->getLang('label_days');
-	  ptln('</TD><TR><TD>');
-	  echo '<LABEL><INPUT type="radio" name="purgemode" value="all"/>'.$this->getLang('label_all').'</LABEL>';
-	  ptln('</TD></TR></TABLE></fieldset');
-	  ptln('</form>');
-	}
+		ptln('<h1>LaTeX plugin tasks</h1>');
+		ptln('<h2>Cache control</h2>');
+		ptln('<p>'.$this->output.'</p>');
 
+		////////////// PURGE FORM
+		ptln('<form action="'.wl($ID).'?do=admin&page='.$this->getPluginName().'" method="post">');
+		ptln('<fieldset style="float:left;"><legend>'.$this->getLang('legend_purge').'</legend><table class="inline"><tr>');
+		ptln('<td rowspan="2"><input type="submit" class="button" name="latexpurge"  value="'.$this->getLang('btn_purge').'" /></td>');
+		ptln('<TD>');
+		$labtimes = $this->getLang('label_times');
+		ptln('(<LABEL><INPUT type="radio" name="purgemode" value="atime" checked/>'.$labtimes['atime'].'</LABEL>');
+		ptln(' | <LABEL><INPUT type="radio" name="purgemode" value="mtime"/>'.$labtimes['mtime'].'</LABEL>)');
+		echo $this->getLang('label_olderthan');
+		echo '<input type="text" name="purgedays" size="3" value="30">';
+		echo $this->getLang('label_days');
+		ptln('</TD><TR><TD>');
+		echo '<LABEL><INPUT type="radio" name="purgemode" value="all"/>'.$this->getLang('label_all').'</LABEL>';
+		ptln('</TD></TR></TABLE></fieldset');
+		ptln('</form>');
+		
+		/////////////// DIAGNOSER
+		ptln('<h2>Troubleshooter</h2>');
+		ptln('<h3>Versions</h3>');
+		ptln('<table>');
+		foreach(array($this->getConf("latex_path"),$this->getConf("dvips_path"),
+				$this->getConf("convert_path"),$this->getConf("identify_path")) as $path) {
+			ptln('<tr><td>');
+			$cmd = explode(' ',$path)[0]." --version 2>&1";
+			echo htmlspecialchars($cmd);
+			ptln('</td><td><pre>');
+			echo trim(shell_exec($cmd));
+			ptln('</pre></td></tr>');
+		}
+		ptln('</table>');
+		
+		$latex = new syntax_plugin_latex_common();
+		
+	}
 }
