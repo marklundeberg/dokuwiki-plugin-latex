@@ -3,7 +3,7 @@
 $lang['encoding']   = 'utf-8';
 $lang['direction']  = 'ltr';
 
-$lang['menu'] = 'LaTeX plugin tasks (remove image cache)'; 
+$lang['menu'] = 'LaTeX plugin tasks (clean image cache, diagnose problems)'; 
 
 $lang['legend_purge'] = "Purge cached LaTeX render files";
 $lang['label_times'] = array('mtime'=>'modification time', 'atime'=>'access time');
