@@ -232,7 +232,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 				else
 					ptln('<div class="error">File missing! '.$fname.'</div>');
 			}
-			if($this->getConf("keep_tmp"))
+			if(! $this->getConf("keep_tmp"))
 				ptln('<div class="info">These files '.$tmpf.'/* will be deleted at the end of this script.</div>');
 			ptln('<div class="level3">');
 			ptln('<table class="inline"><tr><th>Input LaTeX file</th><th>Final result</th></tr>');
@@ -259,7 +259,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			echo htmlspecialchars(file_get_contents($tmpf.'.log'));
 			echo '</pre>';
 			
-			if($this->getConf("keep_tmp"))
+			if(! $this->getConf("keep_tmp"))
 				$plug->_latex->cleanTemporaryDirectory();
 			ptln('</div>');
 		}
