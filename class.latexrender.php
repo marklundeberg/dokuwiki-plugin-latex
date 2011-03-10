@@ -48,22 +48,22 @@ class LatexRender {
     var $_image_format = "png"; //change to png if you prefer
 	////////////////////////////////////
 
-	var $_font_size = 10;
-	var $_latexclass = "article"; //install extarticle class if you wish to have smaller font sizes
+		var $_font_size = 10;
+		var $_latexclass = "article"; //install extarticle class if you wish to have smaller font sizes
     var $_tmp_filename;
     // this most certainly needs to be extended. in the long term it is planned to use
     // a positive list for more security. this is hopefully enough for now. i'd be glad
     // to receive more bad tags !
     var $_latex_tags_blacklist = array(
-        "include","def","command","loop","repeat","open","toks","output","input",
-        "catcode","name","^^",
-        "\\every","\\errhelp","\\errorstopmode","\\scrollmode","\\nonstopmode","\\batchmode",
-        "\\read","\\write","csname","\\newhelp","\\uppercase", "\\lowercase","\\relax","\\aftergroup",
-        "\\afterassignment","\\expandafter","\\noexpand","\\special"
-        );
+	   "include","def","command","loop","repeat","open","toks","output","input",
+	   "catcode","name","^^",
+	   "\\every","\\errhelp","\\errorstopmode","\\scrollmode","\\nonstopmode","\\batchmode",
+	   "\\read","\\write","csname","\\newhelp","\\uppercase", "\\lowercase","\\relax","\\aftergroup",
+	   "\\afterassignment","\\expandafter","\\noexpand","\\special"
+	    );
     var $_errorcode = 0;
-	var $_errorextra = "";
-	var $_filename;
+		var $_errorextra = "";
+		var $_filename;
 
 
     // ====================================================================================
@@ -71,15 +71,15 @@ class LatexRender {
     // ====================================================================================
 
     /**
-     * Initializes the class
-     *
-     * @param string path where the rendered pictures should be stored
-     * @param string same path, but from the httpd chroot
-     */
+	* Initializes the class
+	*
+	* @param string path where the rendered pictures should be stored
+	* @param string same path, but from the httpd chroot
+	*/
     function LatexRender($picture_path,$picture_path_httpd,$tmp_dir) {
-        $this->_picture_path = $picture_path;
-        $this->_picture_path_httpd = $picture_path_httpd;
-        $this->_tmp_dir = $tmp_dir;
+	   $this->_picture_path = $picture_path;
+	   $this->_picture_path_httpd = $picture_path_httpd;
+	   $this->_tmp_dir = $tmp_dir;
     }
 
     // ====================================================================================
@@ -87,91 +87,91 @@ class LatexRender {
     // ====================================================================================
 
     /**
-     * Picture path Mutator function
-     *
-     * @param string sets the current picture path to a new location
-     */
+	* Picture path Mutator function
+	*
+	* @param string sets the current picture path to a new location
+	*/
     function setPicturePath($name) {
-        $this->_picture_path = $name;
+	   $this->_picture_path = $name;
     }
 
     /**
-     * Picture path Mutator function
-     *
-     * @returns the current picture path
-     */
+	* Picture path Mutator function
+	*
+	* @returns the current picture path
+	*/
     function getPicturePath() {
-        return $this->_picture_path;
+	   return $this->_picture_path;
     }
 
     /**
-     * Picture path HTTPD Mutator function
-     *
-     * @param string sets the current httpd picture path to a new location
-     */
+	* Picture path HTTPD Mutator function
+	*
+	* @param string sets the current httpd picture path to a new location
+	*/
     function setPicturePathHTTPD($name) {
-        $this->_picture_path_httpd = $name;
+	   $this->_picture_path_httpd = $name;
     }
 
     /**
-     * Picture path HTTPD Mutator function
-     *
-     * @returns the current picture path
-     */
+	* Picture path HTTPD Mutator function
+	*
+	* @returns the current picture path
+	*/
     function getPicturePathHTTPD() {
-        return $this->_picture_path_httpd;
+	   return $this->_picture_path_httpd;
     }
 
     /**
-     * Tries to match the LaTeX Formula given as argument against the
-     * formula cache. If the picture has not been rendered before, it'll
-     * try to render the formula and drop it in the picture cache directory.
-     *
-     * @param string formula in LaTeX format
-     * @returns the webserver based URL to a picture which contains the
-     * requested LaTeX formula. If anything fails, the resultvalue is false.
-     */
+	* Tries to match the LaTeX Formula given as argument against the
+	* formula cache. If the picture has not been rendered before, it'll
+	* try to render the formula and drop it in the picture cache directory.
+	*
+	* @param string formula in LaTeX format
+	* @returns the webserver based URL to a picture which contains the
+	* requested LaTeX formula. If anything fails, the resultvalue is false.
+	*/
     function getFormulaURL($latex_formula) {
-        // circumvent certain security functions of web-software which
-        // is pretty pointless right here
-        $latex_formula = preg_replace("/&gt;/i", ">", $latex_formula);
-        $latex_formula = preg_replace("/&lt;/i", "<", $latex_formula);
+	   // circumvent certain security functions of web-software which
+	   // is pretty pointless right here
+	   $latex_formula = preg_replace("/&gt;/i", ">", $latex_formula);
+	   $latex_formula = preg_replace("/&lt;/i", "<", $latex_formula);
 		
-		$latex_document = $this->_preamble."\n".trim($latex_formula)."\n".$this->_postamble;
+		 $this->latex_document = $this->_preamble."\n".trim($latex_formula)."\n".$this->_postamble;
 
-        $formula_hash = md5($latex_formula);
+	   $formula_hash = md5($latex_formula);
 
-        $filename = "img".$formula_hash.".".$this->_image_format;
-        $full_path_filename = $this->getPicturePath()."/".$filename;
-		$this->_filename = $full_path_filename;
+	   $filename = "img".$formula_hash.".".$this->_image_format;
+	   $full_path_filename = $this->getPicturePath()."/".$filename;
+		 $this->_filename = $full_path_filename;
 		
-        if (is_readable($full_path_filename)) {
-            return $this->getPicturePathHTTPD()."/".$filename;
-        } else {
-            // security filter: reject too-long formulas
-            if (strlen($latex_formula) > $this->_string_length_limit) {
-            	$this->_errorcode = 1;
+	   if (is_readable($full_path_filename)) {
+		  return $this->getPicturePathHTTPD()."/".$filename;
+	   } else {
+		  // security filter: reject too-long formulas
+		  if (strlen($latex_formula) > $this->_string_length_limit) {
+		  	$this->_errorcode = 1;
 							$this->_errorextra = ': '.strlen($latex_formula);
-              return false;
-            }
+		    return false;
+		  }
 
-            // security filter: try to match against LaTeX-Tags Blacklist
-            for ($i=0;$i<sizeof($this->_latex_tags_blacklist);$i++) {
-                if (stristr($latex_formula,$this->_latex_tags_blacklist[$i])) {
-                	$this->_errorcode = 2;
-                  return false;
-                }
-            }
+		  // security filter: try to match against LaTeX-Tags Blacklist
+		  for ($i=0;$i<sizeof($this->_latex_tags_blacklist);$i++) {
+			 if (stristr($latex_formula,$this->_latex_tags_blacklist[$i])) {
+			 	$this->_errorcode = 2;
+			   return false;
+			 }
+		  }
 
-            // security checks assume correct formula, let's render it
-            if ($this->renderLatex($latex_document,$full_path_filename)) {
-                return $this->getPicturePathHTTPD().$filename;
-            } else {
-                // uncomment if required
-                // $this->_errorcode = 3;
-                return false;
-            }
-        }
+		  // security checks assume correct formula, let's render it
+		  if ($this->renderLatex($this->latex_document,$full_path_filename)) {
+			 return $this->getPicturePathHTTPD().$filename;
+		  } else {
+			 // uncomment if required
+			 // $this->_errorcode = 3;
+			 return false;
+		  }
+	   }
     }
 
     // ====================================================================================
@@ -179,57 +179,57 @@ class LatexRender {
     // ====================================================================================
 
     /**
-     * returns the dimensions of a picture file using 'identify' of the
-     * imagemagick tools. The resulting array can be adressed with either
-     * $dim[0] / $dim[1] or $dim["x"] / $dim["y"]
-     *
-     * @param string path to a picture
-     * @returns array containing the picture dimensions
-     */
+	* returns the dimensions of a picture file using 'identify' of the
+	* imagemagick tools. The resulting array can be adressed with either
+	* $dim[0] / $dim[1] or $dim["x"] / $dim["y"]
+	*
+	* @param string path to a picture
+	* @returns array containing the picture dimensions
+	*/
     function getDimensions($filename) {
-        $output=exec($this->_identify_path." ".$filename);
-        $result=explode(" ",$output);
-        $dim=explode("x",$result[2]);
-        $dim["x"] = $dim[0];
-        $dim["y"] = $dim[1];
+	   $output=exec($this->_identify_path." ".$filename);
+	   $result=explode(" ",$output);
+	   $dim=explode("x",$result[2]);
+	   $dim["x"] = $dim[0];
+	   $dim["y"] = $dim[1];
 
-        return $dim;
+	   return $dim;
     }
 
     /**
-     * Renders a LaTeX formula by the using the following method:
-     *  - write the formula into a wrapped tex-file in a temporary directory
-     *    and change to it
-     *  - Create a DVI file using latex (tetex)
-     *  - Convert DVI file to Postscript (PS) using dvips (tetex)
-     *  - convert, trim and add transparancy by using 'convert' from the
-     *    imagemagick package.
-     *  - Save the resulting image to the picture cache directory using an
-     *    md5 hash as filename. Already rendered formulas can be found directly
-     *    this way.
-     *
-     * @param string LaTeX formula
-     * @returns true if the picture has been successfully saved to the picture
-     *          cache directory
-     */
+	* Renders a LaTeX formula by the using the following method:
+	*  - write the formula into a wrapped tex-file in a temporary directory
+	*    and change to it
+	*  - Create a DVI file using latex (tetex)
+	*  - Convert DVI file to Postscript (PS) using dvips (tetex)
+	*  - convert, trim and add transparancy by using 'convert' from the
+	*    imagemagick package.
+	*  - Save the resulting image to the picture cache directory using an
+	*    md5 hash as filename. Already rendered formulas can be found directly
+	*    this way.
+	*
+	* @param string LaTeX formula
+	* @returns true if the picture has been successfully saved to the picture
+	*		cache directory
+	*/
     function renderLatex($latex_document,$destination) {
 
-        $current_dir = getcwd();
+	   $current_dir = getcwd();
 
-        chdir($this->_tmp_dir);
+	   chdir($this->_tmp_dir);
 		
-        $this->_tmp_filename = md5(rand().$destination);
+	   $this->_tmp_filename = md5(rand().$destination);
 
-        // create temporary latex file
-        $fp = fopen($this->_tmp_dir."/".$this->_tmp_filename.".tex","w");
-        fputs($fp,$latex_document);
-        fclose($fp);
+	   // create temporary latex file
+	   $fp = fopen($this->_tmp_dir."/".$this->_tmp_filename.".tex","w");
+	   fputs($fp,$latex_document);
+	   fclose($fp);
 
-        // create temporary dvi file
-        $command = $this->_latex_path." ".$this->_tmp_filename.".tex";
-        $status_code = exec($command);
+	   // create temporary dvi file
+	   $command = $this->_latex_path." ".$this->_tmp_filename.".tex";
+	   $status_code = exec($command);
 
-        if (!$status_code)
+	   if (!$status_code)
 		{
 			if( ! $this->_keep_tmp)
 				$this->cleanTemporaryDirectory();
@@ -238,56 +238,56 @@ class LatexRender {
 			return false;
 		}
 
-        // convert dvi file to postscript using dvips
-        $command = $this->_dvips_path." ".$this->_tmp_filename.".dvi"." -o ".$this->_tmp_filename.".ps";
-        $status_code = exec($command);
+	   // convert dvi file to postscript using dvips
+	   $command = $this->_dvips_path." ".$this->_tmp_filename.".dvi"." -o ".$this->_tmp_filename.".ps";
+	   $status_code = exec($command);
 
-        // imagemagick convert ps to image and trim picture
-        $command = $this->_convert_path." ".$this->_tmp_filename.".ps ".
-                    $this->_tmp_filename.".".$this->_image_format;
+	   // imagemagick convert ps to image and trim picture
+	   $command = $this->_convert_path." ".$this->_tmp_filename.".ps ".
+				$this->_tmp_filename.".".$this->_image_format;
 
-        $status_code = exec($command);
+	   $status_code = exec($command);
 
-        // test picture for correct dimensions
-        $dim = $this->getDimensions($this->_tmp_filename.".".$this->_image_format);
+	   // test picture for correct dimensions
+	   $dim = $this->getDimensions($this->_tmp_filename.".".$this->_image_format);
 
-        if ( ($dim["x"] > $this->_xsize_limit) or ($dim["y"] > $this->_ysize_limit)) {
-            if( ! $this->_keep_tmp)
+	   if ( ($dim["x"] > $this->_xsize_limit) or ($dim["y"] > $this->_ysize_limit)) {
+		  if( ! $this->_keep_tmp)
 				$this->cleanTemporaryDirectory();
-            chdir($current_dir);
-            $this->_errorcode = 5; // image too big.
-            $this->_errorextra = ": " . $dim["x"] . "x" . $dim["y"];
-            return false;
-        }
+		  chdir($current_dir);
+		  $this->_errorcode = 5; // image too big.
+		  $this->_errorextra = ": " . $dim["x"] . "x" . $dim["y"];
+		  return false;
+	   }
 
-        // copy temporary formula file to cahed formula directory
-        $status_code = copy($this->_tmp_filename.".".$this->_image_format,$destination);
+	   // copy temporary formula file to cahed formula directory
+	   $status_code = copy($this->_tmp_filename.".".$this->_image_format,$destination);
 
-        if( ! $this->_keep_tmp)
-			$this->cleanTemporaryDirectory();
+	   if( ! $this->_keep_tmp)
+					$this->cleanTemporaryDirectory();
 		
-        chdir($current_dir);
+	   chdir($current_dir);
 
-        if (!$status_code) { $this->_errorcode = 6; return false; }
+	   if (!$status_code) { $this->_errorcode = 6; return false; }
 
-        return true;
+	   return true;
     }
 
-    /**
-     * Cleans the temporary directory
-     */
+   /**
+		* Cleans the temporary directory
+		*/
     function cleanTemporaryDirectory() {
-//        $current_dir = getcwd();
-//        chdir($this->_tmp_dir);
+//	   $current_dir = getcwd();
+//	   chdir($this->_tmp_dir);
 
-        unlink($this->_tmp_dir."/".$this->_tmp_filename.".tex");
-        unlink($this->_tmp_dir."/".$this->_tmp_filename.".aux");
-        unlink($this->_tmp_dir."/".$this->_tmp_filename.".log");
-        unlink($this->_tmp_dir."/".$this->_tmp_filename.".dvi");
-        unlink($this->_tmp_dir."/".$this->_tmp_filename.".ps");
-        unlink($this->_tmp_dir."/".$this->_tmp_filename.".".$this->_image_format);
+			unlink($this->_tmp_dir."/".$this->_tmp_filename.".tex");
+			unlink($this->_tmp_dir."/".$this->_tmp_filename.".aux");
+			unlink($this->_tmp_dir."/".$this->_tmp_filename.".log");
+			unlink($this->_tmp_dir."/".$this->_tmp_filename.".dvi");
+			unlink($this->_tmp_dir."/".$this->_tmp_filename.".ps");
+			unlink($this->_tmp_dir."/".$this->_tmp_filename.".".$this->_image_format);
 
-//        chdir($current_dir);
+//	   chdir($current_dir);
     }
 
 }

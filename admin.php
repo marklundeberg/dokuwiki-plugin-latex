@@ -168,31 +168,53 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 
 		/////////////// DIAGNOSER
 		ptln('<h2>Troubleshooter</h2>');
-		
-		ptln('<h3>Versions</h3>');
-		ptln('<div class="level3">');
-		ptln('<table class="inline">');
-		ptln('<tr><th>command</th><th>output</th></tr>');
-		foreach(array($this->getConf("latex_path"),$this->getConf("dvips_path"),
-				$this->getConf("convert_path"),$this->getConf("identify_path")) as $path) {
+		$troubleshoot = 1;
+		if($troubleshoot) {
+			ptln('<h3>Versions</h3>');
+			ptln('<div class="level3">');
+			ptln('<table class="inline">');
+			ptln('<tr><th>command</th><th>output</th></tr>');
+			foreach(array($this->getConf("latex_path"),$this->getConf("dvips_path"),
+					$this->getConf("convert_path"),$this->getConf("identify_path")) as $path) {
+				ptln('<tr><td><pre>');
+				$parts = explode(' ',$path);
+				$cmd = $parts[0]." --version 2>&1";
+				echo htmlspecialchars($cmd);
+				ptln('</pre></td><td><pre>');
+				unset($execout);
+				exec($cmd,$execout);
+				echo htmlspecialchars(implode(PHP_EOL,$execout));
+				ptln('</pre></td></tr>');
+			}
+			ptln('</table>');
+			ptln('</div>');
+			
+			ptln('<h3>Output logs</h3>');
+			ptln('<div class="level3">');
+			$plug = new syntax_plugin_latex_common();
+			
+			$testformula = "$a+b=c$";
+			$md5 = md5($testformula);
+			$outname = $plug->_latex->getPicturePath()."/".$md5.$plug->_latex->_image_format;
+			if(file_exists($outname)) {
+				unlink($outname);
+				ptln('<div class="info">Removed cache file for test: '.$outname.'</div>');
+			}
+			// simulate a call to the syntax plugin; keep temp files.
+			$plug->_latex->_keep_tmp = true;
+			$data = array(formula,DOKU_LEXER_UNMATCHED,'class'=>"latex_inline", 'title'=>"Math", NULL);
+			$tmpf = $plug->_latex->_tmp_dir."/".$plug->_latex->_tmp_filename;
+			$this->doc = '';
+			$plug->render('xhtml', $this, $data);
+			ptln('<table class="inline"><tr><th>Input LaTeX file</th><th>Final result</th></tr>');
 			ptln('<tr><td><pre>');
-			$parts = explode(' ',$path);
-			$cmd = $parts[0]." --version 2>&1";
-			echo htmlspecialchars($cmd);
-			ptln('</pre></td><td><pre>');
-			exec($cmd,$execout);
-			echo htmlspecialchars(implode('\n',$execout));
+			echo htmlspecialchars(file_get_contents($tmpf.'.tex'));
+			ptln('</pre></td><td>');
+			ptln(htmlspecialchars($this->doc));
+			ptln($this->doc);
 			ptln('</pre></td></tr>');
+			ptln('</table>');
+			ptln('</div>');
 		}
-		ptln('</table>');
-		ptln('</div>');
-
-		ptln('<h3>Versions</h3>');
-		ptln('<div class="level3">');
-		ptln('</div>');
-		
-//		$latex = new syntax_plugin_latex_common();
-		ptln('<div class="level2');
-		
 	}
 }
