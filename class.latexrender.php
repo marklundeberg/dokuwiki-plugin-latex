@@ -230,8 +230,8 @@ class LatexRender {
 	   $command = $this->_latex_path." ".$this->_tmp_filename.".tex";
 	   $this->myexec($command,$status_latex);
 
-		// LaTeXing only fails
-	   if (!file_exists($this->_latex_path." ".$this->_tmp_filename.".dvi"))
+		// LaTeXing only fails if DVI doesn't exist. - let's ignore some minor errors.
+	  if (!file_exists($this->_tmp_filename.".dvi"))
 		{
 			if( ! $this->_keep_tmp)
 				$this->cleanTemporaryDirectory();
