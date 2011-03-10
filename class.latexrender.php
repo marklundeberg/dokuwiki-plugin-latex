@@ -285,7 +285,7 @@ class LatexRender {
 			$cmd = "$cmd 2>&1";
 			$lastline = exec($cmd,$output);
 			if(isset($this->_cmdoutput))
-				$this->_cmdoutput .= "\n>>>>> $cmd\n".implode(PHP_EOL,$output).PHP_EOL;
+				$this->_cmdoutput .= "\n>>>>> $cmd\n".trim(implode(PHP_EOL,$output)).PHP_EOL;
 			return $lastline;
 		}
 
