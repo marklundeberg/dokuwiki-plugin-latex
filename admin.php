@@ -193,12 +193,14 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			ptln('<div class="level3">');
 			$plug = new syntax_plugin_latex_common();
 			
-			$testformula = "$a+b=c$";
+			$testformula = '$a+b=c$';
 			$md5 = md5($testformula);
 			$outname = $plug->_latex->getPicturePath()."/".$md5.$plug->_latex->_image_format;
 			if(file_exists($outname)) {
 				unlink($outname);
 				ptln('<div class="info">Removed cache file for test: '.$outname.'</div>');
+			} else {
+				ptln('<div class="info">Attempting to create: '.$outname.'</div>');
 			}
 			// simulate a call to the syntax plugin; keep temp files.
 			$plug->_latex->_keep_tmp = true;

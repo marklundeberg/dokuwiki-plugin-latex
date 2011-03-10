@@ -264,7 +264,7 @@ class LatexRender {
 	   $status_code = copy($this->_tmp_filename.".".$this->_image_format,$destination);
 
 	   if( ! $this->_keep_tmp)
-					$this->cleanTemporaryDirectory();
+				$this->cleanTemporaryDirectory();
 		
 	   chdir($current_dir);
 
