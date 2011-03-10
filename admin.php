@@ -211,11 +211,12 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			echo htmlspecialchars(file_get_contents($tmpf.'.tex'));
 			ptln('</pre></td><td>');
 			ptln(htmlspecialchars($this->doc));
+			ptln('<br/>');
 			ptln($this->doc);
 			ptln('</pre></td></tr>');
 			ptln('</table>');
 			ptln('</div>');
-			$plug->_latex->cleanTemporaryDirectory();
+	//		$plug->_latex->cleanTemporaryDirectory();
 		}
 	}
 }
