@@ -170,7 +170,8 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 		foreach(array($this->getConf("latex_path"),$this->getConf("dvips_path"),
 				$this->getConf("convert_path"),$this->getConf("identify_path")) as $path) {
 			ptln('<tr><td>');
-			$cmd = explode(' ',$path)[0]." --version 2>&1";
+			$parts = explode(' ',$path);
+			$cmd = $parts[0]." --version 2>&1";
 			echo htmlspecialchars($cmd);
 			ptln('</td><td><pre>');
 			echo htmlspecialchars(trim(shell_exec($cmd)));
