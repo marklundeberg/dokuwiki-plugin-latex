@@ -101,7 +101,7 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 		  // if($data['class'] == "latex_displayed")
 				// $renderer->doc .= "\n<br/>";
 				
-		  $renderer->doc .= '<img src="'.$url.'" class="'.$data['class'].'" alt="'.htmlspecialchars($data[0]).'" title="'.$title.'"/>';
+		  $renderer->doc .= '<img src="'.$url.'" class="'.$data['class'].'" alt="'.htmlspecialchars($data[0]).'" title="'.$title.'" />';
 			
 			// don't need breaks now, as PType takes care of this for us.
 		  // if($data['class'] == "latex_displayed")

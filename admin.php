@@ -154,13 +154,13 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 		ptln('<td rowspan="2"><input type="submit" class="button" name="latexpurge"  value="'.$this->getLang('btn_purge').'" /></td>');
 		ptln('<TD>');
 		$labtimes = $this->getLang('label_times');
-		ptln('(<LABEL><INPUT type="radio" name="purgemode" value="atime" checked/>'.$labtimes['atime'].'</LABEL>');
-		ptln(' | <LABEL><INPUT type="radio" name="purgemode" value="mtime"/>'.$labtimes['mtime'].'</LABEL>)');
+		ptln('(<LABEL><INPUT type="radio" name="purgemode" value="atime" checked />'.$labtimes['atime'].'</LABEL>');
+		ptln(' | <LABEL><INPUT type="radio" name="purgemode" value="mtime" />'.$labtimes['mtime'].'</LABEL>)');
 		echo $this->getLang('label_olderthan');
 		echo '<input type="text" name="purgedays" size="3" value="30">';
 		echo $this->getLang('label_days');
 		ptln('</TD><TR><TD>');
-		echo '<LABEL><INPUT type="radio" name="purgemode" value="all"/>'.$this->getLang('label_all').'</LABEL>';
+		echo '<LABEL><INPUT type="radio" name="purgemode" value="all" />'.$this->getLang('label_all').'</LABEL>';
 		ptln('</TD></TR></TABLE>');
 		ptln('</form>');
 		
@@ -195,14 +195,14 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			
 			/// Directory sanity checks
 			if(is_writable($plug->_latex->getPicturePath()) && is_dir($plug->_latex->getPicturePath()))
-				ptln('<div class="success">Media directory writable:'.$plug->_latex->getPicturePath().'</div>');
+				ptln('<div class="success">Media directory is writable: '.$plug->_latex->getPicturePath().'</div>');
 			else
-				ptln('<div class="error">Media directory not writable or nonexistant!!! : '.$plug->_latex->getPicturePath().'
+				ptln('<div class="error">Media directory not writable or nonexistant! '.$plug->_latex->getPicturePath().'
 						<br />Recommendation: This media namespace must be writable on the file system.</div>');
 			if(is_writable($plug->_latex->_tmp_dir) && is_dir($plug->_latex->_tmp_dir))
-				ptln('<div class="success">Temporary directory writable:'.$plug->_latex->_tmp_dir.'</div>');
+				ptln('<div class="success">Temporary directory is writable: '.$plug->_latex->_tmp_dir.'</div>');
 			else
-				ptln('<div class="error">Temporary directory not writable or nonexistant!!! : '.$plug->_latex->_tmp_dir.'
+				ptln('<div class="error">Temporary directory not writable or nonexistant! '.$plug->_latex->_tmp_dir.'
 						<br />Recommendation: Choose a new temporary directory.</div>');
 
 			// simulate a call to the syntax plugin; force render, keep temp files.				
@@ -213,23 +213,44 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 				unlink($outname);
 				ptln('<div class="info">Removed cache file for test: '.$outname.'</div>');
 			}
-			ptln('<div class="info">Attempting to render: <tt>'.$testformula.'</tt> =>'.$outname.'</div>');
+			ptln('<div class="info">Attempting to render: <tt>'.$testformula.'</tt> => '.$outname.'</div>');
 			$plug->_latex->_keep_tmp = true;
 			$data = array($testformula,DOKU_LEXER_UNMATCHED,'class'=>"latex_inline", 'title'=>"Math", NULL);
 			$this->doc = '';
 			$plug->render('xhtml', $this, $data);
 			$tmpf = $plug->_latex->_tmp_dir."/".$plug->_latex->_tmp_filename;
-			
+			$tmpext = array('cmd','tex','log','aux','dvi','ps',$plug->_latex->_image_format);
+			foreach($tmpext as $ext) {
+				$fname = $tmpf.'.'.$ext;
+				if(is_file($fname))
+					ptln('<div class="success">File created: '.$fname.'</div>');
+				else
+					ptln('<div class="success">File missing! '.$fname.'</div>');
+			}
 			ptln('<div class="level3">');
 			ptln('<table class="inline"><tr><th>Input LaTeX file</th><th>Final result</th></tr>');
 			ptln('<tr><td><pre>');
-			echo htmlspecialchars(file_get_contents($tmpf.'.tex'));
+			if(is_readable($tmpf.'.tex') && is_file($tmpf.'.tex'))
+				echo htmlspecialchars(file_get_contents($tmpf.'.tex'));
+			else
+				echo 'MISSING';
 			ptln('</pre></td><td>');
-			ptln(htmlspecialchars($plug->_url));
-			ptln('<br/>');
+//			ptln(htmlspecialchars($plug->_url));
+//			ptln('<br /><br />');
+			ptln('<center>');
 			ptln($this->doc);
-			ptln('</pre></td></tr>');
+			ptln('</center></td></tr>');
 			ptln('</table>');
+			
+			ptln('Contents of '.$tmpf.'.log:');
+			echo '<pre>';
+			echo htmlspecialchars(file_get_contents($tmpf.'.log'));
+			echo '</pre>';
+			
+			ptln('Contents of '.$tmpf.'.cmd:');
+			echo '<pre>';
+			echo htmlspecialchars(file_get_contents($tmpf.'.cmd'));
+			echo '</pre>';
 			ptln('</div>');
 	//		$plug->_latex->cleanTemporaryDirectory();
 		}

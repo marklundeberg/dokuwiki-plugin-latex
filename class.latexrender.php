@@ -280,6 +280,7 @@ class LatexRender {
 //	   $current_dir = getcwd();
 //	   chdir($this->_tmp_dir);
 
+			unlink($this->_tmp_dir."/".$this->_tmp_filename.".cmd");
 			unlink($this->_tmp_dir."/".$this->_tmp_filename.".tex");
 			unlink($this->_tmp_dir."/".$this->_tmp_filename.".aux");
 			unlink($this->_tmp_dir."/".$this->_tmp_filename.".log");
