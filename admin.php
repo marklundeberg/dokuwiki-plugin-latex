@@ -219,6 +219,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			}
 			ptln('<div class="info">Attempting to render: <tt>'.$testformula.'</tt> => '.$outname.'</div>');
 			$plug->_latex->_keep_tmp = true;
+			$plug->_latex->_cmdoutput = ''; // activate command log.
 			$data = array($testformula,DOKU_LEXER_UNMATCHED,'class'=>"latex_inline", 'title'=>"Math", NULL);
 			$this->doc = '';
 			$plug->render('xhtml', $this, $data);
@@ -247,9 +248,9 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			ptln('</center></td></tr>');
 			ptln('</table>');
 			
-			ptln('Command log '.$tmpf.'.cmd (does not include <tt>identify</tt> output):');
+			ptln('Command log:');
 			echo '<pre>';
-			echo htmlspecialchars(file_get_contents($tmpf.'.cmd'));
+			echo $plug->_latex->_cmdoutput;
 			echo '</pre>';
 			
 			ptln('Contents of '.$tmpf.'.log:');
