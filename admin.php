@@ -202,7 +202,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			}
 			// simulate a call to the syntax plugin; keep temp files.
 			$plug->_latex->_keep_tmp = true;
-			$data = array(formula,DOKU_LEXER_UNMATCHED,'class'=>"latex_inline", 'title'=>"Math", NULL);
+			$data = array($testformula,DOKU_LEXER_UNMATCHED,'class'=>"latex_inline", 'title'=>"Math", NULL);
 			$tmpf = $plug->_latex->_tmp_dir."/".$plug->_latex->_tmp_filename;
 			$this->doc = '';
 			$plug->render('xhtml', $this, $data);
@@ -215,6 +215,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			ptln('</pre></td></tr>');
 			ptln('</table>');
 			ptln('</div>');
+			$plug->_latex->cleanTemporaryDirectory();
 		}
 	}
 }
