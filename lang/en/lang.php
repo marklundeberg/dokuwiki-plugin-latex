@@ -23,5 +23,6 @@ $lang['fail2'] = 'Fail: triggered security filter; contains blacklisted LaTeX ta
 $lang['fail4'] = 'Fail: LaTeX compilation failed.';
 $lang['fail5'] = 'Fail: image too wide or too tall: ';
 $lang['fail6'] = 'Fail: error during graphic processing.';
+$lang['fail7'] = 'Fail: error saving to cache.';
 $lang['failX'] = 'Fail: unknown error.';
 $lang['failmax'] =', maximum allowed:';

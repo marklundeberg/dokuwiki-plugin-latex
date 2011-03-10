@@ -246,8 +246,14 @@ class LatexRender {
 	   // imagemagick convert ps to image and trim picture
 	   $command = $this->_convert_path." ".$this->_tmp_filename.".ps ".
 				$this->_tmp_filename.".".$this->_image_format;
-
-	   $status_code = $this->myexec($command);
+	   $status_code .= $this->myexec($command);
+		 
+		 if (!$status_code) {
+			if( ! $this->_keep_tmp)
+				$this->cleanTemporaryDirectory();
+			$this->_errorcode = 6;
+			return false;
+		}
 
 	   // test picture for correct dimensions
 	   $dim = $this->getDimensions($this->_tmp_filename.".".$this->_image_format);
@@ -269,7 +275,7 @@ class LatexRender {
 		
 	   chdir($current_dir);
 
-	   if (!$status_code) { $this->_errorcode = 6; return false; }
+	   if (!$status_code) { $this->_errorcode = 7; return false; }
 
 	   return true;
     }

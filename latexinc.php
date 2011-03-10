@@ -93,6 +93,8 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 						break;
 					case 6: $title = $this->getLang('fail6');
 						break;
+					case 7: $title = $this->getLang('fail7');
+						break;
 					default: $title = $this->getLang('failX');
 						break;
 				}

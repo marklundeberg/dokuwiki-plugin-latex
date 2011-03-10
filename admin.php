@@ -229,7 +229,8 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 				if(unlink($outname))
 					ptln('<div class="info">Removed cache file for test: '.$outname.'</div>');
 				else
-					ptln('<div class="error">Could not remove cached file for test! '.$outname.'</div>');
+					ptln('<div class="error">Could not remove cached file for test! '.$outname.'<br />
+									the following tests will not work (renderer will just reuse the cached file)</div>');
 			}
 			ptln('<div class="info">Attempting to render: <tt>'.htmlspecialchars($testformula).'</tt><br /> => '.$outname.'</div>');
 			$plug->_latex->_keep_tmp = true;
