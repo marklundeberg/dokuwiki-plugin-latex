@@ -173,13 +173,14 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 		ptln('<form action="'.wl($INFO['id']).'" method="get">');
 		ptln('  <input type="hidden" name="do"   value="admin" />');
 		ptln('  <input type="hidden" name="page" value="'.$this->getPluginName().'" />');
-		ptln('Push this button to diagnose your LaTeX/ImageMagick installation: <input type="submit" class="button" name="dotest"  value="Test" />');
+		ptln('Push this button to diagnose your LaTeX/ImageMagick installation: <input type="submit" class="button" name="dotest"  value="Test" /><br/>');
+		ptln('The following latex code will be inserted into the template and compiled:');
 		if(isset($_REQUEST['testformula']))
 			$testformula = $_REQUEST['testformula'];
 		else
 			$testformula = '$$\underbrace{{\it f}({\rm DokuWiki}) = \overbrace{[a+b=c]}^\textrm{\LaTeX}}_{Success!}$$';
 		ptln('<br />');
-		ptln('  <input type="text" name="testformula" size="'.(strlen($testformula)+20).'" value="'.htmlspecialchars($testformula).'" />');
+		ptln('  <textarea cols=70 rows=6 type="text" name="testformula">'.htmlspecialchars($testformula).'</textarea>');
 		ptln('</form>');
 		ptln('</div>');
 		if($_REQUEST['dotest']) {
