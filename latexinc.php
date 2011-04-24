@@ -40,8 +40,8 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 	{
 		global $conf;
 		$meddir = $conf['mediadir'] . '/wiki/latex';
-		$this->_mkpath($meddir,0777-$conf['dmask']);
-		$this->_mkpath($this->getConf("tmp_dir"),0777-$conf['dmask']);
+		$this->_mkpath($meddir,$conf['dmode']);
+		$this->_mkpath($this->getConf("tmp_dir"),$conf['dmode']);
 		$latex = new LatexRender($meddir,
 						DOKU_BASE.'lib/exe/fetch.php?media=wiki:latex:',
 						$this->getConf("tmp_dir"));
