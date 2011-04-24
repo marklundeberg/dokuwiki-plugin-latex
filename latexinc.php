@@ -39,11 +39,11 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 	function syntax_plugin_latex_common()
 	{
 		global $conf;
-		if ( !is_dir($conf['mediadir'] . '/latex') ) {
-		  mkdir($conf['mediadir'] . '/latex', 0777-$conf['dmask']);
-		}
-		$latex = new LatexRender($conf['mediadir'] . '/latex',
-						DOKU_BASE.'lib/exe/fetch.php?media=latex:',
+		$meddir = $conf['mediadir'] . '/wiki/latex';
+		$this->_mkpath($meddir,0777-$conf['dmask']);
+		$this->_mkpath($this->getConf("tmp_dir"),0777-$conf['dmask']);
+		$latex = new LatexRender($meddir,
+						DOKU_BASE.'lib/exe/fetch.php?media=wiki:latex:',
 						$this->getConf("tmp_dir"));
 		$latex->_latex_path = $this->getConf("latex_path");
 		$latex->_dvips_path = $this->getConf("dvips_path");
@@ -99,21 +99,18 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 						break;
 				}
 		  }
-			// don't need breaks now, as PType takes care of this for us.
-		  // if($data['class'] == "latex_displayed")
-				// $renderer->doc .= "\n<br/>";
 				
 		  $renderer->doc .= '<img src="'.$url.'" class="'.$data['class'].'" alt="'.htmlspecialchars($data[0]).'" title="'.$title.'" />';
 			
-			// don't need breaks now, as PType takes care of this for us.
-		  // if($data['class'] == "latex_displayed")
-				// $renderer->doc .= "<br/>\n";
-
 		  $fname = $this->_latex->_filename;
 		  return true;
+      
+      
 	  } elseif ($mode == 'metadata') {
 		  // nothing to do in metadata mode.
 		  return true;
+      
+      
 	  } elseif ($mode == 'odt') {
 			////////////////////////////////////
 			// ODT                            //
@@ -135,6 +132,8 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 		  $renderer->_odtAddImage($fname,$width,$height);
 		  
 		  return true;
+      
+      
 	  } elseif ($mode == 'latex') {
 			////////////////////////////////////
 			// LATEX                          //
@@ -147,6 +146,12 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 	  }
 	  $renderer->doc .= htmlspecialchars($data[0]); /// unknown render mode, just fart out the latex code.
 	  return false;
+	}
+  
+	function _mkpath($path,$dmask=0777)
+	{
+		if(@mkdir($path,$dmask) or file_exists($path)) return true;
+		return ($this->_mkpath(dirname($path),$dmask) and mkdir($path,$dmask));
 	}
 
 }

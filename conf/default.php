@@ -6,6 +6,7 @@ $conf['convert_path'] = '/usr/bin/convert -density 120 -trim -transparent "#FFFF
 $conf['identify_path'] = '/usr/bin/identify';
 $conf['image_format'] = 'png';
 $conf['tmp_dir'] = '/tmp';
+//$conf['tmp_dir'] = ($GLOBALS['conf'])['mediadir'].'/wiki/latex/tmp';
 $conf['keep_tmp'] = false;
 
 $conf['xsize_limit'] = 1000;
