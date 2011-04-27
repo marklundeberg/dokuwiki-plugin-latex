@@ -77,7 +77,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	function latexpurge($mode, $timelimit)
 	{
 		global $conf, $config_cascade;
-		$images = glob($conf['mediadir'].'/latex/img*');
+		$images = glob($conf['mediadir'].'/wiki/latex/img*');
 		$this->_timelimit = $timelimit;
 		switch($mode) {
 			case 'atime':
