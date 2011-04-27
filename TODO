@@ -8,3 +8,8 @@
 	-perhaps a bit premature.
 -MimeTex support
 	-shouldn't be too hard to hack in. need to check if it supports \begin{} \end{} environments.
+-\includegraphics support will work if one puts a \graphicspath line in the preamble...
+  - that could be keyed into the current namespace; but on second thought, that
+	  breaks the idea of having images tagged by checksum (it would depend in which
+		namespace the equation is compiled). instead, admins should just make \graphicspath
+		manually and set it to a specific shared point, in a small wiki.

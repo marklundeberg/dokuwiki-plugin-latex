@@ -1,7 +1,7 @@
 base   latex
 author Alexander Krause, Michael Boyle, Mark Lundeberg
 email  .
-date   2011-03-10
+date   2011-04-24
 name   LaTeX plugin
 desc   LaTeX rendering plugin; requires LaTeX and ImageMagick.
 url    http://www.dokuwiki.org/plugin:latex
