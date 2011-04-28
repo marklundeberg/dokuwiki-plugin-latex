@@ -215,14 +215,14 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			
 			/// Directory sanity checks
 			if(is_writable($plug->_latex->getPicturePath()) && is_dir($plug->_latex->getPicturePath()))
-				ptln('<div class="success">Media directory is writable: '.$plug->_latex->getPicturePath().'</div>');
+				ptln('<div class="success">Media directory is writable: <code>'.$plug->_latex->getPicturePath().'</code></div>');
 			else
-				ptln('<div class="error">Media directory not writable or nonexistant! '.$plug->_latex->getPicturePath().'
+				ptln('<div class="error">Media directory not writable or nonexistant! <code>'.$plug->_latex->getPicturePath().'</code>
 						<br />Recommendation: This media namespace must be writable on the file system.</div>');
 			if(is_writable($plug->_latex->_tmp_dir) && is_dir($plug->_latex->_tmp_dir))
-				ptln('<div class="success">Temporary directory is writable: '.$plug->_latex->_tmp_dir.'</div>');
+				ptln('<div class="success">Temporary directory is writable: <code>'.$plug->_latex->_tmp_dir.'</code></div>');
 			else
-				ptln('<div class="error">Temporary directory not writable or nonexistant! '.$plug->_latex->_tmp_dir.'
+				ptln('<div class="error">Temporary directory not writable or nonexistant! <code>'.$plug->_latex->_tmp_dir.'</code>
 						<br />Recommendation: This media namespace must be writable on the file system.</div>');
 
 			// simulate a call to the syntax plugin; force render, keep temp files.
@@ -230,12 +230,12 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			$outname = $plug->_latex->getPicturePath()."/img".$md5.'.'.$plug->_latex->_image_format;
 			if(file_exists($outname)) {
 				if(unlink($outname))
-					ptln('<div class="info">Removed cache file for test: '.$outname.'</div>');
+					ptln('<div class="info">Removed cache file for test: <code>'.$outname.'</code></div>');
 				else
-					ptln('<div class="error">Could not remove cached file for test! '.$outname.'<br />
+					ptln('<div class="error">Could not remove cached file for test! <code>'.$outname.'</code><br />
 									the following tests will not work (renderer will just reuse the cached file)</div>');
 			}
-			ptln('<div class="info">Attempting to render: <pre>'.htmlspecialchars($testformula).'</pre><br /> => '.$outname.'</div>');
+			ptln('<div class="info">Attempting to render to target <code>'.$outname.'</code></div>');
 			$plug->_latex->_keep_tmp = true;
 			$plug->_latex->_cmdoutput = ''; // activate command log.
 			$data = array($testformula,DOKU_LEXER_UNMATCHED,'class'=>"latex_inline", 'title'=>"Math", NULL);
@@ -247,18 +247,21 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			foreach($tmpext as $ext) {
 				$fname = $tmpf.'.'.$ext;
 				if(is_file($fname)) {
-					$rendstr = $this->render('{{'.$tmpw.'.'.$ext.'?linkonly|'.$fname.'}}');
-					$rendstr = preg_replace('/<\\/?p>/','',$rendstr);
-					ptln('<div class="success">File created: '.$rendstr.'</div>');
+					if(isset($_REQUEST['keep_tmp'])) {
+						$rendstr = $this->render('{{'.$tmpw.'.'.$ext.'?linkonly|'.$fname.'}}');
+						$rendstr = preg_replace('/<\\/?p>/','',$rendstr);
+					} else
+						$rendstr = $fname;
+					ptln('<div class="success">File created: <code>'.$rendstr.'</code></div>');
 				} else
-					ptln('<div class="error">File missing! '.$fname.'</div>');
+					ptln('<div class="error">File missing! <code>'.$fname.'</code></div>');
 			}
 			if(! isset($_REQUEST['keep_tmp']))
-				ptln('<div class="info">These files '.$tmpf.'.* will be deleted at the end of this script.</div>');
+				ptln('<div class="info">These files <code>'.$tmpf.'.*</code> will be deleted at the end of this script.</div>');
 			if(is_file($outname))
-				ptln('<div class="success">Successfully moved to media: '.$outname.'</div>');
+				ptln('<div class="success">Successfully moved to media: <code>'.$outname.'</code></div>');
 			else
-				ptln('<div class="error">File missing from media! '.$outname.'</div>');
+				ptln('<div class="error">File missing from media! <code>'.$outname.'</code></div>');
 				
 			ptln('<div class="level3">');
 			ptln('<table class="inline"><tr><th>Input LaTeX file</th><th>Final result</th></tr>');
