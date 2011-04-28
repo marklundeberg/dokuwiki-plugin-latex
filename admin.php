@@ -241,12 +241,13 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			$data = array($testformula,DOKU_LEXER_UNMATCHED,'class'=>"latex_inline", 'title'=>"Math", NULL);
 			$this->doc = '';
 			$plug->render('xhtml', $this, $data);
+			$tmpw = $this->getConf('latex_namespace').'tmp:'.$plug->_latex->_tmp_filename;
 			$tmpf = $plug->_latex->_tmp_dir."/".$plug->_latex->_tmp_filename;
 			$tmpext = array('tex','log','aux','dvi','ps',$plug->_latex->_image_format);
 			foreach($tmpext as $ext) {
 				$fname = $tmpf.'.'.$ext;
 				if(is_file($fname))
-					ptln('<div class="success">File created: '.$fname.'</div>');
+					ptln('<div class="success">File created: '.$this->render('{{'.$tmpw.'.'.$ext.'?linkonly}}').'</div>');
 				else
 					ptln('<div class="error">File missing! '.$fname.'</div>');
 			}
