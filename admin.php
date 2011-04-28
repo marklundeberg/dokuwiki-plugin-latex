@@ -77,7 +77,8 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 	function latexpurge($mode, $timelimit)
 	{
 		global $conf, $config_cascade;
-		$images = glob($conf['mediadir'].'/wiki/latex/img*');
+		$meddir = $conf['mediadir'] . '/' . strtr($this->getConf('latex_namespace'),':','/');
+		$images = glob($meddir.'/img*');
 		$this->_timelimit = $timelimit;
 		switch($mode) {
 			case 'atime':
@@ -174,12 +175,13 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 		ptln('  <input type="hidden" name="do"   value="admin" />');
 		ptln('  <input type="hidden" name="page" value="'.$this->getPluginName().'" />');
 		ptln('Push this button to diagnose your LaTeX/ImageMagick installation: <input type="submit" class="button" name="dotest"  value="Test" /><br/>');
+		ptln('<input type="checkbox" name="keep_tmp">Check this button to keep the temporary files used during compilation.</input><br/>');
 		ptln('The following latex code will be inserted into the template and compiled:');
+		ptln('<br />');
 		if(isset($_REQUEST['testformula']))
 			$testformula = $_REQUEST['testformula'];
 		else
 			$testformula = '$$\underbrace{{\it f}({\rm DokuWiki}) = \overbrace{[a+b=c]}^\textrm{\LaTeX}}_{Success!}$$';
-		ptln('<br />');
 		ptln('  <textarea cols=70 rows=6 type="text" name="testformula">'.htmlspecialchars($testformula).'</textarea>');
 		ptln('</form>');
 		ptln('</div>');
@@ -221,7 +223,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 				ptln('<div class="success">Temporary directory is writable: '.$plug->_latex->_tmp_dir.'</div>');
 			else
 				ptln('<div class="error">Temporary directory not writable or nonexistant! '.$plug->_latex->_tmp_dir.'
-						<br />Recommendation: Choose a new temporary directory.</div>');
+						<br />Recommendation: This media namespace must be writable on the file system.</div>');
 
 			// simulate a call to the syntax plugin; force render, keep temp files.
 			$md5 = md5($testformula);
@@ -233,7 +235,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 					ptln('<div class="error">Could not remove cached file for test! '.$outname.'<br />
 									the following tests will not work (renderer will just reuse the cached file)</div>');
 			}
-			ptln('<div class="info">Attempting to render: <tt>'.htmlspecialchars($testformula).'</tt><br /> => '.$outname.'</div>');
+			ptln('<div class="info">Attempting to render: <pre>'.htmlspecialchars($testformula).'</pre><br /> => '.$outname.'</div>');
 			$plug->_latex->_keep_tmp = true;
 			$plug->_latex->_cmdoutput = ''; // activate command log.
 			$data = array($testformula,DOKU_LEXER_UNMATCHED,'class'=>"latex_inline", 'title'=>"Math", NULL);
@@ -248,9 +250,8 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 				else
 					ptln('<div class="error">File missing! '.$fname.'</div>');
 			}
-			if(! $this->getConf("keep_tmp"))
-				ptln('<div class="info">These files '.$tmpf.'.* will be deleted at the end of this script
-									(change keep_tmp in Config Manager to disable this).</div>');
+			if(! isset($_REQUEST['keep_tmp']))
+				ptln('<div class="info">These files '.$tmpf.'.* will be deleted at the end of this script.</div>');
 			if(is_file($outname))
 				ptln('<div class="success">Successfully moved to media: '.$outname.'</div>');
 			else
@@ -281,7 +282,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			echo htmlspecialchars(file_get_contents($tmpf.'.log'));
 			echo '</pre>';
 			
-			if(! $this->getConf("keep_tmp"))
+			if(! isset($_REQUEST['keep_tmp']))
 				$plug->_latex->cleanTemporaryDirectory();
 			ptln('</div>');
 		}

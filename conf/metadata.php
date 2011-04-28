@@ -11,8 +11,7 @@ $meta['latex_path'] = array('string');
 $meta['dvips_path'] = array('string');
 $meta['convert_path'] = array('string');
 $meta['identify_path'] = array('string');
-$meta['tmp_dir'] = array('string');
-$meta['keep_tmp'] = array('onoff');
+$meta['latex_namespace'] = array('string');
 
 $meta['preamble'] = array('');
 $meta['postamble'] = array('');

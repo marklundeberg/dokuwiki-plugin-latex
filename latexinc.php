@@ -39,17 +39,17 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 	function syntax_plugin_latex_common()
 	{
 		global $conf;
-		$meddir = $conf['mediadir'] . '/wiki/latex';
+		$meddir = $conf['mediadir'] . '/' . strtr($this->getConf('latex_namespace'),':','/');
 		$this->_mkpath($meddir,$conf['dmode']);
-		$this->_mkpath($this->getConf("tmp_dir"),$conf['dmode']);
+		$this->_mkpath($meddir.'/tmp',$conf['dmode']);
 		$latex = new LatexRender($meddir,
-						DOKU_BASE.'lib/exe/fetch.php?media=wiki:latex:',
-						$this->getConf("tmp_dir"));
+						DOKU_BASE.'lib/exe/fetch.php?media='.$this->getConf('latex_namespace').':',
+						$meddir.'/tmp');
 		$latex->_latex_path = $this->getConf("latex_path");
 		$latex->_dvips_path = $this->getConf("dvips_path");
 		$latex->_convert_path = $this->getConf("convert_path");
 		$latex->_identify_path = $this->getConf("identify_path");
-		$latex->_keep_tmp = $this->getConf("keep_tmp");
+		$latex->_keep_tmp = false;
 		$latex->_image_format = $this->getConf("image_format");
 		$latex->_colour = $this->getConf("colour");
 		$latex->_xsize_limit = $this->getConf("xsize_limit");
