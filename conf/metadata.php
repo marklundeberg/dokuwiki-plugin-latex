@@ -10,8 +10,9 @@ $meta['string_length_limit'] = array('numeric');
 
 $meta['latex_path'] = array('string');
 $meta['dvips_path'] = array('string');
-$meta['convert_path'] = array('string');
 $meta['identify_path'] = array('string');
+$meta['convert_path'] = array('string');
+$meta['convert_options'] = array('string');
 
 $meta['preamble'] = array('');
 $meta['postamble'] = array('');

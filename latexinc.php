@@ -47,7 +47,7 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 						$meddir.'/tmp');
 		$latex->_latex_path = $this->getConf("latex_path");
 		$latex->_dvips_path = $this->getConf("dvips_path");
-		$latex->_convert_path = $this->getConf("convert_path");
+		$latex->_convert_path = $this->getConf("convert_path").' '.$this->getConf("convert_options");
 		$latex->_identify_path = $this->getConf("identify_path");
 		$latex->_keep_tmp = false;
 		$latex->_image_format = $this->getConf("image_format");

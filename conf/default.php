@@ -1,9 +1,10 @@
 <?php
 
-$conf['latex_path'] = '/usr/bin/latex --interaction=nonstopmode';
-$conf['dvips_path'] = '/usr/bin/dvips -E';
-$conf['convert_path'] = '/usr/bin/convert -density 120 -trim -transparent "#FFFFFF"';
-$conf['identify_path'] = '/usr/bin/identify';
+$conf['latex_path'] = 'latex';
+$conf['dvips_path'] = 'dvips';
+$conf['convert_path'] = 'convert';
+$conf['convert_options'] = '-density 120 -trim -transparent "#FFFFFF"';
+$conf['identify_path'] = 'identify';
 $conf['image_format'] = 'png';
 $conf['latex_namespace'] = 'wiki:latex';
 

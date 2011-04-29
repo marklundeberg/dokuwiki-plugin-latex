@@ -187,7 +187,7 @@ class LatexRender {
 	* @returns array containing the picture dimensions
 	*/
     function getDimensions($filename) {
-	   $output=$this->myexec($this->_identify_path." ".$filename);
+	   $output=$this->myexec($this->_identify_path." ".$filename, $status);
 	   $result=explode(" ",$output);
 	   $dim=explode("x",$result[2]);
 	   $dim["x"] = $dim[0];
@@ -227,7 +227,7 @@ class LatexRender {
 	   fclose($fp);
 
 	   // create temporary dvi file
-	   $command = $this->_latex_path." ".$this->_tmp_filename.".tex";
+	   $command = $this->_latex_path." --interaction=nonstopmode ".$this->_tmp_filename.".tex";
 	   $this->myexec($command,$status_latex);
 
 		// LaTeXing only fails if DVI doesn't exist. - let's ignore some minor errors.
@@ -241,7 +241,7 @@ class LatexRender {
 		}
 
 	   // convert dvi file to postscript using dvips
-	   $command = $this->_dvips_path." ".$this->_tmp_filename.".dvi"." -o ".$this->_tmp_filename.".ps";
+	   $command = $this->_dvips_path." -E ".$this->_tmp_filename.".dvi"." -o ".$this->_tmp_filename.".ps";
 	   $this->myexec($command,$status_dvips);
 
 
@@ -306,12 +306,12 @@ class LatexRender {
 //	   $current_dir = getcwd();
 //	   chdir($this->_tmp_dir);
 
-			unlink($this->_tmp_dir."/".$this->_tmp_filename.".tex");
-			unlink($this->_tmp_dir."/".$this->_tmp_filename.".aux");
-			unlink($this->_tmp_dir."/".$this->_tmp_filename.".log");
-			unlink($this->_tmp_dir."/".$this->_tmp_filename.".dvi");
-			unlink($this->_tmp_dir."/".$this->_tmp_filename.".ps");
-			unlink($this->_tmp_dir."/".$this->_tmp_filename.".".$this->_image_format);
+			@unlink($this->_tmp_dir."/".$this->_tmp_filename.".tex");
+			@unlink($this->_tmp_dir."/".$this->_tmp_filename.".aux");
+			@unlink($this->_tmp_dir."/".$this->_tmp_filename.".log");
+			@unlink($this->_tmp_dir."/".$this->_tmp_filename.".dvi");
+			@unlink($this->_tmp_dir."/".$this->_tmp_filename.".ps");
+			@unlink($this->_tmp_dir."/".$this->_tmp_filename.".".$this->_image_format);
 
 //	   chdir($current_dir);
     }

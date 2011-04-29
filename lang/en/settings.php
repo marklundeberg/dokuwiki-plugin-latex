@@ -4,9 +4,10 @@ $lang['adminlink'] = 'If you want this change to affect old LaTeX renders, you s
   wl($ID).'?do=admin&page=latex'.
   '" target="_blank" class=""wikilink1">admin page</a> and refresh your browser\'s cache.';
 
-$lang['latex_path'] = 'Path to <code>latex</code> program and options';
-$lang['dvips_path'] = 'Path to <code>dvips</code> program and options';
-$lang['convert_path'] = 'Path to ImageMagick <code>convert</code> program and options;
+$lang['latex_path'] = 'Path to <code>latex</code> program';
+$lang['dvips_path'] = 'Path to <code>dvips</code> program';
+$lang['convert_path'] = 'Path to ImageMagick <code>convert</code> program';
+$lang['convert_options'] = 'Options for <code>convert</code> program; e.g.
    <code>-density &lt;number&gt;</code> controls rendering size, and <code>-transparent &lt;colour&gt;</code>
    converts colour to transparency. '.$lang['adminlink'];
 $lang['identify_path'] = 'Path to ImageMagick <code>identify</code> program';

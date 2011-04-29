@@ -194,8 +194,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			foreach(array($this->getConf("latex_path"),$this->getConf("dvips_path"),
 					$this->getConf("convert_path"),$this->getConf("identify_path")) as $path) {
 				ptln('<tr><td><pre>');
-				$parts = explode(' ',$path);
-				$cmd = $parts[0]." --version 2>&1";
+				$cmd = $path." --version 2>&1";
 				echo htmlspecialchars($cmd);
 				ptln('</pre></td><td>');
 				unset($execout);
@@ -230,7 +229,8 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 			$outname = $plug->_latex->getPicturePath()."/img".$md5.'.'.$plug->_latex->_image_format;
 			if(file_exists($outname)) {
 				if(unlink($outname))
-					ptln('<div class="info">Removed cache file for test: <code>'.$outname.'</code></div>');
+					ptln('<div class="info">Removed cache file for test: <code>'.$outname.'</code><br/>
+					<b>WARNING: You may need to refresh your browser\'s cache to see changes in the resulting image.</b></div>');
 				else
 					ptln('<div class="error">Could not remove cached file for test! <code>'.$outname.'</code><br />
 									the following tests will not work (renderer will just reuse the cached file)</div>');
@@ -248,7 +248,7 @@ class admin_plugin_latex extends DokuWiki_Admin_Plugin {
 				$fname = $tmpf.'.'.$ext;
 				if(is_file($fname)) {
 					if(isset($_REQUEST['keep_tmp'])) {
-						$rendstr = $this->render('{{'.$tmpw.'.'.$ext.'?linkonly|'.$fname.'}}');
+						$rendstr = $this->render('{{'.$tmpw.'.'.$ext.'?linkonly&nocache|'.$fname.'}}');
 						$rendstr = preg_replace('/<\\/?p>/','',$rendstr);
 					} else
 						$rendstr = $fname;

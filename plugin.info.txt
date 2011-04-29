@@ -1,7 +1,7 @@
 base   latex
 author Alexander Krause, Michael Boyle, Mark Lundeberg
 email  .
-date   2011-04-28
+date   2011-04-29
 name   LaTeX plugin
 desc   LaTeX rendering plugin
 url    http://www.dokuwiki.org/plugin:latex
