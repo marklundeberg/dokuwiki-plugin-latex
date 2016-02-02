@@ -20,7 +20,7 @@ class syntax_plugin_latex_dollar extends syntax_plugin_latex_common {
    /**
     * Handle the match
     */
-    function handle($match, $state, $pos, &$handler){
+    function handle($match, $state, $pos, Doku_Handler $handler){
 	  if($state != DOKU_LEXER_UNMATCHED)
 		return array($match,$state,NULL);
 	  return array("$".$match."$",$state,'class'=>"latex_inline", 'title'=>"Math", NULL);
