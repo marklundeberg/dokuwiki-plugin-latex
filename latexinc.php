@@ -127,7 +127,7 @@ class syntax_plugin_latex_common extends DokuWiki_Syntax_Plugin {
 		  
 		  if($data['class'] == "latex_displayed")
 				// displayed math: 5 spaces seems to look okay.
-				$renderer->doc .= '<text:s text:c="5"/>';
+				$renderer->preformatted('     ');
 		  
 		  $renderer->_odtAddImage($fname,$width,$height);
 		  
